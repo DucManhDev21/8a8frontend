@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
 <meta name="description" content="Portal Lớp 8A8 - Trường THCS Cẩm Lý 2: học tập, thi đua, trắc nghiệm, thành viên, tương tác và kho kỷ niệm.">
 <meta name="keywords" content="8A8, THCS Cẩm Lý 2, lớp 8A8, học tập, thi đua, trắc nghiệm">
 <meta name="author" content="Lớp 8A8 - Trường THCS Cẩm Lý 2">
@@ -41,6 +41,7 @@ tailwind.config={
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
+/* Chống vỡ giao diện dọc/ngang */
 body{
  margin:0;color:var(--text);
  font-family:Inter,system-ui,sans-serif;
@@ -49,6 +50,8 @@ body{
  radial-gradient(circle at 90% 20%,rgba(37,99,235,.12),transparent 30rem),
  var(--page);
  transition:background .5s,color .3s;
+ overflow-x: hidden; 
+ width: 100%;
 }
 body:before{
  content:"";position:fixed;inset:0;pointer-events:none;z-index:-2;
@@ -58,7 +61,7 @@ body:before{
  mask-image:linear-gradient(to bottom,black,transparent 85%);
 }
 a{text-decoration:none;color:inherit}
-button,input,select,textarea{font:inherit}
+button,input,select,textarea{font:inherit; max-width: 100%;}
 button{cursor:pointer}
 .glass{
  background:var(--surface);
@@ -107,17 +110,19 @@ button{cursor:pointer}
 .btn-primary{color:white;background:linear-gradient(135deg,var(--primary),var(--secondary));box-shadow:0 12px 30px rgba(37,99,235,.2)}
 .btn-soft{background:rgba(148,163,184,.12);border:1px solid var(--border)}
 .btn-danger{color:white;background:linear-gradient(135deg,#ef4444,#be123c)}
-.badge{display:inline-flex;align-items:center;gap:.35rem;padding:.3rem .65rem;border-radius:999px;font-size:.75rem;font-weight:800;background:rgba(20,184,166,.12);border:1px solid rgba(20,184,166,.2)}
-.page-section{width:min(1180px,calc(100% - 2rem));margin:auto;padding:5rem 0}
+.badge{display:inline-flex;align-items:center;gap:.35rem;padding:.3rem .65rem;border-radius:999px;font-size:.75rem;font-weight:800;background:rgba(20,184,166,.12);border:1px solid rgba(20,184,166,.2); white-space: nowrap;}
+.page-section{width:min(1180px,calc(100% - 2rem));margin:auto;padding:4rem 0}
+.nav-link{transition: color 0.2s;}
 .nav-link.active{color:var(--primary)}
-.avatar{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;font-weight:900}
+.avatar{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;font-weight:900; flex-shrink: 0;}
 .progress{height:9px;border-radius:999px;background:rgba(148,163,184,.18);overflow:hidden}
-.progress>div{height:100%;background:linear-gradient(90deg,var(--primary),var(--secondary));border-radius:inherit}
+.progress>div{height:100%;background:linear-gradient(90deg,var(--primary),var(--secondary));border-radius:inherit; transition: width 0.3s;}
 .toast-stack{position:fixed;right:1rem;bottom:1rem;z-index:150;display:grid;gap:.6rem}
 .toast{padding:1rem 1.1rem;border-radius:17px;max-width:360px}
-table{width:100%;border-collapse:collapse}
+.table-wrapper {width: 100%; overflow-x: auto;}
+table{width:100%;border-collapse:collapse; min-width: 600px;}
 th,td{padding:.8rem;text-align:left;border-bottom:1px solid var(--border)}
-@media(max-width:800px){.desktop-nav{display:none}.page-section{padding:3.5rem 0}.hero-title{font-size:2.6rem}}
+@media(max-width:800px){.desktop-nav{display:none}.page-section{padding:3rem 0}.hero-title{font-size:2.6rem}}
 </style>
 </head>
 
@@ -125,9 +130,9 @@ th,td{padding:.8rem;text-align:left;border-bottom:1px solid var(--border)}
 <div id="seasonal-canvas-root"></div>
 <div id="seasonal-banner"></div>
 
-<header class="sticky top-0 z-50 border-b border-slate-300/20 glass" data-aos="fade-down" data-aos-mirror="true" data-aos-once="false">
+<header class="sticky top-0 z-50 border-b border-slate-300/20 glass" data-aos="fade-down" data-aos-once="true">
  <div class="max-w-[1280px] mx-auto px-4 py-3 flex items-center gap-3">
-  <a href="#trang-chu" class="flex items-center gap-3 shrink-0" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+  <a href="#trang-chu" class="flex items-center gap-3 shrink-0">
    <div class="w-11 h-11 rounded-2xl grid place-items-center font-black text-white text-xl bg-gradient-to-br from-teal-500 to-blue-600 shadow-neon">8A8</div>
    <div class="hidden sm:block">
     <div class="font-black font-display">PORTAL 8A8</div>
@@ -135,8 +140,9 @@ th,td{padding:.8rem;text-align:left;border-bottom:1px solid var(--border)}
    </div>
   </a>
 
-  <nav class="desktop-nav flex-1 flex justify-center gap-5 text-sm font-bold">
-   <a class="nav-link" href="#trang-chu" data-route-link="trang-chu">Trang chủ</a>
+  <!-- Menu Nav sẽ được JS kiểm soát ẩn/hiện dựa vào trạng thái đăng nhập -->
+  <nav id="main-nav" class="desktop-nav flex-1 flex justify-center gap-5 text-sm font-bold opacity-0 pointer-events-none transition-opacity duration-300">
+   <a class="nav-link" href="#trang-chu" data-route-link="trang-chu">Dashboard</a>
    <a class="nav-link" href="#thanh-vien" data-route-link="thanh-vien">Thành viên</a>
    <a class="nav-link" href="#thi-dua" data-route-link="thi-dua">Thi đua</a>
    <a class="nav-link" href="#hoc-tap" data-route-link="hoc-tap">Học tập</a>
@@ -144,35 +150,35 @@ th,td{padding:.8rem;text-align:left;border-bottom:1px solid var(--border)}
    <a class="nav-link" href="#giai-tri" data-route-link="giai-tri">Giải trí</a>
   </nav>
 
-  <div class="flex items-center gap-2">
-   <button id="theme-toggle" class="btn btn-soft" aria-label="Đổi giao diện" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">🌙</button>
-   <button id="login-button" class="btn btn-primary" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">Đăng nhập</button>
-   <button id="register-button" class="btn btn-soft hidden sm:inline-flex" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">Tạo tài khoản</button>
+  <div class="flex items-center gap-2 shrink-0">
+   <button id="theme-toggle" class="btn btn-soft" aria-label="Đổi giao diện">🌙</button>
+   <button id="login-button" class="btn btn-primary">Đăng nhập</button>
+   <button id="register-button" class="btn btn-soft hidden sm:inline-flex">Tạo tài khoản</button>
    <div id="profile-frame" class="hidden"></div>
   </div>
  </div>
 </header>
 
-<main id="app" aria-live="polite"></main>
+<main id="app" aria-live="polite" class="min-h-[70vh]"></main>
 
 <footer class="border-t border-slate-300/20 mt-12">
- <div class="max-w-[1180px] mx-auto px-4 py-10 text-center text-sm text-slate-500" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+ <div class="max-w-[1180px] mx-auto px-4 py-10 text-center text-sm text-slate-500">
   <div class="font-black text-lg text-slate-700 dark:text-slate-200">8A8 — Bứt phá giới hạn</div>
   <div class="mt-2">Lớp 8A8 · Trường THCS Cẩm Lý 2</div>
   <div class="mt-1">Đoàn kết đập tan mọi thách thức!</div>
  </div>
 </footer>
 
-<!-- LOGIN MODAL: TÁCH RIÊNG -->
+<!-- LOGIN MODAL -->
 <div id="login-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="login-title">
- <div class="auth-panel p-6" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+ <div class="auth-panel p-6">
   <div class="flex justify-between items-start">
    <div>
     <span class="badge">🔐 Khu vực thành viên</span>
     <h2 id="login-title" class="text-3xl font-black mt-3">Đăng nhập</h2>
     <p class="text-sm text-slate-500 mt-1">Chào mừng bạn quay lại Portal 8A8.</p>
    </div>
-   <button class="btn btn-soft modal-close" data-modal="login-modal" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">×</button>
+   <button class="btn btn-soft modal-close" data-modal="login-modal">×</button>
   </div>
 
   <form id="login-form" class="mt-6 space-y-4">
@@ -184,28 +190,28 @@ th,td{padding:.8rem;text-align:left;border-bottom:1px solid var(--border)}
     <span class="text-sm font-bold">Mật khẩu</span>
     <input id="login-password" class="input mt-2" type="password" autocomplete="current-password" required minlength="6" placeholder="••••••••">
    </label>
-   <button class="btn btn-primary w-full" type="submit" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+   <button class="btn btn-primary w-full" type="submit">
     Đăng nhập vào Portal
    </button>
   </form>
 
   <div class="mt-5 text-center text-sm text-slate-500">
    Chưa có tài khoản?
-   <button id="switch-to-register" class="font-black text-teal-500" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">Tạo tài khoản mới</button>
+   <button id="switch-to-register" class="font-black text-teal-500">Tạo tài khoản mới</button>
   </div>
  </div>
 </div>
 
-<!-- REGISTER MODAL: TÁCH RIÊNG -->
+<!-- REGISTER MODAL -->
 <div id="register-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="register-title">
- <div class="auth-panel p-6" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+ <div class="auth-panel p-6">
   <div class="flex justify-between items-start">
    <div>
     <span class="badge">✨ Thành viên mới</span>
     <h2 id="register-title" class="text-3xl font-black mt-3">Tạo tài khoản</h2>
     <p class="text-sm text-slate-500 mt-1">Đăng ký riêng biệt, nhanh chóng và an toàn.</p>
    </div>
-   <button class="btn btn-soft modal-close" data-modal="register-modal" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">×</button>
+   <button class="btn btn-soft modal-close" data-modal="register-modal">×</button>
   </div>
 
   <form id="register-form" class="mt-6 space-y-4">
@@ -225,36 +231,36 @@ th,td{padding:.8rem;text-align:left;border-bottom:1px solid var(--border)}
     <span class="text-sm font-bold">Xác nhận mật khẩu</span>
     <input id="register-password-confirm" class="input mt-2" type="password" autocomplete="new-password" required minlength="6" placeholder="Nhập lại mật khẩu">
    </label>
-   <button class="btn btn-primary w-full" type="submit" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+   <button class="btn btn-primary w-full" type="submit">
     Tạo tài khoản
    </button>
   </form>
 
   <div class="mt-5 text-center text-sm text-slate-500">
    Đã có tài khoản?
-   <button id="switch-to-login" class="font-black text-teal-500" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">Đăng nhập</button>
+   <button id="switch-to-login" class="font-black text-teal-500">Đăng nhập</button>
   </div>
  </div>
 </div>
 
 <!-- PROFILE MODAL -->
 <div id="student-modal" class="modal-backdrop">
- <div id="student-modal-content" class="auth-panel p-6" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false"></div>
+ <div id="student-modal-content" class="auth-panel p-6"></div>
 </div>
 
 <!-- POPUP THÔNG BÁO -->
 <div id="notice-modal" class="modal-backdrop">
- <div class="auth-panel p-7" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+ <div class="auth-panel p-7">
   <div class="flex justify-between gap-4">
    <div>
     <span class="badge">📢 Thông báo lớp</span>
     <h2 id="notice-title" class="text-3xl font-black mt-3"></h2>
    </div>
-   <button id="notice-close-temporary" class="btn btn-soft" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">×</button>
+   <button id="notice-close-temporary" class="btn btn-soft">×</button>
   </div>
   <div id="notice-content" class="mt-5 leading-7 whitespace-pre-wrap text-slate-600 dark:text-slate-300"></div>
   <div class="mt-6 p-4 rounded-2xl bg-slate-500/10 text-center">
-   <button id="notice-read-button" class="btn btn-primary w-full" disabled data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+   <button id="notice-read-button" class="btn btn-primary w-full" disabled>
     Tôi đã đọc (3)
    </button>
    <p class="text-xs text-slate-500 mt-2">Sau khi mở khóa, trạng thái đọc được giữ đến 23:59:59 hôm nay.</p>
@@ -267,7 +273,6 @@ th,td{padding:.8rem;text-align:left;border-bottom:1px solid var(--border)}
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
@@ -291,8 +296,7 @@ import {
   orderBy,
   limit,
   onSnapshot,
-  serverTimestamp,
-  increment
+  serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -390,14 +394,10 @@ function escapeHtml(value=""){
     "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
   }[m]));
 }
-function safeId(value){return String(value).replace(/[^a-zA-Z0-9_-]/g,"-")}
 
-function aosMarkup(html,animation="fade-up"){
-  return html
-    .replace(/<([a-z][^>]*)>/gi,(match,attrs)=>{
-      if(attrs.includes("data-aos=")) return match;
-      return `<$1 data-aos="${animation}" data-aos-mirror="true" data-aos-once="false">`;
-    });
+// Hàm hỗ trợ render AOS chỉ ở trang giới thiệu để tránh rối mắt khi đã đăng nhập
+function getAos(anim = "fade-up") {
+  return !state.user ? `data-aos="${anim}" data-aos-mirror="true" data-aos-once="false"` : '';
 }
 
 function refreshAOS(){
@@ -405,7 +405,6 @@ function refreshAOS(){
     AOS.refreshHard();
     AOS.refresh();
   }
-  if(window.lucide) lucide.createIcons();
 }
 
 window.AOS?.init({
@@ -419,12 +418,9 @@ window.AOS?.init({
 function toast(message,type="info"){
   const node=document.createElement("div");
   node.className="toast glass";
-  node.setAttribute("data-aos","fade-left");
-  node.setAttribute("data-aos-mirror","true");
-  node.setAttribute("data-aos-once","false");
   node.innerHTML=`<div class="font-bold">${escapeHtml(message)}</div>`;
   $("toast-stack").appendChild(node);
-  setTimeout(()=>node.remove(),4200);
+  setTimeout(()=>node.remove(),3500);
 }
 
 function swalSuccess(title,text){
@@ -439,7 +435,6 @@ function swalSuccess(title,text){
 
 function openModal(id){
   $(id)?.classList.add("open");
-  refreshAOS();
 }
 function closeModal(id){
   $(id)?.classList.remove("open");
@@ -457,7 +452,6 @@ document.querySelectorAll(".modal-close").forEach(button=>{
 
 $("login-button").addEventListener("click",()=>openModal("login-modal"));
 $("register-button").addEventListener("click",()=>openModal("register-modal"));
-
 $("switch-to-register").addEventListener("click",()=>{
   closeModal("login-modal");
   openModal("register-modal");
@@ -490,75 +484,34 @@ $("login-form").addEventListener("submit",async event=>{
     closeModal("login-modal");
     $("login-form").reset();
   }catch(error){
-    Swal.fire({
-      icon:"error",
-      title:"Đăng nhập thất bại",
-      text:translateFirebaseError(error.code),
-      confirmButtonColor:"#ef4444"
-    });
+    Swal.fire({icon:"error",title:"Đăng nhập thất bại",text:"Email hoặc mật khẩu không đúng.",confirmButtonColor:"#ef4444"});
   }
 });
 
 $("register-form").addEventListener("submit",async event=>{
   event.preventDefault();
-
   const name=$("register-name").value.trim();
   const email=$("register-email").value.trim();
   const password=$("register-password").value;
   const confirm=$("register-password-confirm").value;
 
   if(password!==confirm){
-    Swal.fire({
-      icon:"warning",
-      title:"Mật khẩu chưa khớp",
-      text:"Vui lòng nhập lại hai mật khẩu giống nhau."
-    });
+    Swal.fire({icon:"warning",title:"Mật khẩu chưa khớp",text:"Vui lòng nhập lại hai mật khẩu giống nhau."});
     return;
   }
-
   try{
     const credential=await createUserWithEmailAndPassword(auth,email,password);
-
     await updateProfile(credential.user,{displayName:name});
-
     await setDoc(doc(db,"users",credential.user.uid),{
-      uid:credential.user.uid,
-      email,
-      displayName:name,
-      role:"student",
-      classRole:"",
-      team:"",
-      createdAt:serverTimestamp()
+      uid:credential.user.uid, email, displayName:name, role:"student", classRole:"", team:"", createdAt:serverTimestamp()
     });
-
     closeModal("register-modal");
     $("register-form").reset();
-
-    await swalSuccess(
-      "Tạo tài khoản thành công!",
-      `Chào mừng ${name} đến với Portal 8A8.`
-    );
+    await swalSuccess("Tạo tài khoản thành công!",`Chào mừng ${name} đến với Portal 8A8.`);
   }catch(error){
-    Swal.fire({
-      icon:"error",
-      title:"Không thể tạo tài khoản",
-      text:translateFirebaseError(error.code),
-      confirmButtonColor:"#ef4444"
-    });
+    Swal.fire({icon:"error",title:"Lỗi",text:"Không thể tạo tài khoản, email có thể đã tồn tại.",confirmButtonColor:"#ef4444"});
   }
 });
-
-function translateFirebaseError(code){
-  const map={
-    "auth/invalid-credential":"Email hoặc mật khẩu không chính xác.",
-    "auth/invalid-email":"Địa chỉ email không hợp lệ.",
-    "auth/email-already-in-use":"Email này đã được sử dụng.",
-    "auth/weak-password":"Mật khẩu quá yếu. Hãy dùng ít nhất 6 ký tự.",
-    "auth/user-disabled":"Tài khoản đã bị vô hiệu hóa.",
-    "auth/too-many-requests":"Có quá nhiều yêu cầu. Vui lòng thử lại sau."
-  };
-  return map[code]||"Đã xảy ra lỗi. Vui lòng thử lại.";
-}
 
 onAuthStateChanged(auth,async user=>{
   state.user=user;
@@ -566,25 +519,12 @@ onAuthStateChanged(auth,async user=>{
   if(user){
     try{
       const profileSnap=await getDoc(doc(db,"users",user.uid));
-      state.userProfile=profileSnap.exists()
-        ? profileSnap.data()
-        : {
-            uid:user.uid,
-            email:user.email,
-            displayName:user.displayName||"Thành viên",
-            role:"student"
-          };
+      state.userProfile=profileSnap.exists() ? profileSnap.data() : {uid:user.uid, email:user.email, displayName:user.displayName||"Thành viên", role:"student"};
     }catch(error){
-      state.userProfile={
-        uid:user.uid,
-        email:user.email,
-        displayName:user.displayName||"Thành viên",
-        role:"student"
-      };
+      state.userProfile={uid:user.uid, email:user.email, displayName:user.displayName||"Thành viên", role:"student"};
     }
-
     renderProfileFrame();
-    toast(`🎉 Chào mừng ${state.userProfile.displayName} quay trở lại Portal 8A8!`);
+    toast(`🎉 Chào mừng ${state.userProfile.displayName} quay trở lại!`);
   }else{
     state.userProfile=null;
     renderProfileFrame();
@@ -596,46 +536,48 @@ onAuthStateChanged(auth,async user=>{
 });
 
 function roleName(role){
-  return ({
-    super_admin:"Super Admin",
-    admin:"Admin",
-    teacher:"GVCN",
-    student:"Học sinh"
-  })[role]||"Thành viên";
+  return ({"super_admin":"Super Admin","admin":"Admin","teacher":"GVCN","student":"Học sinh"})[role]||"Thành viên";
 }
 
 function renderProfileFrame(){
   const login=$("login-button");
   const register=$("register-button");
   const frame=$("profile-frame");
+  const nav=$("main-nav");
 
   if(!state.user){
     login.classList.remove("hidden");
     register.classList.remove("hidden");
     frame.classList.add("hidden");
+    // Ẩn menu khi chưa đăng nhập
+    nav.classList.add("opacity-0", "pointer-events-none");
+    nav.classList.remove("opacity-100", "pointer-events-auto");
     return;
   }
 
   login.classList.add("hidden");
   register.classList.add("hidden");
   frame.classList.remove("hidden");
+  // Hiện menu khi đã đăng nhập
+  nav.classList.remove("opacity-0", "pointer-events-none");
+  nav.classList.add("opacity-100", "pointer-events-auto");
 
   const name=state.userProfile?.displayName||state.user.displayName||"Thành viên";
   const role=roleName(state.userProfile?.role);
 
   frame.innerHTML=`
     <div class="flex items-center gap-2">
-      <a href="#profile" class="glass rounded-2xl px-3 py-2 flex items-center gap-2" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+      <a href="#profile" class="glass rounded-2xl px-3 py-2 flex items-center gap-2">
         <div class="avatar">${escapeHtml(name.charAt(0).toUpperCase())}</div>
-        <div class="hidden md:block">
+        <div class="hidden md:block text-left">
           <div class="text-xs text-slate-500">Xin chào</div>
-          <div class="text-sm font-black max-w-[150px] truncate">${escapeHtml(name)}</div>
+          <div class="text-sm font-black max-w-[120px] truncate">${escapeHtml(name)}</div>
           <div class="text-[10px] text-teal-500 font-bold">${escapeHtml(role)}</div>
         </div>
       </a>
       ${(state.userProfile?.role==="admin"||state.userProfile?.role==="super_admin")
-        ?`<a href="./admin.html" class="btn btn-primary hidden lg:inline-flex" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">⚙️ Trang Admin</a>`:""}
-      <button id="logout-button" class="btn btn-soft" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">Thoát</button>
+        ?`<a href="./admin.html" class="btn btn-primary hidden lg:inline-flex">⚙️ Admin</a>`:""}
+      <button id="logout-button" class="btn btn-soft">Thoát</button>
     </div>
   `;
 
@@ -644,87 +586,44 @@ function renderProfileFrame(){
     toast("Bạn đã đăng xuất.");
     location.hash="#trang-chu";
   });
-
-  refreshAOS();
 }
 
 async function loadRealtimeData(){
   state.unsubscribe.forEach(fn=>fn());
   state.unsubscribe=[];
-
+  
+  // Giả lập load data nhanh để hiển thị ngay
+  state.students=[...MOCK_STUDENTS];
+  
   const studentsQuery=query(collection(db,"students"),orderBy("name"));
-
   state.unsubscribe.push(
     onSnapshot(studentsQuery,snapshot=>{
-      state.students=snapshot.docs.map(item=>({
-        id:item.id,
-        ...item.data()
-      }));
-      if(!state.students.length) state.students=[...MOCK_STUDENTS];
-      router();
-    },()=>{
-      state.students=[...MOCK_STUDENTS];
-      router();
-    })
-  );
-
-  state.unsubscribe.push(
-    onSnapshot(
-      query(collection(db,"quizzes"),orderBy("createdAt","desc"),limit(50)),
-      snapshot=>{
-        state.quizzes=snapshot.docs.map(item=>({id:item.id,...item.data()}));
-        router();
-      },
-      ()=>{state.quizzes=[];router()}
-    )
-  );
-
-  state.unsubscribe.push(
-    onSnapshot(
-      query(collection(db,"homework"),orderBy("deadline","asc"),limit(30)),
-      snapshot=>{
-        state.homework=snapshot.docs.map(item=>({id:item.id,...item.data()}));
-        router();
-      },
-      ()=>{state.homework=[];router()}
-    )
-  );
-
-  state.unsubscribe.push(
-    onSnapshot(
-      query(collection(db,"polls"),orderBy("createdAt","desc"),limit(10)),
-      snapshot=>{
-        state.polls=snapshot.docs.map(item=>({id:item.id,...item.data()}));
-        router();
-      },
-      ()=>{state.polls=[];router()}
-    )
-  );
-
-  state.unsubscribe.push(
-    onSnapshot(
-      query(collection(db,"confessions"),orderBy("createdAt","desc"),limit(30)),
-      snapshot=>{
-        state.approvedConfessions=snapshot.docs
-          .map(item=>({id:item.id,...item.data()}))
-          .filter(item=>item.status==="approved");
-        router();
-      },
-      ()=>{state.approvedConfessions=[];router()}
-    )
-  );
-
-  state.unsubscribe.push(
-    onSnapshot(
-      query(collection(db,"popups"),orderBy("createdAt","desc"),limit(1)),
-      snapshot=>{
-        state.notice=snapshot.docs.length
-          ? {id:snapshot.docs[0].id,...snapshot.docs[0].data()}
-          : null;
-        maybeShowNotice();
+      if(snapshot.docs.length) {
+         state.students=snapshot.docs.map(item=>({id:item.id,...item.data()}));
       }
-    )
+      router();
+    },()=>{ router(); })
   );
+
+  state.unsubscribe.push(onSnapshot(query(collection(db,"quizzes"),orderBy("createdAt","desc"),limit(50)),snapshot=>{
+        state.quizzes=snapshot.docs.map(item=>({id:item.id,...item.data()})); router();
+  },()=>{state.quizzes=[]; router()}));
+
+  state.unsubscribe.push(onSnapshot(query(collection(db,"homework"),orderBy("deadline","asc"),limit(30)),snapshot=>{
+        state.homework=snapshot.docs.map(item=>({id:item.id,...item.data()})); router();
+  },()=>{state.homework=[]; router()}));
+
+  state.unsubscribe.push(onSnapshot(query(collection(db,"polls"),orderBy("createdAt","desc"),limit(10)),snapshot=>{
+        state.polls=snapshot.docs.map(item=>({id:item.id,...item.data()})); router();
+  },()=>{state.polls=[]; router()}));
+
+  state.unsubscribe.push(onSnapshot(query(collection(db,"confessions"),orderBy("createdAt","desc"),limit(30)),snapshot=>{
+        state.approvedConfessions=snapshot.docs.map(item=>({id:item.id,...item.data()})).filter(item=>item.status==="approved"); router();
+  },()=>{state.approvedConfessions=[]; router()}));
+
+  state.unsubscribe.push(onSnapshot(query(collection(db,"popups"),orderBy("createdAt","desc"),limit(1)),snapshot=>{
+        state.notice=snapshot.docs.length ? {id:snapshot.docs[0].id,...snapshot.docs[0].data()} : null; maybeShowNotice();
+  }));
 }
 
 function currentRoute(){
@@ -740,25 +639,37 @@ function router(){
   });
 
   let html="";
-
-  switch(route){
-    case "trang-chu":html=homePage();break;
-    case "thanh-vien":html=membersPage();break;
-    case "to-chi-tiet":html=teamPage(state.selectedTeam||"Tổ 1");break;
-    case "thi-dua":html=competitionPage();break;
-    case "hoc-tap":html=studyPage();break;
-    case "trac-nghiem":html=quizPage();break;
-    case "giai-tri":html=entertainmentPage();break;
-    case "confession":html=confessionPage();break;
-    case "profile":html=profilePage();break;
-    default:
-      location.hash="#trang-chu";
-      return;
+  
+  // Logic điều hướng dựa trên trạng thái đăng nhập
+  if (!state.user && route !== "trang-chu") {
+      html = `
+      <section class="page-section text-center min-h-[60vh] flex flex-col justify-center items-center">
+        <div class="text-6xl mb-6">🔒</div>
+        <h1 class="text-3xl font-black mb-4">Khu vực Nội bộ</h1>
+        <p class="text-slate-500 mb-8 max-w-md">Vui lòng đăng nhập bằng tài khoản thành viên để xem danh sách lớp, bài tập và tham gia thi đua.</p>
+        <button onclick="openModal('login-modal')" class="btn btn-primary">Đăng nhập ngay</button>
+      </section>`;
+  } else {
+      switch(route){
+        case "trang-chu":html = state.user ? loggedInDashboard() : guestIntroPage(); break;
+        case "thanh-vien":html=membersPage();break;
+        case "to-chi-tiet":html=teamPage(state.selectedTeam||"Tổ 1");break;
+        case "thi-dua":html=competitionPage();break;
+        case "hoc-tap":html=studyPage();break;
+        case "trac-nghiem":html=quizPage();break;
+        case "giai-tri":html=entertainmentPage();break;
+        case "confession":html=confessionPage();break;
+        case "profile":html=profilePage();break;
+        default: location.hash="#trang-chu"; return;
+      }
   }
 
   $("app").innerHTML=html;
   bindRouteEvents();
-  refreshAOS();
+  
+  // Chỉ chạy AOS refresh ở trang giới thiệu để tránh giật lag nội bộ
+  if (!state.user) refreshAOS();
+  
   window.scrollTo({top:0,behavior:"smooth"});
 }
 
@@ -766,7 +677,7 @@ window.addEventListener("hashchange",router);
 
 function sectionTitle(eyebrow,title,description=""){
   return `
-    <div class="mb-10" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+    <div class="mb-10" ${getAos("fade-up")}>
       <span class="badge">${eyebrow}</span>
       <h1 class="text-4xl md:text-5xl font-black font-display mt-4">${title}</h1>
       ${description?`<p class="mt-3 text-slate-500 dark:text-slate-400 max-w-3xl leading-7">${description}</p>`:""}
@@ -774,103 +685,125 @@ function sectionTitle(eyebrow,title,description=""){
   `;
 }
 
-function homePage(){
-  const boys=state.students.filter(x=>x.gender==="Nam").length||20;
-  const girls=state.students.filter(x=>x.gender==="Nữ").length||20;
+// ==========================================
+// TRANG DÀNH CHO KHÁCH (CHƯA ĐĂNG NHẬP) - FULL ANIMATION
+// ==========================================
+function guestIntroPage() {
   const total=state.students.length||40;
-
   return `
-  <section class="relative min-h-[680px] overflow-hidden flex items-center">
+  <section class="relative min-h-[85vh] overflow-hidden flex items-center">
     <div class="hero-grid"></div>
     <div class="orb w-64 h-64 bg-teal-400/20 -top-20 left-[8%]"></div>
     <div class="orb w-80 h-80 bg-blue-500/20 top-[35%] right-[4%]" style="animation-delay:2s"></div>
 
-    <div class="relative z-10 w-[min(1180px,calc(100%-2rem))] mx-auto py-20">
-      <div class="max-w-4xl" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
-        <span class="badge">🏫 ${CLASS_NAME}</span>
+    <div class="relative z-10 w-[min(1180px,calc(100%-2rem))] mx-auto py-20 text-center md:text-left">
+      <div class="max-w-4xl" data-aos="fade-up" data-aos-duration="1000">
+        <span class="badge">🏫 Giới thiệu chung về lớp</span>
         <h1 class="hero-title text-5xl md:text-7xl font-black font-display leading-[1.02] mt-6">
-          8A8
-          <span class="gradient-text">Bứt phá giới hạn.</span>
+          Lớp 8A8
+          <span class="gradient-text block md:inline mt-2 md:mt-0">Bứt phá giới hạn.</span>
         </h1>
         <p class="text-xl md:text-2xl mt-6 text-slate-600 dark:text-slate-300 leading-relaxed">
           Đoàn kết đập tan mọi thách thức!
         </p>
-        <p class="mt-6 max-w-2xl text-slate-500 dark:text-slate-400 leading-7">
-          Portal 8A8 là không gian số dành cho học sinh, phụ huynh và giáo viên:
-          nơi thành tích được ghi nhận, bài học được kết nối, hoạt động lớp được
-          cập nhật và những kỷ niệm đẹp được lưu giữ.
+        <p class="mt-6 max-w-2xl text-slate-500 dark:text-slate-400 leading-7 mx-auto md:mx-0">
+          Chào mừng bạn đến với Portal 8A8 - không gian số độc quyền dành riêng cho các thành viên lớp 8A8, Trường THCS Cẩm Lý 2. Đây là nơi lưu giữ mọi kỷ niệm, quản lý điểm số, thi đua và bài tập một cách minh bạch, hiện đại nhất.
         </p>
-        <div class="flex flex-wrap gap-3 mt-8">
-          <a href="#thanh-vien" class="btn btn-primary" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">👥 Khám phá thành viên</a>
-          <a href="#trac-nghiem" class="btn btn-soft" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">🧠 Làm trắc nghiệm</a>
+        <div class="flex flex-wrap justify-center md:justify-start gap-4 mt-10">
+          <button onclick="openModal('register-modal')" class="btn btn-primary text-lg px-8 py-4 shadow-lg shadow-teal-500/30 hover:scale-105 transition-transform" data-aos="zoom-in" data-aos-delay="200">✨ Tham gia Portal ngay</button>
+          <a href="#cau-chuyen" class="btn btn-soft text-lg px-8 py-4" data-aos="zoom-in" data-aos-delay="300">Tìm hiểu thêm ↓</a>
         </div>
       </div>
-
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-16">
-        ${statCard("👥","Sĩ số",total,"thành viên")}
-        ${statCard("♂️","Nam",boys,"học sinh")}
-        ${statCard("♀️","Nữ",girls,"học sinh")}
-        ${statCard("🎓","GVCN","Cô Hoàn","đồng hành cùng lớp")}
-      </div>
     </div>
   </section>
 
-  <section class="page-section">
+  <section id="cau-chuyen" class="page-section border-t border-slate-300/20">
     ${sectionTitle("✨ CÂU CHUYỆN 8A8","Một tập thể — nhiều cá tính — một tinh thần","")}
-    <div class="grid lg:grid-cols-2 gap-6">
-      <article class="glass rounded-3xl p-7 card-3d" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
-        <div class="text-4xl mb-5">🚀</div>
+    <div class="grid md:grid-cols-2 gap-6 mt-8">
+      <article class="glass rounded-3xl p-8 card-3d" data-aos="fade-right">
+        <div class="text-5xl mb-5">🚀</div>
         <h2 class="text-2xl font-black">Hành trình xây dựng tập thể</h2>
         <p class="mt-4 leading-8 text-slate-600 dark:text-slate-300">
-          8A8 được xây dựng trên tinh thần mỗi thành viên đều có một thế mạnh
-          riêng nhưng không đứng riêng lẻ. Trong lớp học, một bài toán khó có
-          thể cần một người giỏi tư duy, một bài thuyết trình cần một người tự
-          tin, một tiết văn nghệ cần người giàu cảm xúc, còn một hoạt động tập
-          thể cần tất cả cùng chung nhịp. Chính sự khác biệt ấy tạo nên sức mạnh
-          chung của lớp.
+          8A8 được xây dựng trên tinh thần mỗi thành viên đều có một thế mạnh riêng nhưng không bao giờ đứng lẻ loi. Trong lớp học, một bài toán khó có thể cần một người giỏi tư duy, một bài thuyết trình cần một người tự tin, còn một hoạt động tập thể cần tất cả cùng chung nhịp đập. 
         </p>
         <p class="mt-4 leading-8 text-slate-600 dark:text-slate-300">
-          Mỗi ngày đến trường không chỉ là thêm một bài học trong sách giáo khoa.
-          Đó còn là cơ hội để học cách lắng nghe, hợp tác, chịu trách nhiệm,
-          giúp đỡ bạn bè và biết trân trọng công sức của thầy cô. Portal 8A8
-          được tạo ra để những điều ấy không bị trôi qua theo thời gian.
+          Chính sự khác biệt ấy tạo nên sức mạnh chung của lớp. Portal này được lập ra để ghi nhận những cống hiến dù là nhỏ nhất của từng cá nhân.
         </p>
       </article>
 
-      <article class="glass rounded-3xl p-7 card-3d" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
-        <div class="text-4xl mb-5">🏆</div>
-        <h2 class="text-2xl font-black">Tinh thần thi đua tích cực</h2>
+      <article class="glass rounded-3xl p-8 card-3d" data-aos="fade-left">
+        <div class="text-5xl mb-5">🏆</div>
+        <h2 class="text-2xl font-black">Hệ thống Thi Đua & Học Tập</h2>
         <p class="mt-4 leading-8 text-slate-600 dark:text-slate-300">
-          Thi đua ở 8A8 hướng tới việc biến một điểm cộng nhỏ thành động lực lớn.
-          Một lời khen đúng lúc có thể khiến một bạn mạnh dạn hơn; một lời nhắc
-          nhở đúng cách có thể giúp một bạn điều chỉnh hành vi. Hệ thống điểm
-          được thiết kế để minh bạch lịch sử cộng trừ, hiển thị lý do và ghi nhận
-          tiến bộ thay vì chỉ tập trung vào một con số.
+          Hệ thống Portal được thiết kế như một trung tâm quản lý toàn diện. Các thành viên có thể theo dõi Thời khóa biểu Real-time, làm bài tập Trắc nghiệm trực tuyến tính điểm ngay lập tức.
         </p>
         <p class="mt-4 leading-8 text-slate-600 dark:text-slate-300">
-          Những thành tích học tập, văn nghệ, thể thao, hoạt động trải nghiệm
-          hay đóng góp cho tập thể đều có thể được ghi lại để cuối kỳ nhìn lại,
-          cả lớp thấy mình đã cùng nhau đi xa đến đâu.
+          Ngoài ra, Bảng xếp hạng Thi đua sẽ hiển thị công khai lịch sử cộng/trừ điểm. Mọi sự tiến bộ hay cố gắng đều được quy đổi thành "Huy hiệu vinh dự", giúp biến thi đua thành niềm vui thay vì áp lực.
         </p>
       </article>
     </div>
   </section>
 
   <section class="page-section">
-    ${sectionTitle("👑 BAN CÁN SỰ","Những người kết nối tập thể","")}
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+    ${sectionTitle("👑 BAN CÁN SỰ","Những người kết nối tập thể","Đội ngũ nòng cốt giữ lửa nhiệt huyết cho 8A8.")}
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
       ${leaderCard("👩‍🏫","GVCN","Cô Hoàn","Người đồng hành")}
       ${leaderCard("⭐","Lớp trưởng","Thùy Linh","Điều phối tập thể")}
       ${leaderCard("📚","LP Học tập","Ngọc Ánh","Kết nối học tập")}
       ${leaderCard("🎤","LP Văn nghệ","Khánh Ngọc","Hoạt động văn nghệ")}
-      ${leaderCard("1️⃣","Tổ 1","Phạm Hoàng Long","Tổ trưởng")}
-      ${leaderCard("2️⃣","Tổ 2","Vũ Khánh Linh","Tổ trưởng")}
-      ${leaderCard("3️⃣","Tổ 3","Đỗ Đức Mạnh","Tổ trưởng")}
-      ${leaderCard("4️⃣","Tổ 4","Bùi Phương Thảo","Tổ trưởng")}
     </div>
   </section>
+  
+  <section class="page-section mb-12 text-center">
+    <div class="glass rounded-3xl p-12 max-w-3xl mx-auto" data-aos="zoom-in" data-aos-duration="800">
+        <h2 class="text-3xl font-black mb-4">Bạn là thành viên của 8A8?</h2>
+        <p class="text-slate-500 mb-8">Đăng nhập để xem danh sách sĩ số đầy đủ, tham gia làm bài trắc nghiệm và xem bảng điểm thi đua.</p>
+        <button onclick="openModal('login-modal')" class="btn btn-primary px-10 py-4 text-lg">Đăng nhập vào Portal</button>
+    </div>
+  </section>
+  `;
+}
 
-  <section class="page-section">
+// ==========================================
+// TRANG DASHBOARD (ĐÃ ĐĂNG NHẬP) - LƯỢC BỎ ANIMATION THỪA
+// ==========================================
+function loggedInDashboard(){
+  const total=state.students.length||40;
+  const name=state.userProfile?.displayName||state.user?.displayName||"Thành viên";
+  
+  return `
+  <section class="page-section pt-8">
+    <div class="flex items-center gap-4 mb-8 bg-teal-500/10 p-6 rounded-3xl border border-teal-500/20">
+        <div class="avatar w-16 h-16 text-2xl">${escapeHtml(name.charAt(0).toUpperCase())}</div>
+        <div>
+            <h1 class="text-2xl font-black">Chào mừng trở lại, ${escapeHtml(name)}! 👋</h1>
+            <p class="text-slate-500 text-sm mt-1">Hôm nay bạn muốn xem gì tại Portal 8A8?</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+        <a href="#thanh-vien" class="glass rounded-3xl p-5 hover:-translate-y-1 transition-transform">
+            <div class="text-3xl">👥</div>
+            <div class="font-black mt-2">Thành viên</div>
+            <div class="text-xs text-slate-500 mt-1">${total} học sinh</div>
+        </a>
+        <a href="#thi-dua" class="glass rounded-3xl p-5 hover:-translate-y-1 transition-transform">
+            <div class="text-3xl">🏆</div>
+            <div class="font-black mt-2">Thi đua</div>
+            <div class="text-xs text-slate-500 mt-1">Bảng xếp hạng</div>
+        </a>
+        <a href="#hoc-tap" class="glass rounded-3xl p-5 hover:-translate-y-1 transition-transform">
+            <div class="text-3xl">📚</div>
+            <div class="font-black mt-2">Học tập</div>
+            <div class="text-xs text-slate-500 mt-1">TKB & Bài tập</div>
+        </a>
+        <a href="#trac-nghiem" class="glass rounded-3xl p-5 hover:-translate-y-1 transition-transform">
+            <div class="text-3xl">🧠</div>
+            <div class="font-black mt-2">Trắc nghiệm</div>
+            <div class="text-xs text-slate-500 mt-1">Làm bài lấy điểm</div>
+        </a>
+    </div>
+
     ${sectionTitle("⏱️ COUNTDOWN","Các cột mốc đáng nhớ","")}
     <div class="grid md:grid-cols-3 gap-5" id="countdown-grid">
       ${countdownCard("📖","Thi học kỳ","2026-12-15T08:00:00")}
@@ -881,18 +814,8 @@ function homePage(){
   `;
 }
 
-function statCard(icon,label,value,note){
-  return `
-  <div class="glass rounded-3xl p-5 card-3d" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
-    <div class="text-3xl">${icon}</div>
-    <div class="text-sm text-slate-500 mt-3">${label}</div>
-    <div class="text-3xl font-black mt-1">${escapeHtml(value)}</div>
-    <div class="text-xs text-slate-500 mt-1">${note}</div>
-  </div>`;
-}
-
 function leaderCard(icon,role,name,note){
- return `<div class="glass rounded-3xl p-5 card-3d" data-aos="flip-left" data-aos-mirror="true" data-aos-once="false">
+ return `<div class="glass rounded-3xl p-5 card-3d" ${getAos("flip-left")}>
    <div class="text-3xl">${icon}</div>
    <div class="text-xs text-teal-500 font-black mt-4">${role}</div>
    <div class="text-lg font-black mt-1">${name}</div>
@@ -901,11 +824,11 @@ function leaderCard(icon,role,name,note){
 }
 
 function countdownCard(icon,title,date){
- return `<div class="glass rounded-3xl p-6 card-3d" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+ return `<div class="glass rounded-3xl p-6 card-3d" ${getAos("zoom-in")}>
    <div class="text-3xl">${icon}</div>
    <div class="font-black mt-4">${title}</div>
    <div class="text-xs text-slate-500 mt-1">${date}</div>
-   <div class="countdown-value text-2xl font-black mt-4" data-countdown="${date}">Đang tính...</div>
+   <div class="countdown-value text-2xl font-black mt-4 text-teal-600 dark:text-teal-400" data-countdown="${date}">Đang tính...</div>
  </div>`;
 }
 
@@ -916,7 +839,7 @@ function membersPage(){
    ${sectionTitle("👥 THÀNH VIÊN","Đại gia đình 8A8","Chọn một tổ để xem danh sách thành viên và hồ sơ chi tiết.")}
    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
     ${teams.map((team,i)=>`
-      <button class="team-card glass rounded-3xl p-6 text-left card-3d" data-team="${team}" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+      <button class="team-card glass rounded-3xl p-6 text-left hover:-translate-y-1 transition-transform" data-team="${team}">
         <div class="text-4xl">${["1️⃣","2️⃣","3️⃣","4️⃣"][i]}</div>
         <div class="text-xl font-black mt-5">${team}</div>
         <div class="text-sm text-slate-500 mt-2">${state.students.filter(s=>s.team===team).length||10} thành viên</div>
@@ -932,20 +855,20 @@ function teamPage(team){
  const members=state.students.filter(s=>s.team===team);
  return `
  <section class="page-section">
-   <button class="btn btn-soft mb-6" onclick="location.hash='#thanh-vien'" data-aos="fade-right" data-aos-mirror="true" data-aos-once="false">← Tất cả tổ</button>
+   <button class="btn btn-soft mb-6" onclick="location.hash='#thanh-vien'">← Quay lại các Tổ</button>
    ${sectionTitle("🏫 "+team,`Thành viên ${team}`,"Chạm vào hồ sơ để xem điểm thi đua, huy hiệu và lịch sử.")}
    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-    ${members.map((s,index)=>studentCard(s,index)).join("")}
+    ${members.map((s,index)=>studentCard(s)).join("")}
    </div>
  </section>
  `;
 }
 
-function studentCard(student,index){
+function studentCard(student){
  const score=Number(student.score??10);
  const badge=score>=12?"📚":score<8?"⚡":"🌱";
  return `
- <button class="student-card glass rounded-3xl p-5 text-left card-3d" data-student-id="${escapeHtml(student.id)}" data-aos="${index%2?"flip-left":"fade-up"}" data-aos-mirror="true" data-aos-once="false">
+ <button class="student-card glass rounded-3xl p-5 text-left hover:-translate-y-1 transition-transform" data-student-id="${escapeHtml(student.id)}">
    <div class="flex items-center justify-between">
      <div class="avatar">${escapeHtml(student.name?.charAt(0)||"?")}</div>
      <span class="badge">${badge} ${score} điểm</span>
@@ -977,7 +900,7 @@ function openStudent(student){
      <div class="text-sm text-slate-500">${escapeHtml(student.classRole||"Thành viên")}</div>
     </div>
    </div>
-   <button class="btn btn-soft modal-close-student" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">×</button>
+   <button class="btn btn-soft modal-close-student">×</button>
   </div>
 
   <div class="grid grid-cols-2 gap-3 mt-7">
@@ -987,14 +910,14 @@ function openStudent(student){
    ${infoBox("🏆","Xếp hạng",`#${rank}`)}
   </div>
 
-  <div class="mt-5 glass rounded-2xl p-5" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+  <div class="mt-5 glass rounded-2xl p-5">
    <div class="text-sm text-slate-500">Điểm thi đua</div>
    <div class="text-4xl font-black mt-1">${score}</div>
   </div>
 
   <div class="mt-5">
    <div class="font-black">Huy hiệu</div>
-   <div class="flex flex-wrap gap-2 mt-3">${badges.map(x=>`<span class="badge" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">${x}</span>`).join("")}</div>
+   <div class="flex flex-wrap gap-2 mt-3">${badges.map(x=>`<span class="badge">${x}</span>`).join("")}</div>
   </div>
 
   <div class="mt-6">
@@ -1002,7 +925,7 @@ function openStudent(student){
    <div class="mt-3 space-y-2 max-h-52 overflow-auto">
     ${(student.history||[]).length
       ? student.history.slice().reverse().map(h=>`
-        <div class="p-3 rounded-2xl bg-slate-500/10" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+        <div class="p-3 rounded-2xl bg-slate-500/10">
           <div class="font-bold ${Number(h.points)>0?"text-emerald-500":"text-rose-500"}">${Number(h.points)>0?"+":""}${h.points} điểm</div>
           <div class="text-sm mt-1">${escapeHtml(h.reason||"Không có lý do")}</div>
         </div>`).join("")
@@ -1012,11 +935,10 @@ function openStudent(student){
  `;
  openModal("student-modal");
  $("student-modal-content").querySelector(".modal-close-student").addEventListener("click",()=>closeModal("student-modal"));
- refreshAOS();
 }
 
 function infoBox(icon,label,value){
- return `<div class="rounded-2xl p-4 bg-slate-500/10" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+ return `<div class="rounded-2xl p-4 bg-slate-500/10">
    <div>${icon}</div><div class="text-xs text-slate-500 mt-2">${label}</div><div class="font-bold mt-1">${escapeHtml(value)}</div>
  </div>`;
 }
@@ -1028,26 +950,27 @@ function competitionPage(){
 
  return `
  <section class="page-section">
-  ${sectionTitle("🏆 THI ĐUA REALTIME","Bảng thành tích 8A8","Điểm được cập nhật theo dữ liệu Firestore khi Admin ghi nhận khen thưởng hoặc nhắc nhở.")}
-  <div class="grid lg:grid-cols-2 gap-6">
-   <div class="glass rounded-3xl p-6" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+  ${sectionTitle("🏆 THI ĐUA REALTIME","Bảng thành tích 8A8","Điểm được cập nhật tự động khi Admin ghi nhận khen thưởng hoặc nhắc nhở.")}
+  
+  <div class="grid lg:grid-cols-2 gap-6 mb-8">
+   <div class="glass rounded-3xl p-6 border-l-4 border-l-emerald-500">
     <div class="text-xl font-black">🌟 Góc Vinh danh</div>
     <div class="space-y-3 mt-5">
      ${praises.length?praises.map(item=>`
-       <div class="rounded-2xl p-4 bg-emerald-500/10" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
-        <div class="font-black text-emerald-500">+${item.points} · ${escapeHtml(item.student.name)}</div>
+       <div class="rounded-2xl p-4 bg-emerald-500/10">
+        <div class="font-black text-emerald-600 dark:text-emerald-400">+${item.points} ·${escapeHtml(item.student.name)}</div>
         <div class="text-sm mt-1">${escapeHtml(item.reason||"Được ghi nhận")}</div>
        </div>`).join("")
        :`<div class="text-sm text-slate-500">Chưa có dữ liệu vinh danh.</div>`}
     </div>
    </div>
 
-   <div class="glass rounded-3xl p-6" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+   <div class="glass rounded-3xl p-6 border-l-4 border-l-rose-500">
     <div class="text-xl font-black">📝 Góc Nhắc nhở</div>
     <div class="space-y-3 mt-5">
      ${warnings.length?warnings.map(item=>`
-       <div class="rounded-2xl p-4 bg-rose-500/10" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
-        <div class="font-black text-rose-500">${item.points} · ${escapeHtml(item.student.name)}</div>
+       <div class="rounded-2xl p-4 bg-rose-500/10">
+        <div class="font-black text-rose-600 dark:text-rose-400">${item.points} ·${escapeHtml(item.student.name)}</div>
         <div class="text-sm mt-1">${escapeHtml(item.reason||"Cần chú ý")}</div>
        </div>`).join("")
        :`<div class="text-sm text-slate-500">Chưa có dữ liệu nhắc nhở.</div>`}
@@ -1055,24 +978,26 @@ function competitionPage(){
    </div>
   </div>
 
-  <div class="glass rounded-3xl p-6 mt-6 overflow-auto" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+  <div class="glass rounded-3xl p-6 mt-6">
    <div class="flex justify-between items-center gap-3 mb-5">
-    <div class="text-xl font-black">📊 Xếp hạng thi đua</div>
-    <span class="badge">Realtime</span>
+    <div class="text-xl font-black">📊 Xếp hạng thi đua tổng</div>
+    <span class="badge bg-teal-500/20 text-teal-600">Realtime</span>
    </div>
-   <table>
-    <thead><tr><th>#</th><th>Học sinh</th><th>Tổ</th><th>Điểm</th><th>Huy hiệu</th></tr></thead>
-    <tbody>
-     ${ranked.map((s,i)=>`
-      <tr data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
-       <td class="font-black">${i+1}</td>
-       <td>${escapeHtml(s.name)}</td>
-       <td>${escapeHtml(s.team||"")}</td>
-       <td class="font-black">${Number(s.score??10)}</td>
-       <td>${i===0?"🥇":Number(s.score??10)>=12?"📚":Number(s.score??10)<8?"⚡":"🌱"}</td>
-      </tr>`).join("")}
-    </tbody>
-   </table>
+   <div class="table-wrapper">
+     <table>
+      <thead><tr><th>#</th><th>Học sinh</th><th>Tổ</th><th>Điểm</th><th>Huy hiệu</th></tr></thead>
+      <tbody>
+       ${ranked.map((s,i)=>`
+        <tr>
+         <td class="font-black">${i+1}</td>
+         <td class="whitespace-nowrap">${escapeHtml(s.name)}</td>
+         <td class="whitespace-nowrap">${escapeHtml(s.team||"")}</td>
+         <td class="font-black text-teal-600">${Number(s.score??10)}</td>
+         <td>${i===0?"🥇":Number(s.score??10)>=12?"📚":Number(s.score??10)<8?"⚡":"🌱"}</td>
+        </tr>`).join("")}
+      </tbody>
+     </table>
+   </div>
   </div>
  </section>`;
 }
@@ -1083,50 +1008,50 @@ function studyPage(){
 
  return `
  <section class="page-section">
-  ${sectionTitle("📚 HỌC TẬP","Trung tâm học tập 8A8","Thời khóa biểu, bài tập và tình hình điểm danh được tập trung tại một nơi.")}
-  <div class="glass rounded-3xl p-6" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
-   <div class="flex justify-between items-center">
+  ${sectionTitle("📚 HỌC TẬP","Trung tâm học tập 8A8","Thời khóa biểu, bài tập và tình hình điểm danh trong ngày.")}
+  
+  <div class="glass rounded-3xl p-6 mb-6">
+   <div class="flex flex-wrap justify-between items-center gap-4">
     <div>
      <div class="text-xs text-teal-500 font-black">HÔM NAY</div>
      <div class="text-2xl font-black mt-1">${new Date().toLocaleDateString("vi-VN",{weekday:"long",day:"2-digit",month:"2-digit",year:"numeric"})}</div>
     </div>
     <div class="badge">🟢 Môn học hôm nay</div>
    </div>
-   <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+   <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
     ${today.map((subject,index)=>`
-      <div class="rounded-2xl p-5 ${index===0?"bg-teal-500/15 border-teal-400/40":"bg-slate-500/10"} border" data-aos="${index%2?"zoom-in":"flip-left"}" data-aos-mirror="true" data-aos-once="false">
+      <div class="rounded-2xl p-5 ${index===0?"bg-teal-500/15 border border-teal-400/40 shadow-sm":"bg-slate-500/10"}">
        <div class="text-xs text-slate-500">Tiết ${index+1}</div>
-       <div class="font-black mt-2">${subject}</div>
-       ${index===0?'<div class="text-xs text-teal-500 font-bold mt-3">⭐ Đang ưu tiên</div>':""}
+       <div class="font-black mt-2 truncate" title="${subject}">${subject}</div>${index===0?'<div class="text-xs text-teal-600 dark:text-teal-400 font-bold mt-3">⭐ Đang ưu tiên</div>':""}
       </div>`).join("")}
    </div>
   </div>
 
   <div class="grid lg:grid-cols-2 gap-6 mt-6">
-   <div class="glass rounded-3xl p-6" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
-    <div class="text-xl font-black">📝 Bài tập về nhà</div>
-    <div class="space-y-3 mt-5">
+   <div class="glass rounded-3xl p-6">
+    <div class="text-xl font-black mb-5">📝 Bài tập về nhà</div>
+    <div class="space-y-3">
      ${state.homework.length
        ?state.homework.map(hw=>homeworkCard(hw)).join("")
-       :`<div class="text-sm text-slate-500">Chưa có bài tập được giao.</div>`}
+       :`<div class="text-sm text-slate-500 p-4 bg-slate-500/10 rounded-2xl text-center">Chưa có bài tập được giao. Thảnh thơi nhé! 🌴</div>`}
     </div>
    </div>
 
-   <div class="glass rounded-3xl p-6" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
-    <div class="text-xl font-black">📋 Sổ đầu bài & điểm danh</div>
-    <div class="grid grid-cols-3 gap-3 mt-5">
+   <div class="glass rounded-3xl p-6">
+    <div class="text-xl font-black mb-5">📋 Sổ đầu bài & điểm danh</div>
+    <div class="grid grid-cols-3 gap-3">
      ${infoBox("✅","Có mặt","Đang cập nhật")}
      ${infoBox("❌","Vắng","Đang cập nhật")}
      ${infoBox("⏰","Muộn","Đang cập nhật")}
     </div>
-    <div class="mt-5 text-sm text-slate-500">
-      Dữ liệu điểm danh được thiết kế để Admin cập nhật theo ngày ở bảng quản trị.
-     </div>
+    <div class="mt-5 text-sm text-slate-500 p-4 bg-slate-500/10 rounded-2xl">
+      Dữ liệu điểm danh được quản lý bởi GVCN và lớp trưởng theo ngày.
+    </div>
    </div>
   </div>
 
-  <div class="mt-8 text-center" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
-   <a href="#trac-nghiem" class="btn btn-primary">🧠 Chuyển tới Trắc nghiệm</a>
+  <div class="mt-8 text-center">
+   <a href="#trac-nghiem" class="btn btn-primary px-8">🧠 Bắt đầu làm bài Trắc nghiệm</a>
   </div>
  </section>`;
 }
@@ -1135,16 +1060,16 @@ function homeworkCard(hw){
  const deadline=hw.deadline?new Date(hw.deadline):null;
  const remaining=deadline?deadline-Date.now():0;
  const overdue=remaining<0;
- return `<div class="p-4 rounded-2xl bg-slate-500/10" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
-   <div class="flex justify-between gap-3">
+ return `<div class="p-4 rounded-2xl ${overdue ? 'bg-rose-500/10 opacity-70' : 'bg-slate-500/10'} border border-slate-300/10">
+   <div class="flex justify-between gap-3 items-start">
     <div>
-     <div class="text-xs text-teal-500 font-black">${escapeHtml(hw.subject||"Môn học")}</div>
-     <div class="font-black mt-1">${escapeHtml(hw.title||"Bài tập")}</div>
+     <div class="text-xs text-teal-600 dark:text-teal-400 font-black">${escapeHtml(hw.subject||"Môn học")}</div>
+     <div class="font-black mt-1 text-lg">${escapeHtml(hw.title||"Bài tập")}</div>
     </div>
-    <span class="badge">${overdue?"Đã quá hạn":"Đang mở"}</span>
+    <span class="badge ${overdue ? 'bg-rose-500/20 text-rose-600' : ''}">${overdue?"Đã quá hạn":"Đang mở"}</span>
    </div>
    <div class="text-xs text-slate-500 mt-3">Hạn: ${deadline?deadline.toLocaleString("vi-VN"):"Chưa xác định"}</div>
-   ${deadline?`<div class="text-xs font-bold mt-2" data-deadline="${deadline.toISOString()}">${formatRemaining(remaining)}</div>`:""}
+   ${deadline && !overdue ? `<div class="text-xs font-bold mt-2 text-orange-500" data-deadline="${deadline.toISOString()}">${formatRemaining(remaining)}</div>`:""}
  </div>`;
 }
 
@@ -1155,16 +1080,17 @@ function formatRemaining(ms){
  const h=Math.floor(total%86400/3600);
  const m=Math.floor(total%3600/60);
  const s=total%60;
- return `${d} ngày ${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+ return `${d>0?d+' ngày ':''}${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
 }
 
 function quizPage(){
  const subjects=[...new Set(state.quizzes.map(q=>q.subject).filter(Boolean))];
  return `
  <section class="page-section">
-  ${sectionTitle("🧠 TRẮC NGHIỆM","Quiz Arena 8A8","Đề thi được lấy trực tiếp từ Firestore. Admin có thể tạo đề theo từng môn, thêm câu hỏi A/B/C/D, đáp án và lời giải.")}
-  <div class="flex flex-wrap gap-2 mb-7">
-   ${SUBJECTS.map(subject=>`<button class="subject-filter btn btn-soft" data-subject="${subject}" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">${subject}</button>`).join("")}
+  ${sectionTitle("🧠 TRẮC NGHIỆM","Quiz Arena 8A8","Hoàn thành bài tập để tích lũy điểm thi đua.")}
+  <div class="flex flex-wrap gap-2 mb-7 overflow-x-auto pb-2">
+   <button class="subject-filter btn btn-soft shrink-0" data-subject="Tất cả">Tất cả môn</button>
+   ${SUBJECTS.map(subject=>`<button class="subject-filter btn btn-soft shrink-0" data-subject="${subject}">${subject}</button>`).join("")}
   </div>
   <div id="quiz-list" class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
    ${quizCards(state.quizzes)}
@@ -1174,33 +1100,27 @@ function quizPage(){
 
 function quizCards(quizzes){
  if(!quizzes.length){
-  return `<div class="md:col-span-2 lg:col-span-3 glass rounded-3xl p-10 text-center" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
-    <div class="text-5xl">🧪</div>
-    <div class="text-2xl font-black mt-5">Chưa có đề thi</div>
-    <p class="text-slate-500 mt-2">Admin hãy vào trang quản trị để tạo đề trắc nghiệm đầu tiên.</p>
+  return `<div class="md:col-span-2 lg:col-span-3 glass rounded-3xl p-10 text-center">
+    <div class="text-5xl mb-4">🧪</div>
+    <div class="text-2xl font-black">Chưa có đề thi nào</div>
+    <p class="text-slate-500 mt-2">Hiện tại không có bài trắc nghiệm nào cho môn học này.</p>
   </div>`;
  }
  return quizzes.map(q=>`
-  <article class="quiz-card glass rounded-3xl p-6 card-3d" data-subject="${escapeHtml(q.subject||"")}" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
-   <span class="badge">${escapeHtml(q.subject||"Môn học")}</span>
-   <h2 class="text-xl font-black mt-5">${escapeHtml(q.title||"Bài trắc nghiệm")}</h2>
-   <div class="text-sm text-slate-500 mt-2">${(q.questions||[]).length} câu · ${Number(q.duration||10)} phút</div>
-   <button class="start-quiz btn btn-primary w-full mt-6" data-id="${escapeHtml(q.id)}" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">Bắt đầu làm bài</button>
+  <article class="quiz-card glass rounded-3xl p-6 hover:-translate-y-1 transition-transform border border-transparent hover:border-teal-500/30" data-subject="${escapeHtml(q.subject||"")}">
+   <span class="badge bg-blue-500/10 text-blue-600 dark:text-blue-400">${escapeHtml(q.subject||"Môn học")}</span>
+   <h2 class="text-xl font-black mt-4 line-clamp-2">${escapeHtml(q.title||"Bài trắc nghiệm")}</h2>
+   <div class="text-sm text-slate-500 mt-3 font-medium flex gap-4">
+     <span>📝 ${(q.questions||[]).length} câu</span>
+     <span>⏱️ ${Number(q.duration||10)} phút</span>
+   </div>
+   <button class="start-quiz btn btn-primary w-full mt-6" data-id="${escapeHtml(q.id)}">Bắt đầu làm bài</button>
   </article>`).join("");
 }
 
 function startQuiz(id){
  const quiz=state.quizzes.find(q=>q.id===id);
  if(!quiz)return;
- if(!state.user){
-  Swal.fire({
-   icon:"info",
-   title:"Hãy đăng nhập trước",
-   text:"Bạn cần tài khoản thành viên để làm bài và ghi nhận kết quả."
-  }).then(()=>openModal("login-modal"));
-  return;
- }
-
  state.currentQuiz=quiz;
  state.quizIndex=0;
  state.quizAnswers=Array((quiz.questions||[]).length).fill(null);
@@ -1223,37 +1143,37 @@ function renderQuizModal(){
  if(!q)return;
 
  $("student-modal-content").innerHTML=`
- <div class="flex justify-between gap-3">
+ <div class="flex justify-between gap-3 items-start">
   <div>
    <span class="badge">${escapeHtml(state.currentQuiz.subject||"")}</span>
-   <h2 class="text-2xl font-black mt-3">${escapeHtml(state.currentQuiz.title||"Bài trắc nghiệm")}</h2>
+   <h2 class="text-xl font-black mt-3 pr-4">${escapeHtml(state.currentQuiz.title||"Bài trắc nghiệm")}</h2>
   </div>
-  <div id="quiz-timer" class="badge">00:00:00</div>
+  <div id="quiz-timer" class="badge bg-rose-500/10 text-rose-600 border-rose-500/20 text-lg tabular-nums">00:00:00</div>
  </div>
 
  <div class="mt-6">
-  <div class="flex justify-between text-xs text-slate-500">
-   <span>Câu ${state.quizIndex+1}/${state.currentQuiz.questions.length}</span>
+  <div class="flex justify-between text-xs text-slate-500 font-bold mb-2">
+   <span>Câu hỏi ${state.quizIndex+1}/${state.currentQuiz.questions.length}</span>
    <span>${Math.round((state.quizIndex/state.currentQuiz.questions.length)*100)}%</span>
   </div>
-  <div class="progress mt-2"><div style="width:${((state.quizIndex)/state.currentQuiz.questions.length)*100}%"></div></div>
+  <div class="progress"><div style="width:${((state.quizIndex)/state.currentQuiz.questions.length)*100}%"></div></div>
  </div>
 
- <div class="mt-7" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
-  <div class="text-xl font-black leading-8">${escapeHtml(q.question)}</div>
-  <div class="grid gap-3 mt-5">
+ <div class="mt-8 bg-slate-500/5 p-5 rounded-2xl">
+  <div class="text-lg md:text-xl font-bold leading-8">${escapeHtml(q.question)}</div>
+  <div class="grid gap-3 mt-6">
    ${(q.options||[]).map((option,index)=>`
-    <button class="quiz-option p-4 rounded-2xl text-left border ${state.quizAnswers[state.quizIndex]===index?"border-teal-500 bg-teal-500/10":"border-slate-300/20 bg-slate-500/10"}"
-      data-answer-index="${index}" data-aos="${index%2?"zoom-in":"fade-up"}" data-aos-mirror="true" data-aos-once="false">
-      <span class="font-black mr-2">${String.fromCharCode(65+index)}.</span>${escapeHtml(option)}
+    <button class="quiz-option p-4 rounded-2xl text-left border transition-all ${state.quizAnswers[state.quizIndex]===index?"border-teal-500 bg-teal-500/10 shadow-sm":"border-slate-300/30 bg-white/50 dark:bg-slate-800/50 hover:bg-slate-500/10"}"
+      data-answer-index="${index}">
+      <span class="font-black mr-2 text-teal-600 dark:text-teal-400">${String.fromCharCode(65+index)}.</span>${escapeHtml(option)}
     </button>`).join("")}
   </div>
  </div>
 
- <div class="flex justify-between gap-3 mt-7">
-  <button id="quiz-prev" class="btn btn-soft" ${state.quizIndex===0?"disabled":""} data-aos="fade-right" data-aos-mirror="true" data-aos-once="false">← Câu trước</button>
-  <button id="quiz-next" class="btn btn-primary" data-aos="fade-left" data-aos-mirror="true" data-aos-once="false">
-   ${state.quizIndex===state.currentQuiz.questions.length-1?"Nộp bài":"Câu tiếp theo →"}
+ <div class="flex justify-between gap-3 mt-8">
+  <button id="quiz-prev" class="btn btn-soft px-6" ${state.quizIndex===0?"disabled":""}>← Trước</button>
+  <button id="quiz-next" class="btn btn-primary px-8">
+   ${state.quizIndex===state.currentQuiz.questions.length-1?"Nộp bài ngay":"Tiếp theo →"}
   </button>
  </div>
  `;
@@ -1269,34 +1189,23 @@ function renderQuizModal(){
  });
 
  $("quiz-prev").addEventListener("click",()=>{
-  if(state.quizIndex>0){
-   state.quizIndex--;
-   renderQuizModal();
-  }
+  if(state.quizIndex>0){ state.quizIndex--; renderQuizModal(); }
  });
 
  $("quiz-next").addEventListener("click",()=>{
   if(state.quizIndex===state.currentQuiz.questions.length-1)submitQuiz();
-  else{
-   state.quizIndex++;
-   renderQuizModal();
-  }
+  else{ state.quizIndex++; renderQuizModal(); }
  });
-
- refreshAOS();
 }
 
 async function submitQuiz(){
  clearInterval(state.quizTimer);
-
  const questions=state.currentQuiz.questions||[];
  let correct=0;
 
  const results=questions.map((q,index)=>{
   const selected=state.quizAnswers[index];
-  const answer=typeof q.answer==="number"
-    ?q.answer
-    :String(q.answer||"").toUpperCase().charCodeAt(0)-65;
+  const answer=typeof q.answer==="number" ? q.answer : String(q.answer||"").toUpperCase().charCodeAt(0)-65;
   const isCorrect=selected===answer;
   if(isCorrect)correct++;
   return {q,selected,answer,isCorrect};
@@ -1311,75 +1220,69 @@ async function submitQuiz(){
    quizId:state.currentQuiz.id,
    quizTitle:state.currentQuiz.title||"",
    subject:state.currentQuiz.subject||"",
-   correct,
-   total:questions.length,
-   score,
-   createdAt:serverTimestamp()
+   correct, total:questions.length, score, createdAt:serverTimestamp()
   });
- }catch(error){
-  console.warn("Không ghi được quizResults:",error);
- }
+ }catch(error){ console.warn("Lỗi lưu KQ:",error); }
 
  $("student-modal-content").innerHTML=`
- <div class="text-center" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
-  <div class="text-6xl">🎉</div>
-  <div class="text-3xl font-black mt-4">Hoàn thành bài!</div>
-  <div class="text-6xl font-black gradient-text mt-4">${score}%</div>
-  <div class="text-slate-500 mt-2">Đúng ${correct}/${questions.length} câu</div>
+ <div class="text-center py-6">
+  <div class="text-6xl mb-4">🎉</div>
+  <div class="text-2xl font-black">Hoàn thành bài thi!</div>
+  <div class="text-6xl font-black gradient-text mt-4 mb-2">${score}đ</div>
+  <div class="text-slate-500 font-bold bg-slate-500/10 inline-block px-4 py-1 rounded-full">Đúng ${correct}/${questions.length} câu</div>
  </div>
 
- <div class="mt-7 space-y-4">
+ <div class="mt-6 space-y-4 max-h-[40vh] overflow-y-auto pr-2">
  ${results.map((r,index)=>`
-  <div class="rounded-2xl p-4 ${r.isCorrect?"bg-emerald-500/10":"bg-rose-500/10"}" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
-   <div class="font-black">${r.isCorrect?"✅":"❌"} Câu ${index+1}: ${escapeHtml(r.q.question)}</div>
-   <div class="text-sm mt-2">Đáp án đúng: <b>${escapeHtml(r.q.options?.[r.answer]||"")}</b></div>
-   ${r.q.explanation?`<div class="text-sm text-slate-500 mt-2">💡 ${escapeHtml(r.q.explanation)}</div>`:""}
+  <div class="rounded-2xl p-4 ${r.isCorrect?"bg-emerald-500/10 border border-emerald-500/20":"bg-rose-500/10 border border-rose-500/20"}">
+   <div class="font-bold text-sm md:text-base">${r.isCorrect?"✅":"❌"} ${escapeHtml(r.q.question)}</div>
+   <div class="text-sm mt-2 font-medium">Đáp án: <span class="text-teal-600 dark:text-teal-400">${escapeHtml(r.q.options?.[r.answer]||"")}</span></div>
+   ${r.q.explanation?`<div class="text-sm text-slate-500 mt-2 pt-2 border-t border-slate-300/20">💡 ${escapeHtml(r.q.explanation)}</div>`:""}
   </div>`).join("")}
  </div>
 
- <button class="btn btn-primary w-full mt-7 close-result" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">Đóng kết quả</button>
+ <button class="btn btn-primary w-full mt-6 close-result py-4 text-lg">Đóng kết quả</button>
  `;
  $("student-modal-content").querySelector(".close-result").addEventListener("click",()=>closeModal("student-modal"));
- refreshAOS();
 
- if(window.confetti){
-  confetti({particleCount:120,spread:80,origin:{y:.65}});
+ if(window.confetti && score > 50){
+  confetti({particleCount:150, spread:90, origin:{y:.6}});
  }
 }
 
 function entertainmentPage(){
  return `
  <section class="page-section">
-  ${sectionTitle("🎮 GIẢI TRÍ","Không gian thư giãn 8A8","Sau giờ học, cùng chơi một ván game và xem những hoạt động đang diễn ra trong lớp.")}
+  ${sectionTitle("🎮 GIẢI TRÍ","Không gian thư giãn","Giải trí nhẹ nhàng sau những giờ học căng thẳng.")}
   <div class="grid lg:grid-cols-2 gap-6">
-   <div class="glass rounded-3xl p-6" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
-    <div class="text-xl font-black">❎⭕ Tic-Tac-Toe</div>
-    <div id="tic-tac-toe" class="grid grid-cols-3 gap-3 max-w-[360px] mx-auto mt-6"></div>
-    <div id="game-status" class="text-center font-bold mt-5">Lượt X</div>
-    <button id="reset-game" class="btn btn-soft w-full mt-4" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">Chơi lại</button>
+   <div class="glass rounded-3xl p-6 text-center">
+    <div class="text-xl font-black mb-6">❎⭕ Cờ Caro (Tic-Tac-Toe)</div>
+    <div id="tic-tac-toe" class="grid grid-cols-3 gap-2 max-w-[280px] mx-auto"></div>
+    <div id="game-status" class="text-center font-bold mt-6 text-lg">Lượt X</div>
+    <button id="reset-game" class="btn btn-soft w-full max-w-[280px] mt-4">Chơi ván mới</button>
    </div>
 
-   <div class="glass rounded-3xl p-6" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
-    <div class="text-xl font-black">🎵 Memory Capsule</div>
-    <p class="text-sm text-slate-500 mt-2">Kho kỷ niệm có thể kết nối với album ảnh và trình phát nhạc của lớp.</p>
-    <div class="rounded-3xl aspect-video bg-gradient-to-br from-teal-500/20 to-blue-500/20 mt-6 grid place-items-center">
-      <div class="text-center">
-       <div class="text-6xl">📸</div>
-       <div class="font-black mt-3">Kỷ niệm 8A8</div>
-       <div class="text-sm text-slate-500">Album ảnh sẽ được quản lý trong phiên bản Admin.</div>
+   <div class="glass rounded-3xl p-6">
+    <div class="text-xl font-black mb-2">🎵 Memory Capsule</div>
+    <p class="text-sm text-slate-500">Kho lưu trữ kỷ niệm, hình ảnh và hoạt động lớp.</p>
+    <div class="rounded-3xl aspect-video bg-gradient-to-br from-teal-500/20 to-blue-500/20 mt-6 grid place-items-center border border-teal-500/20">
+      <div class="text-center p-4">
+       <div class="text-5xl mb-3">📸</div>
+       <div class="font-black text-lg">Album 8A8</div>
+       <div class="text-xs text-slate-500 mt-1">Đang chờ Admin cập nhật ảnh mới.</div>
       </div>
     </div>
    </div>
   </div>
 
-  <div class="mt-8">
-   <div class="flex items-center justify-between mb-5">
-    <div class="text-2xl font-black">📊 Bình chọn realtime</div>
-    <a href="#confession" class="btn btn-soft">Confession →</a>
+  <div class="mt-10">
+   <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+    <div class="text-2xl font-black">📊 Bình chọn lớp</div>
+    <a href="#confession" class="btn btn-soft">Góc Tâm Sự (Confession) →</a>
    </div>
    <div class="grid md:grid-cols-2 gap-5">
     ${state.polls.filter(p=>p.active!==false).map(pollCard).join("")||
-      `<div class="glass rounded-3xl p-8 text-slate-500" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">Chưa có cuộc bình chọn đang hoạt động.</div>`}
+      `<div class="glass rounded-3xl p-8 text-slate-500 text-center col-span-2">Chưa có cuộc bình chọn nào đang diễn ra.</div>`}
    </div>
   </div>
  </section>`;
@@ -1388,93 +1291,84 @@ function entertainmentPage(){
 function pollCard(poll){
  const options=poll.options||[];
  const total=options.reduce((sum,o)=>sum+Number(o.votes||0),0);
- return `<article class="glass rounded-3xl p-6" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
-   <div class="badge">📊 Poll</div>
-   <h2 class="text-xl font-black mt-4">${escapeHtml(poll.question)}</h2>
+ return `<article class="glass rounded-3xl p-6">
+   <div class="badge bg-purple-500/10 text-purple-600 dark:text-purple-400">🗳️ Bình chọn</div>
+   <h2 class="text-lg font-black mt-4 leading-relaxed">${escapeHtml(poll.question)}</h2>
    <div class="space-y-4 mt-5">
     ${options.map((o,index)=>{
       const votes=Number(o.votes||0);
       const pct=total?Math.round(votes/total*100):0;
-      return `<div data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
-       <button class="poll-vote btn btn-soft w-full justify-between" data-poll="${escapeHtml(poll.id)}" data-option="${escapeHtml(o.id||String(index))}">
-        <span>${escapeHtml(o.text)}</span><span>${pct}%</span>
+      return `<div>
+       <button class="poll-vote flex w-full justify-between items-center p-3 rounded-xl bg-slate-500/5 hover:bg-slate-500/10 transition-colors border border-slate-300/10 text-sm font-bold" data-poll="${escapeHtml(poll.id)}" data-option="${escapeHtml(o.id||String(index))}">
+        <span class="text-left flex-1">${escapeHtml(o.text)}</span>
+        <span class="text-teal-600 ml-4">${pct}%</span>
        </button>
-       <div class="progress mt-2"><div style="width:${pct}%"></div></div>
+       <div class="progress mt-2 h-1.5"><div style="width:${pct}%"></div></div>
       </div>`;
     }).join("")}
    </div>
-   <div class="text-xs text-slate-500 mt-4">${total} lượt bình chọn</div>
+   <div class="text-xs text-slate-500 mt-5 text-right font-medium">${total} lượt bình chọn</div>
  </article>`;
 }
 
 function confessionPage(){
  return `
  <section class="page-section">
-  ${sectionTitle("💬 CONFESSION","Góc tâm sự ẩn danh","Nội dung gửi đi không hiển thị tên người gửi. Admin phải duyệt trước khi xuất hiện công khai.")}
+  ${sectionTitle("💬 CONFESSION","Góc tâm sự ẩn danh","Nội dung của bạn được giữ kín danh tính và cần Admin duyệt trước khi đăng.")}
   <div class="grid lg:grid-cols-2 gap-6">
-   <div class="glass rounded-3xl p-6" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
-    <div class="text-xl font-black">✍️ Gửi confession</div>
+   <div class="glass rounded-3xl p-6">
+    <div class="text-xl font-black">✍️ Viết Confession</div>
     <form id="confession-form" class="mt-5">
-      <textarea id="confession-content" class="input min-h-44 resize-y" maxlength="1000" required placeholder="Viết lời chúc, tâm sự hoặc một điều bạn muốn chia sẻ..."></textarea>
-      <button class="btn btn-primary w-full mt-4" type="submit" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">Gửi ẩn danh</button>
+      <textarea id="confession-content" class="input min-h-[160px] resize-y bg-white/60 dark:bg-slate-900/60" maxlength="1000" required placeholder="Viết một lời chúc, tâm sự hoặc nhắn nhủ điều gì đó..."></textarea>
+      <button class="btn btn-primary w-full mt-4" type="submit">Gửi ẩn danh ✈️</button>
     </form>
    </div>
 
-   <div class="glass rounded-3xl p-6" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
-    <div class="text-xl font-black">📮 Góp ý riêng tư</div>
+   <div class="glass rounded-3xl p-6">
+    <div class="text-xl font-black">📮 Hòm thư góp ý</div>
     <form id="private-feedback-form" class="mt-5 space-y-4">
-      <select id="feedback-recipient" class="input">
-       <option value="Cô Hoàn">Cô Hoàn</option>
-       <option value="Thùy Linh">Lớp trưởng Thùy Linh</option>
+      <select id="feedback-recipient" class="input bg-white/60 dark:bg-slate-900/60 font-bold">
+       <option value="Cô Hoàn">Gửi: GVCN Cô Hoàn</option>
+       <option value="Thùy Linh">Gửi: Lớp trưởng Thùy Linh</option>
       </select>
-      <textarea id="feedback-content" class="input min-h-36" maxlength="1000" required placeholder="Nội dung góp ý..."></textarea>
-      <button class="btn btn-primary w-full" type="submit" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">Gửi riêng tư</button>
+      <textarea id="feedback-content" class="input min-h-[105px] resize-y bg-white/60 dark:bg-slate-900/60" maxlength="1000" required placeholder="Nội dung góp ý riêng tư..."></textarea>
+      <button class="btn btn-soft w-full bg-slate-800 text-white dark:bg-slate-100 dark:text-black" type="submit">Gửi riêng tư</button>
     </form>
    </div>
   </div>
 
-  <div class="mt-8">
-   <div class="text-2xl font-black mb-5">🌟 Những lời đã được duyệt</div>
+  <div class="mt-12">
+   <div class="text-2xl font-black mb-6 flex items-center gap-2">🌟 Bảng tin Confession</div>
    <div class="grid md:grid-cols-2 gap-4">
     ${state.approvedConfessions.map(c=>`
-      <article class="glass rounded-3xl p-6" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
-       <div class="text-3xl">💌</div>
-       <p class="mt-4 leading-7 whitespace-pre-wrap">${escapeHtml(c.content)}</p>
-       <div class="text-xs text-slate-500 mt-4">— Thành viên 8A8</div>
+      <article class="glass rounded-3xl p-6 border-l-4 border-l-pink-500">
+       <div class="text-2xl mb-2">💌</div>
+       <p class="leading-relaxed whitespace-pre-wrap font-medium">${escapeHtml(c.content)}</p>
+       <div class="text-xs text-slate-500 mt-4 font-bold tracking-wide uppercase">— Ẩn danh</div>
       </article>`).join("")||
-      `<div class="glass rounded-3xl p-8 text-slate-500" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">Chưa có confession được duyệt.</div>`}
+      `<div class="glass rounded-3xl p-8 text-slate-500 text-center col-span-2">Chưa có bài viết nào được duyệt trên bảng tin.</div>`}
    </div>
   </div>
  </section>`;
 }
 
 function profilePage(){
- if(!state.user){
-  return `<section class="page-section text-center">
-   <div class="glass rounded-3xl p-12" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
-    <div class="text-5xl">🔐</div>
-    <h1 class="text-3xl font-black mt-5">Bạn chưa đăng nhập</h1>
-    <p class="text-slate-500 mt-2">Đăng nhập để xem hồ sơ tài khoản.</p>
-    <button id="profile-login" class="btn btn-primary mt-6" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">Đăng nhập</button>
-   </div>
-  </section>`;
- }
-
  const p=state.userProfile||{};
  return `<section class="page-section">
-   ${sectionTitle("👤 PROFILE","Hồ sơ tài khoản","Thông tin tài khoản hiện tại của bạn.")}
-   <div class="max-w-2xl glass rounded-3xl p-7" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
-    <div class="flex items-center gap-5">
-     <div class="avatar w-20 h-20 text-3xl">${escapeHtml((p.displayName||"T").charAt(0))}</div>
-     <div>
-      <div class="text-2xl font-black">${escapeHtml(p.displayName||"Thành viên")}</div>
-      <div class="text-sm text-slate-500">${escapeHtml(p.email||state.user.email||"")}</div>
-      <span class="badge mt-2">${roleName(p.role)}</span>
+   ${sectionTitle("👤 HỒ SƠ","Thông tin tài khoản","Quản lý thông tin cá nhân của bạn.")}
+   <div class="max-w-2xl mx-auto glass rounded-3xl p-8">
+    <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 text-center sm:text-left">
+     <div class="avatar w-24 h-24 text-4xl shadow-xl shadow-teal-500/20">${escapeHtml((p.displayName||"T").charAt(0))}</div>
+     <div class="flex-1">
+      <div class="text-3xl font-black">${escapeHtml(p.displayName||"Thành viên")}</div>
+      <div class="text-slate-500 mt-1">${escapeHtml(p.email||state.user.email||"")}</div>
+      <div class="mt-3"><span class="badge bg-teal-500/20 text-teal-700 dark:text-teal-400 text-sm px-3 py-1">${roleName(p.role)}</span></div>
      </div>
     </div>
-    <div class="grid sm:grid-cols-2 gap-4 mt-7">
-      ${infoBox("🎓","Chức vụ",p.classRole||"Thành viên")}
-      ${infoBox("🏫","Tổ",p.team||"Chưa cập nhật")}
+    
+    <div class="grid sm:grid-cols-2 gap-4 mt-8 border-t border-slate-300/20 pt-8">
+      ${infoBox("🎓","Chức vụ lớp",p.classRole||"Thành viên")}
+      ${infoBox("🏫","Tổ hoạt động",p.team||"Chưa cập nhật")}
     </div>
    </div>
  </section>`;
@@ -1487,44 +1381,38 @@ function bindRouteEvents(){
    location.hash="#to-chi-tiet";
   });
  });
-
  document.querySelectorAll(".student-card").forEach(button=>{
   button.addEventListener("click",()=>{
    const student=state.students.find(s=>s.id===button.dataset.studentId);
    if(student)openStudent(student);
   });
  });
-
  document.querySelectorAll(".start-quiz").forEach(button=>{
   button.addEventListener("click",()=>startQuiz(button.dataset.id));
  });
-
  document.querySelectorAll(".subject-filter").forEach(button=>{
   button.addEventListener("click",()=>{
    const subject=button.dataset.subject;
+   // Đánh dấu active cho nút filter
+   document.querySelectorAll(".subject-filter").forEach(b => {
+       b.classList.remove("btn-primary");
+       b.classList.add("btn-soft");
+   });
+   button.classList.remove("btn-soft");
+   button.classList.add("btn-primary");
+   
    $("quiz-list").innerHTML=quizCards(
     subject==="Tất cả"?state.quizzes:state.quizzes.filter(q=>q.subject===subject)
    );
    bindRouteEvents();
-   refreshAOS();
   });
  });
-
  document.querySelectorAll(".poll-vote").forEach(button=>{
   button.addEventListener("click",()=>votePoll(button.dataset.poll,button.dataset.option));
  });
 
- if($("confession-form")){
-  $("confession-form").addEventListener("submit",submitConfession);
- }
-
- if($("private-feedback-form")){
-  $("private-feedback-form").addEventListener("submit",submitPrivateFeedback);
- }
-
- if($("profile-login")){
-  $("profile-login").addEventListener("click",()=>openModal("login-modal"));
- }
+ if($("confession-form")) $("confession-form").addEventListener("submit",submitConfession);
+ if($("private-feedback-form")) $("private-feedback-form").addEventListener("submit",submitPrivateFeedback);
 
  initGame();
  initCountdowns();
@@ -1532,224 +1420,120 @@ function bindRouteEvents(){
 
 async function submitConfession(event){
  event.preventDefault();
- if(!state.user){
-  Swal.fire({icon:"info",title:"Hãy đăng nhập",text:"Bạn cần đăng nhập để gửi confession."});
-  return;
- }
-
  const content=$("confession-content").value.trim();
  if(!content)return;
-
  try{
-  await addDoc(collection(db,"confessions"),{
-   content,
-   status:"pending",
-   createdAt:serverTimestamp()
-  });
-
+  await addDoc(collection(db,"confessions"),{ content, status:"pending", createdAt:serverTimestamp() });
   $("confession-form").reset();
-
-  await swalSuccess(
-   "Đã gửi!",
-   "Confession đã được đưa vào hàng chờ duyệt. Tên của bạn không được công khai."
-  );
+  await swalSuccess("Gửi thành công!","Confession ẩn danh đã được đưa vào hàng chờ duyệt.");
  }catch(error){
-  Swal.fire({icon:"error",title:"Không thể gửi",text:"Firestore chưa cho phép thao tác này hoặc đang có lỗi kết nối."});
+  Swal.fire({icon:"error",title:"Lỗi kết nối",text:"Không thể gửi do lỗi mạng hoặc quyền truy cập."});
  }
 }
 
 async function submitPrivateFeedback(event){
  event.preventDefault();
-
- if(!state.user){
-  Swal.fire({icon:"info",title:"Hãy đăng nhập",text:"Bạn cần đăng nhập để gửi góp ý riêng tư."});
-  return;
- }
-
  const recipient=$("feedback-recipient").value;
  const content=$("feedback-content").value.trim();
-
  if(!content)return;
-
  try{
   await addDoc(collection(db,"privateFeedback"),{
-   recipient,
-   content,
-   uid:state.user.uid,
-   displayName:state.userProfile?.displayName||state.user.displayName||"",
-   createdAt:serverTimestamp(),
-   status:"unread"
+   recipient, content, uid:state.user.uid, displayName:state.userProfile?.displayName||state.user.displayName||"", createdAt:serverTimestamp(), status:"unread"
   });
-
   $("private-feedback-form").reset();
-
-  await swalSuccess(
-   "Đã gửi góp ý!",
-   `Góp ý riêng tư đã được gửi tới ${recipient}.`
-  );
- }catch(error){
-  Swal.fire({icon:"error",title:"Không thể gửi",text:"Vui lòng thử lại sau."});
- }
+  await swalSuccess("Đã gửi!","Góp ý đã được gửi bí mật tới "+recipient);
+ }catch(error){ Swal.fire({icon:"error",title:"Lỗi",text:"Vui lòng thử lại sau."}); }
 }
 
 async function votePoll(pollId,optionId){
- if(!state.user){
-  Swal.fire({icon:"info",title:"Hãy đăng nhập",text:"Bạn cần đăng nhập để bình chọn."});
-  return;
- }
-
  const voteKey=`a8a8-vote-${pollId}`;
-
- if(localStorage.getItem(voteKey)){
-  toast("Bạn đã bình chọn cuộc này trên thiết bị này.");
-  return;
- }
-
+ if(localStorage.getItem(voteKey)){ toast("Bạn đã bình chọn mục này rồi.","warning"); return; }
  const poll=state.polls.find(p=>p.id===pollId);
  if(!poll)return;
-
- const index=(poll.options||[]).findIndex(
-  option=>String(option.id)===String(optionId)
- );
-
+ const index=(poll.options||[]).findIndex(option=>String(option.id)===String(optionId));
  if(index<0)return;
 
  try{
-  const options=(poll.options||[]).map((option,i)=>
-    i===index
-      ?{...option,votes:Number(option.votes||0)+1}
-      :option
-  );
-
+  const options=(poll.options||[]).map((option,i)=> i===index ? {...option,votes:Number(option.votes||0)+1} : option );
   await updateDoc(doc(db,"polls",pollId),{options});
-
   localStorage.setItem(voteKey,"1");
-  toast("Đã ghi nhận bình chọn.");
- }catch(error){
-  Swal.fire({icon:"error",title:"Không thể bình chọn",text:"Bạn chưa được cấp quyền hoặc dữ liệu đang có lỗi."});
- }
+  toast("✅ Đã ghi nhận bình chọn của bạn.");
+ }catch(error){ Swal.fire({icon:"error",title:"Lỗi",text:"Không thể bình chọn."}); }
 }
 
 function initGame(){
  const board=$("tic-tac-toe");
  if(!board)return;
-
  let cells=Array(9).fill("");
  let turn="X";
  let over=false;
 
  function draw(){
   board.innerHTML=cells.map((value,index)=>`
-    <button class="aspect-square rounded-2xl bg-slate-500/10 border border-slate-300/20 text-4xl font-black"
-      data-cell="${index}" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">${value}</button>
+    <button class="aspect-square rounded-2xl bg-white/50 dark:bg-slate-800/50 border border-slate-300/20 text-4xl font-black transition-colors hover:bg-slate-500/10"
+      data-cell="${index}">${value}</button>
   `).join("");
 
   board.querySelectorAll("[data-cell]").forEach(button=>{
    button.addEventListener("click",()=>{
     const index=Number(button.dataset.cell);
     if(over||cells[index])return;
-
     cells[index]=turn;
     const result=winner(cells);
-
     if(result){
      over=true;
-     $("game-status").textContent=result==="draw"?"🤝 Hòa!":`🏆 ${result} thắng!`;
+     $("game-status").textContent=result==="draw"?"🤝 Hòa nhau!":`🏆 Chúc mừng ${result} thắng!`;
     }else{
      turn=turn==="X"?"O":"X";
-     $("game-status").textContent=`Lượt ${turn}`;
+     $("game-status").textContent=`Lượt của ${turn}`;
     }
     draw();
    });
   });
-
-  refreshAOS();
  }
-
  function reset(){
-  cells=Array(9).fill("");
-  turn="X";
-  over=false;
-  $("game-status").textContent="Lượt X";
-  draw();
+  cells=Array(9).fill(""); turn="X"; over=false; $("game-status").textContent="Lượt X"; draw();
  }
-
- $("reset-game").onclick=reset;
- draw();
+ $("reset-game").onclick=reset; draw();
 }
 
 function winner(cells){
- const lines=[
-  [0,1,2],[3,4,5],[6,7,8],
-  [0,3,6],[1,4,7],[2,5,8],
-  [0,4,8],[2,4,6]
- ];
- for(const [a,b,c] of lines){
-  if(cells[a]&&cells[a]===cells[b]&&cells[a]===cells[c])return cells[a];
- }
+ const lines=[ [0,1,2],[3,4,5],[6,7,8], [0,3,6],[1,4,7],[2,5,8], [0,4,8],[2,4,6] ];
+ for(const [a,b,c] of lines){ if(cells[a]&&cells[a]===cells[b]&&cells[a]===cells[c])return cells[a]; }
  return cells.every(Boolean)?"draw":null;
 }
 
 function initCountdowns(){
  document.querySelectorAll("[data-countdown]").forEach(node=>{
   const date=node.dataset.countdown;
-  const update=()=>{
-   const target=new Date(date).getTime();
-   node.textContent=formatRemaining(target-Date.now());
-  };
-  update();
-  setInterval(update,1000);
+  const update=()=> node.textContent=formatRemaining(new Date(date).getTime()-Date.now());
+  update(); setInterval(update,1000);
  });
-
  document.querySelectorAll("[data-deadline]").forEach(node=>{
   const date=node.dataset.deadline;
-  const update=()=>{
-   node.textContent=formatRemaining(new Date(date).getTime()-Date.now());
-  };
-  update();
-  setInterval(update,1000);
+  const update=()=> node.textContent=formatRemaining(new Date(date).getTime()-Date.now());
+  update(); setInterval(update,1000);
  });
 }
 
 async function checkBirthday(){
- const today=new Date();
- const day=today.getDate();
- const month=today.getMonth()+1;
-
+ const today=new Date(); const day=today.getDate(); const month=today.getMonth()+1;
  const birthdayStudents=state.students.filter(student=>{
   if(!student.dob)return false;
-  const date=new Date(student.dob);
-  return date.getDate()===day&&date.getMonth()+1===month;
+  const date=new Date(student.dob); return date.getDate()===day&&date.getMonth()+1===month;
  });
-
  if(!birthdayStudents.length)return;
-
  const names=birthdayStudents.map(s=>s.name).join(", ");
  const key=`birthday-${today.getFullYear()}-${month}-${day}-${names}`;
-
  if(localStorage.getItem(key))return;
-
  localStorage.setItem(key,"1");
 
  setTimeout(()=>{
   if(window.confetti){
-   const duration=3000;
-   const end=Date.now()+duration;
-
+   const duration=3500; const end=Date.now()+duration;
    (function frame(){
-    confetti({
-     particleCount:7,
-     angle:60,
-     spread:55,
-     origin:{x:0}
-    });
-    confetti({
-     particleCount:7,
-     angle:120,
-     spread:55,
-     origin:{x:1}
-    });
-
+    confetti({particleCount:7,angle:60,spread:55,origin:{x:0,y:0.8}});
+    confetti({particleCount:7,angle:120,spread:55,origin:{x:1,y:0.8}});
     if(Date.now()<end)requestAnimationFrame(frame);
    })();
   }
@@ -1758,114 +1542,58 @@ async function checkBirthday(){
  Swal.fire({
   icon:"success",
   title:"🎂 Chúc mừng sinh nhật!",
-  html:`Hôm nay là sinh nhật của <b>${escapeHtml(names)}</b>!<br>Chúc bạn tuổi mới thật vui, khỏe và luôn tỏa sáng cùng 8A8!`,
+  html:`Hôm nay là sinh nhật của <b>${escapeHtml(names)}</b>!<br>Tập thể 8A8 chúc bạn tuổi mới thật bùng nổ!`,
   confirmButtonText:"Gửi lời chúc 🎉",
   confirmButtonColor:"#14b8a6"
  });
 }
 
 function todayKey(){
- const now=new Date();
- return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}-${String(now.getDate()).padStart(2,"0")}`;
+ const now=new Date(); return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}-${String(now.getDate()).padStart(2,"0")}`;
 }
 
 function maybeShowNotice(){
  const notice=state.notice;
  if(!notice||notice.active===false)return;
-
  const noticeId=notice.id;
  const stored=localStorage.getItem("a8a8-notice-read");
  const readData=stored?JSON.parse(stored):null;
-
  if(readData?.noticeId===noticeId&&readData?.date===todayKey())return;
 
  $("notice-title").textContent=notice.title||"Thông báo";
  $("notice-content").textContent=notice.content||"";
-
  const button=$("notice-read-button");
  const close=$("notice-close-temporary");
 
- let seconds=3;
- button.disabled=true;
- button.textContent=`Tôi đã đọc (${seconds})`;
-
+ let seconds=5;
+ button.disabled=true; button.textContent=`Tôi đã đọc (${seconds})`;
  clearInterval(window.noticeCountdown);
 
  window.noticeCountdown=setInterval(()=>{
   seconds--;
-
-  if(seconds>0){
-   button.textContent=`Tôi đã đọc (${seconds})`;
-  }else{
-   clearInterval(window.noticeCountdown);
-   button.disabled=false;
-   button.textContent="Bố đọc rồi";
-  }
+  if(seconds>0) button.textContent=`Tôi đã đọc (${seconds})`;
+  else{ clearInterval(window.noticeCountdown); button.disabled=false; button.textContent="Tôi đã đọc & hiểu rõ"; }
  },1000);
 
- close.onclick=()=>{
-  closeModal("notice-modal");
- };
-
+ close.onclick=()=> closeModal("notice-modal");
  button.onclick=()=>{
-  localStorage.setItem("a8a8-notice-read",JSON.stringify({
-   noticeId,
-   date:todayKey()
-  }));
+  localStorage.setItem("a8a8-notice-read",JSON.stringify({noticeId,date:todayKey()}));
   closeModal("notice-modal");
  };
-
  openModal("notice-modal");
 }
 
-window.addEventListener("storage",event=>{
- if(event.key==="a8a8-notice-read")maybeShowNotice();
-});
-
-window.addEventListener("load",()=>{
- setTimeout(()=>{
-  refreshAOS();
- },200);
-});
+window.addEventListener("storage",event=>{ if(event.key==="a8a8-notice-read")maybeShowNotice(); });
 
 if("serviceWorker" in navigator){
- window.addEventListener("load",()=>{
-  navigator.serviceWorker.register("./service-worker.js").catch(error=>{
-   console.warn("Service Worker chưa được đăng ký:",error);
-  });
- });
+ window.addEventListener("load",()=>{ navigator.serviceWorker.register("./service-worker.js").catch(()=>{}); });
 }
 
-window.addEventListener("beforeunload",()=>{
- state.unsubscribe.forEach(fn=>fn());
-});
+window.addEventListener("beforeunload",()=>{ state.unsubscribe.forEach(fn=>fn()); });
 </script>
 
 <!--
-==============================================================
-PHẦN HOOK CHO SEASONAL THEME ENGINE — LẦN 4
-==============================================================
-
-Lần 4 sẽ cung cấp:
-./seasonal-theme-engine.js
-
-Không dùng emoji/icon rơi chung chung.
-Engine sẽ tự quyết định atmosphere dựa trên ngày:
-- Quốc Khánh Việt Nam
-- Trung Thu
-- Tết Nguyên Đán
-- Ngày Nhà Giáo Việt Nam
-- 8/3
-- 20/10
-- Halloween
-- Giáng Sinh
-- ngày thường
-
-Khi file được triển khai, thêm dòng sau trước </body>:
-
 <script src="./seasonal-theme-engine.js"></script>
-
-==============================================================
 -->
 </body>
 </html>
