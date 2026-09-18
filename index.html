@@ -1,0 +1,1871 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="Portal Lớp 8A8 - Trường THCS Cẩm Lý 2: học tập, thi đua, trắc nghiệm, thành viên, tương tác và kho kỷ niệm.">
+<meta name="keywords" content="8A8, THCS Cẩm Lý 2, lớp 8A8, học tập, thi đua, trắc nghiệm">
+<meta name="author" content="Lớp 8A8 - Trường THCS Cẩm Lý 2">
+<meta name="theme-color" content="#0f172a" id="theme-color-meta">
+<meta property="og:title" content="8A8 Portal - Trường THCS Cẩm Lý 2">
+<meta property="og:description" content="8A8 - Bứt phá giới hạn, Đoàn kết đập tan mọi thách thức!">
+<meta property="og:type" content="website">
+<link rel="manifest" href="./manifest.webmanifest">
+<title>8A8 Portal | Trường THCS Cẩm Lý 2</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={
+  darkMode:"class",
+  theme:{extend:{
+    fontFamily:{sans:["Inter","system-ui","sans-serif"],display:["Space Grotesk","Inter","sans-serif"]},
+    boxShadow:{glass:"0 20px 80px rgba(15,23,42,.16)",neon:"0 0 35px rgba(45,212,191,.25)"}
+  }}
+};
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+<link rel="stylesheet" href="./seasonal-theme.css">
+
+<style>
+:root{
+ --primary:#14b8a6;--secondary:#2563eb;--accent:#f59e0b;
+ --page:#f1f5f9;--surface:rgba(255,255,255,.68);
+ --text:#0f172a;--muted:#64748b;--border:rgba(148,163,184,.28);
+}
+.dark{
+ --page:#07111f;--surface:rgba(15,23,42,.68);
+ --text:#f8fafc;--muted:#94a3b8;--border:rgba(148,163,184,.18);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+ margin:0;color:var(--text);
+ font-family:Inter,system-ui,sans-serif;
+ background:
+ radial-gradient(circle at 10% 10%,rgba(20,184,166,.12),transparent 28rem),
+ radial-gradient(circle at 90% 20%,rgba(37,99,235,.12),transparent 30rem),
+ var(--page);
+ transition:background .5s,color .3s;
+}
+body:before{
+ content:"";position:fixed;inset:0;pointer-events:none;z-index:-2;
+ background-image:linear-gradient(rgba(148,163,184,.045) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(148,163,184,.045) 1px,transparent 1px);
+ background-size:42px 42px;
+ mask-image:linear-gradient(to bottom,black,transparent 85%);
+}
+a{text-decoration:none;color:inherit}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.glass{
+ background:var(--surface);
+ border:1px solid var(--border);
+ backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+ box-shadow:0 20px 80px rgba(15,23,42,.12);
+}
+.dark .glass{box-shadow:0 20px 80px rgba(0,0,0,.24)}
+.gradient-text{
+ background:linear-gradient(110deg,var(--primary),var(--secondary),var(--accent));
+ -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero-grid{
+ position:absolute;inset:0;pointer-events:none;overflow:hidden;
+ background:
+ radial-gradient(circle at 50% 40%,rgba(20,184,166,.15),transparent 28%),
+ radial-gradient(circle at 15% 75%,rgba(37,99,235,.12),transparent 25%);
+}
+.orb{position:absolute;border-radius:999px;filter:blur(1px);opacity:.5;animation:orb 9s ease-in-out infinite}
+@keyframes orb{50%{transform:translate3d(0,-28px,0) scale(1.06)}}
+.card-3d{transition:transform .35s,box-shadow .35s}
+.card-3d:hover{transform:translateY(-7px) rotateX(1deg);box-shadow:0 28px 80px rgba(15,23,42,.18)}
+.modal-backdrop{
+ position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;
+ padding:1rem;background:rgba(2,6,23,.62);backdrop-filter:blur(14px)
+}
+.modal-backdrop.open{display:flex}
+.auth-panel{
+ width:min(480px,100%);max-height:92vh;overflow:auto;border-radius:30px;
+ border:1px solid rgba(255,255,255,.22);
+ background:linear-gradient(145deg,rgba(255,255,255,.14),rgba(255,255,255,.06));
+ box-shadow:0 35px 100px rgba(0,0,0,.4),0 0 55px rgba(20,184,166,.14);
+}
+.input{
+ width:100%;padding:.85rem 1rem;border-radius:15px;
+ border:1px solid var(--border);background:rgba(255,255,255,.5);
+ color:var(--text);outline:none;transition:.2s;
+}
+.dark .input{background:rgba(15,23,42,.65)}
+.input:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(20,184,166,.12)}
+.btn{
+ display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+ border-radius:14px;padding:.75rem 1rem;font-weight:800;transition:.2s;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{color:white;background:linear-gradient(135deg,var(--primary),var(--secondary));box-shadow:0 12px 30px rgba(37,99,235,.2)}
+.btn-soft{background:rgba(148,163,184,.12);border:1px solid var(--border)}
+.btn-danger{color:white;background:linear-gradient(135deg,#ef4444,#be123c)}
+.badge{display:inline-flex;align-items:center;gap:.35rem;padding:.3rem .65rem;border-radius:999px;font-size:.75rem;font-weight:800;background:rgba(20,184,166,.12);border:1px solid rgba(20,184,166,.2)}
+.page-section{width:min(1180px,calc(100% - 2rem));margin:auto;padding:5rem 0}
+.nav-link.active{color:var(--primary)}
+.avatar{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;font-weight:900}
+.progress{height:9px;border-radius:999px;background:rgba(148,163,184,.18);overflow:hidden}
+.progress>div{height:100%;background:linear-gradient(90deg,var(--primary),var(--secondary));border-radius:inherit}
+.toast-stack{position:fixed;right:1rem;bottom:1rem;z-index:150;display:grid;gap:.6rem}
+.toast{padding:1rem 1.1rem;border-radius:17px;max-width:360px}
+table{width:100%;border-collapse:collapse}
+th,td{padding:.8rem;text-align:left;border-bottom:1px solid var(--border)}
+@media(max-width:800px){.desktop-nav{display:none}.page-section{padding:3.5rem 0}.hero-title{font-size:2.6rem}}
+</style>
+</head>
+
+<body>
+<div id="seasonal-canvas-root"></div>
+<div id="seasonal-banner"></div>
+
+<header class="sticky top-0 z-50 border-b border-slate-300/20 glass" data-aos="fade-down" data-aos-mirror="true" data-aos-once="false">
+ <div class="max-w-[1280px] mx-auto px-4 py-3 flex items-center gap-3">
+  <a href="#trang-chu" class="flex items-center gap-3 shrink-0" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+   <div class="w-11 h-11 rounded-2xl grid place-items-center font-black text-white text-xl bg-gradient-to-br from-teal-500 to-blue-600 shadow-neon">8A8</div>
+   <div class="hidden sm:block">
+    <div class="font-black font-display">PORTAL 8A8</div>
+    <div class="text-xs text-slate-500 dark:text-slate-400">THCS Cẩm Lý 2</div>
+   </div>
+  </a>
+
+  <nav class="desktop-nav flex-1 flex justify-center gap-5 text-sm font-bold">
+   <a class="nav-link" href="#trang-chu" data-route-link="trang-chu">Trang chủ</a>
+   <a class="nav-link" href="#thanh-vien" data-route-link="thanh-vien">Thành viên</a>
+   <a class="nav-link" href="#thi-dua" data-route-link="thi-dua">Thi đua</a>
+   <a class="nav-link" href="#hoc-tap" data-route-link="hoc-tap">Học tập</a>
+   <a class="nav-link" href="#trac-nghiem" data-route-link="trac-nghiem">Trắc nghiệm</a>
+   <a class="nav-link" href="#giai-tri" data-route-link="giai-tri">Giải trí</a>
+  </nav>
+
+  <div class="flex items-center gap-2">
+   <button id="theme-toggle" class="btn btn-soft" aria-label="Đổi giao diện" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">🌙</button>
+   <button id="login-button" class="btn btn-primary" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">Đăng nhập</button>
+   <button id="register-button" class="btn btn-soft hidden sm:inline-flex" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">Tạo tài khoản</button>
+   <div id="profile-frame" class="hidden"></div>
+  </div>
+ </div>
+</header>
+
+<main id="app" aria-live="polite"></main>
+
+<footer class="border-t border-slate-300/20 mt-12">
+ <div class="max-w-[1180px] mx-auto px-4 py-10 text-center text-sm text-slate-500" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+  <div class="font-black text-lg text-slate-700 dark:text-slate-200">8A8 — Bứt phá giới hạn</div>
+  <div class="mt-2">Lớp 8A8 · Trường THCS Cẩm Lý 2</div>
+  <div class="mt-1">Đoàn kết đập tan mọi thách thức!</div>
+ </div>
+</footer>
+
+<!-- LOGIN MODAL: TÁCH RIÊNG -->
+<div id="login-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="login-title">
+ <div class="auth-panel p-6" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+  <div class="flex justify-between items-start">
+   <div>
+    <span class="badge">🔐 Khu vực thành viên</span>
+    <h2 id="login-title" class="text-3xl font-black mt-3">Đăng nhập</h2>
+    <p class="text-sm text-slate-500 mt-1">Chào mừng bạn quay lại Portal 8A8.</p>
+   </div>
+   <button class="btn btn-soft modal-close" data-modal="login-modal" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">×</button>
+  </div>
+
+  <form id="login-form" class="mt-6 space-y-4">
+   <label class="block">
+    <span class="text-sm font-bold">Email</span>
+    <input id="login-email" class="input mt-2" type="email" autocomplete="email" required placeholder="tenban@example.com">
+   </label>
+   <label class="block">
+    <span class="text-sm font-bold">Mật khẩu</span>
+    <input id="login-password" class="input mt-2" type="password" autocomplete="current-password" required minlength="6" placeholder="••••••••">
+   </label>
+   <button class="btn btn-primary w-full" type="submit" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+    Đăng nhập vào Portal
+   </button>
+  </form>
+
+  <div class="mt-5 text-center text-sm text-slate-500">
+   Chưa có tài khoản?
+   <button id="switch-to-register" class="font-black text-teal-500" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">Tạo tài khoản mới</button>
+  </div>
+ </div>
+</div>
+
+<!-- REGISTER MODAL: TÁCH RIÊNG -->
+<div id="register-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="register-title">
+ <div class="auth-panel p-6" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+  <div class="flex justify-between items-start">
+   <div>
+    <span class="badge">✨ Thành viên mới</span>
+    <h2 id="register-title" class="text-3xl font-black mt-3">Tạo tài khoản</h2>
+    <p class="text-sm text-slate-500 mt-1">Đăng ký riêng biệt, nhanh chóng và an toàn.</p>
+   </div>
+   <button class="btn btn-soft modal-close" data-modal="register-modal" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">×</button>
+  </div>
+
+  <form id="register-form" class="mt-6 space-y-4">
+   <label class="block">
+    <span class="text-sm font-bold">Họ và tên</span>
+    <input id="register-name" class="input mt-2" type="text" autocomplete="name" required maxlength="80" placeholder="Nguyễn Văn A">
+   </label>
+   <label class="block">
+    <span class="text-sm font-bold">Email</span>
+    <input id="register-email" class="input mt-2" type="email" autocomplete="email" required placeholder="tenban@example.com">
+   </label>
+   <label class="block">
+    <span class="text-sm font-bold">Mật khẩu</span>
+    <input id="register-password" class="input mt-2" type="password" autocomplete="new-password" required minlength="6" placeholder="Tối thiểu 6 ký tự">
+   </label>
+   <label class="block">
+    <span class="text-sm font-bold">Xác nhận mật khẩu</span>
+    <input id="register-password-confirm" class="input mt-2" type="password" autocomplete="new-password" required minlength="6" placeholder="Nhập lại mật khẩu">
+   </label>
+   <button class="btn btn-primary w-full" type="submit" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+    Tạo tài khoản
+   </button>
+  </form>
+
+  <div class="mt-5 text-center text-sm text-slate-500">
+   Đã có tài khoản?
+   <button id="switch-to-login" class="font-black text-teal-500" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">Đăng nhập</button>
+  </div>
+ </div>
+</div>
+
+<!-- PROFILE MODAL -->
+<div id="student-modal" class="modal-backdrop">
+ <div id="student-modal-content" class="auth-panel p-6" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false"></div>
+</div>
+
+<!-- POPUP THÔNG BÁO -->
+<div id="notice-modal" class="modal-backdrop">
+ <div class="auth-panel p-7" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+  <div class="flex justify-between gap-4">
+   <div>
+    <span class="badge">📢 Thông báo lớp</span>
+    <h2 id="notice-title" class="text-3xl font-black mt-3"></h2>
+   </div>
+   <button id="notice-close-temporary" class="btn btn-soft" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">×</button>
+  </div>
+  <div id="notice-content" class="mt-5 leading-7 whitespace-pre-wrap text-slate-600 dark:text-slate-300"></div>
+  <div class="mt-6 p-4 rounded-2xl bg-slate-500/10 text-center">
+   <button id="notice-read-button" class="btn btn-primary w-full" disabled data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+    Tôi đã đọc (3)
+   </button>
+   <p class="text-xs text-slate-500 mt-2">Sau khi mở khóa, trạng thái đọc được giữ đến 23:59:59 hôm nay.</p>
+  </div>
+ </div>
+</div>
+
+<div id="toast-stack" class="toast-stack"></div>
+
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import {
+  getFirestore,
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+  addDoc,
+  updateDoc,
+  query,
+  orderBy,
+  limit,
+  onSnapshot,
+  serverTimestamp,
+  increment
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCWDybmAejsQX0f9lwd6c0lXyfQ4A-HqKs",
+  authDomain: "a8thcscl2.firebaseapp.com",
+  projectId: "a8thcscl2",
+  storageBucket: "a8thcscl2.firebasestorage.app",
+  messagingSenderId: "271886897885",
+  appId: "1:271886897885:web:d8fc19828db5921d9bc134",
+  measurementId: "G-KZP06LF2Z4"
+};
+
+const appFirebase = initializeApp(firebaseConfig);
+const auth = getAuth(appFirebase);
+const db = getFirestore(appFirebase);
+
+const SUPER_ADMIN_EMAIL = "tranducmanh2109@gmail.com";
+const CLASS_NAME = "Lớp 8A8 - Trường THCS Cẩm Lý 2";
+
+const state = {
+  user:null,
+  userProfile:null,
+  students:[],
+  quizzes:[],
+  homework:[],
+  polls:[],
+  approvedConfessions:[],
+  notice:null,
+  selectedTeam:null,
+  currentQuiz:null,
+  quizIndex:0,
+  quizAnswers:[],
+  quizTimer:null,
+  quizSeconds:0,
+  selectedStudent:null,
+  unsubscribe:[],
+  boardScores:[]
+};
+
+const MOCK_STUDENTS = Array.from({length:40},(_,i)=>{
+  const names=[
+    "Phạm Hoàng Long","Vũ Khánh Linh","Đỗ Đức Mạnh","Bùi Phương Thảo",
+    "Nguyễn Minh Anh","Trần Ngọc Anh","Lê Gia Huy","Nguyễn Thu Trang",
+    "Phạm Quang Minh","Đặng Khánh Linh","Nguyễn Hải Nam","Hoàng Mai Anh",
+    "Vũ Đức Anh","Bùi Ngọc Hà","Trần Minh Đức","Nguyễn Phương Linh",
+    "Lê Tuấn Anh","Phạm Khánh Huyền","Đỗ Minh Quân","Vũ Hà My",
+    "Nguyễn Thành Đạt","Bùi Thùy Dương","Trần Đức Anh","Phạm Ngọc Mai",
+    "Lê Hoàng Nam","Nguyễn Khánh Vy","Đặng Minh Khang","Vũ Ngọc Linh",
+    "Bùi Anh Tú","Trần Quỳnh Anh","Nguyễn Đức Minh","Lê Phương Anh",
+    "Phạm Minh Khôi","Đỗ Khánh Hòa","Vũ Hoàng Long","Nguyễn Thảo Chi",
+    "Bùi Minh Quân","Trần Hải Yến","Lê Đức Anh","Nguyễn Mai Phương"
+  ];
+  const team=Math.floor(i/10)+1;
+  return {
+    id:"mock-"+String(i+1).padStart(2,"0"),
+    name:names[i],
+    dob:`2012-${String((i%12)+1).padStart(2,"0")}-${String((i%27)+1).padStart(2,"0")}`,
+    gender:i%2===0?"Nam":"Nữ",
+    team:`Tổ ${team}`,
+    classRole:
+      i===0?"Tổ trưởng Tổ 1":
+      i===1?"Tổ trưởng Tổ 2":
+      i===2?"Tổ trưởng Tổ 3":
+      i===3?"Tổ trưởng Tổ 4":
+      i===4?"Lớp trưởng Thùy Linh":
+      i===5?"LP Học tập Ngọc Ánh":
+      i===6?"LP Văn nghệ Khánh Ngọc":"",
+    score:10,
+    badges:[],
+    history:[]
+  };
+});
+
+const TEAM_LEADERS={
+ "Tổ 1":"Hồng Thảo",
+ "Tổ 2":"Tùng Lâm",
+ "Tổ 3":"Khánh Ngọc",
+ "Tổ 4":"Bảo Sơn"
+};
+
+const SUBJECTS=["Toán","Ngữ văn","Tiếng Anh","Vật lý","Hóa học","Sinh học","Lịch sử","Địa lý"];
+
+const SCHEDULE={
+  1:["Ngữ văn","Toán","Tiếng Anh","Vật lý"],
+  2:["Toán","Ngữ văn","Sinh học","Lịch sử"],
+  3:["Tiếng Anh","Toán","Địa lý","Ngữ văn"],
+  4:["Vật lý","Hóa học","Toán","Tiếng Anh"],
+  5:["Ngữ văn","Lịch sử","Sinh học","Toán"],
+  6:["Toán","Tiếng Anh","Ngữ văn","Hoạt động trải nghiệm"]
+};
+
+function $(id){return document.getElementById(id)}
+function escapeHtml(value=""){
+  return String(value).replace(/[&<>"']/g,m=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[m]));
+}
+function safeId(value){return String(value).replace(/[^a-zA-Z0-9_-]/g,"-")}
+
+function aosMarkup(html,animation="fade-up"){
+  return html
+    .replace(/<([a-z][^>]*)>/gi,(match,attrs)=>{
+      if(attrs.includes("data-aos=")) return match;
+      return `<$1 data-aos="${animation}" data-aos-mirror="true" data-aos-once="false">`;
+    });
+}
+
+function refreshAOS(){
+  if(window.AOS){
+    AOS.refreshHard();
+    AOS.refresh();
+  }
+  if(window.lucide) lucide.createIcons();
+}
+
+window.AOS?.init({
+  duration:800,
+  easing:"ease-in-out-sine",
+  once:false,
+  mirror:true,
+  offset:120
+});
+
+function toast(message,type="info"){
+  const node=document.createElement("div");
+  node.className="toast glass";
+  node.setAttribute("data-aos","fade-left");
+  node.setAttribute("data-aos-mirror","true");
+  node.setAttribute("data-aos-once","false");
+  node.innerHTML=`<div class="font-bold">${escapeHtml(message)}</div>`;
+  $("toast-stack").appendChild(node);
+  setTimeout(()=>node.remove(),4200);
+}
+
+function swalSuccess(title,text){
+  return Swal.fire({
+    icon:"success",
+    title,
+    text,
+    confirmButtonText:"Tiếp tục",
+    confirmButtonColor:"#14b8a6"
+  });
+}
+
+function openModal(id){
+  $(id)?.classList.add("open");
+  refreshAOS();
+}
+function closeModal(id){
+  $(id)?.classList.remove("open");
+}
+
+document.querySelectorAll(".modal-close").forEach(button=>{
+  button.addEventListener("click",()=>closeModal(button.dataset.modal));
+});
+
+["login-modal","register-modal","student-modal","notice-modal"].forEach(id=>{
+  $(id).addEventListener("click",event=>{
+    if(event.target.id===id) closeModal(id);
+  });
+});
+
+$("login-button").addEventListener("click",()=>openModal("login-modal"));
+$("register-button").addEventListener("click",()=>openModal("register-modal"));
+
+$("switch-to-register").addEventListener("click",()=>{
+  closeModal("login-modal");
+  openModal("register-modal");
+});
+$("switch-to-login").addEventListener("click",()=>{
+  closeModal("register-modal");
+  openModal("login-modal");
+});
+
+$("theme-toggle").addEventListener("click",()=>{
+  document.documentElement.classList.toggle("dark");
+  const dark=document.documentElement.classList.contains("dark");
+  localStorage.setItem("a8a8-theme",dark?"dark":"light");
+  $("theme-toggle").textContent=dark?"☀️":"🌙";
+  $("theme-color-meta").content=dark?"#07111f":"#f1f5f9";
+});
+
+if(localStorage.getItem("a8a8-theme")==="dark"){
+  document.documentElement.classList.add("dark");
+  $("theme-toggle").textContent="☀️";
+}
+
+$("login-form").addEventListener("submit",async event=>{
+  event.preventDefault();
+  const email=$("login-email").value.trim();
+  const password=$("login-password").value;
+
+  try{
+    await signInWithEmailAndPassword(auth,email,password);
+    closeModal("login-modal");
+    $("login-form").reset();
+  }catch(error){
+    Swal.fire({
+      icon:"error",
+      title:"Đăng nhập thất bại",
+      text:translateFirebaseError(error.code),
+      confirmButtonColor:"#ef4444"
+    });
+  }
+});
+
+$("register-form").addEventListener("submit",async event=>{
+  event.preventDefault();
+
+  const name=$("register-name").value.trim();
+  const email=$("register-email").value.trim();
+  const password=$("register-password").value;
+  const confirm=$("register-password-confirm").value;
+
+  if(password!==confirm){
+    Swal.fire({
+      icon:"warning",
+      title:"Mật khẩu chưa khớp",
+      text:"Vui lòng nhập lại hai mật khẩu giống nhau."
+    });
+    return;
+  }
+
+  try{
+    const credential=await createUserWithEmailAndPassword(auth,email,password);
+
+    await updateProfile(credential.user,{displayName:name});
+
+    await setDoc(doc(db,"users",credential.user.uid),{
+      uid:credential.user.uid,
+      email,
+      displayName:name,
+      role:"student",
+      classRole:"",
+      team:"",
+      createdAt:serverTimestamp()
+    });
+
+    closeModal("register-modal");
+    $("register-form").reset();
+
+    await swalSuccess(
+      "Tạo tài khoản thành công!",
+      `Chào mừng ${name} đến với Portal 8A8.`
+    );
+  }catch(error){
+    Swal.fire({
+      icon:"error",
+      title:"Không thể tạo tài khoản",
+      text:translateFirebaseError(error.code),
+      confirmButtonColor:"#ef4444"
+    });
+  }
+});
+
+function translateFirebaseError(code){
+  const map={
+    "auth/invalid-credential":"Email hoặc mật khẩu không chính xác.",
+    "auth/invalid-email":"Địa chỉ email không hợp lệ.",
+    "auth/email-already-in-use":"Email này đã được sử dụng.",
+    "auth/weak-password":"Mật khẩu quá yếu. Hãy dùng ít nhất 6 ký tự.",
+    "auth/user-disabled":"Tài khoản đã bị vô hiệu hóa.",
+    "auth/too-many-requests":"Có quá nhiều yêu cầu. Vui lòng thử lại sau."
+  };
+  return map[code]||"Đã xảy ra lỗi. Vui lòng thử lại.";
+}
+
+onAuthStateChanged(auth,async user=>{
+  state.user=user;
+
+  if(user){
+    try{
+      const profileSnap=await getDoc(doc(db,"users",user.uid));
+      state.userProfile=profileSnap.exists()
+        ? profileSnap.data()
+        : {
+            uid:user.uid,
+            email:user.email,
+            displayName:user.displayName||"Thành viên",
+            role:"student"
+          };
+    }catch(error){
+      state.userProfile={
+        uid:user.uid,
+        email:user.email,
+        displayName:user.displayName||"Thành viên",
+        role:"student"
+      };
+    }
+
+    renderProfileFrame();
+    toast(`🎉 Chào mừng ${state.userProfile.displayName} quay trở lại Portal 8A8!`);
+  }else{
+    state.userProfile=null;
+    renderProfileFrame();
+  }
+
+  await checkBirthday();
+  await loadRealtimeData();
+  router();
+});
+
+function roleName(role){
+  return ({
+    super_admin:"Super Admin",
+    admin:"Admin",
+    teacher:"GVCN",
+    student:"Học sinh"
+  })[role]||"Thành viên";
+}
+
+function renderProfileFrame(){
+  const login=$("login-button");
+  const register=$("register-button");
+  const frame=$("profile-frame");
+
+  if(!state.user){
+    login.classList.remove("hidden");
+    register.classList.remove("hidden");
+    frame.classList.add("hidden");
+    return;
+  }
+
+  login.classList.add("hidden");
+  register.classList.add("hidden");
+  frame.classList.remove("hidden");
+
+  const name=state.userProfile?.displayName||state.user.displayName||"Thành viên";
+  const role=roleName(state.userProfile?.role);
+
+  frame.innerHTML=`
+    <div class="flex items-center gap-2">
+      <a href="#profile" class="glass rounded-2xl px-3 py-2 flex items-center gap-2" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+        <div class="avatar">${escapeHtml(name.charAt(0).toUpperCase())}</div>
+        <div class="hidden md:block">
+          <div class="text-xs text-slate-500">Xin chào</div>
+          <div class="text-sm font-black max-w-[150px] truncate">${escapeHtml(name)}</div>
+          <div class="text-[10px] text-teal-500 font-bold">${escapeHtml(role)}</div>
+        </div>
+      </a>
+      ${(state.userProfile?.role==="admin"||state.userProfile?.role==="super_admin")
+        ?`<a href="./admin.html" class="btn btn-primary hidden lg:inline-flex" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">⚙️ Trang Admin</a>`:""}
+      <button id="logout-button" class="btn btn-soft" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">Thoát</button>
+    </div>
+  `;
+
+  $("logout-button").addEventListener("click",async()=>{
+    await signOut(auth);
+    toast("Bạn đã đăng xuất.");
+    location.hash="#trang-chu";
+  });
+
+  refreshAOS();
+}
+
+async function loadRealtimeData(){
+  state.unsubscribe.forEach(fn=>fn());
+  state.unsubscribe=[];
+
+  const studentsQuery=query(collection(db,"students"),orderBy("name"));
+
+  state.unsubscribe.push(
+    onSnapshot(studentsQuery,snapshot=>{
+      state.students=snapshot.docs.map(item=>({
+        id:item.id,
+        ...item.data()
+      }));
+      if(!state.students.length) state.students=[...MOCK_STUDENTS];
+      router();
+    },()=>{
+      state.students=[...MOCK_STUDENTS];
+      router();
+    })
+  );
+
+  state.unsubscribe.push(
+    onSnapshot(
+      query(collection(db,"quizzes"),orderBy("createdAt","desc"),limit(50)),
+      snapshot=>{
+        state.quizzes=snapshot.docs.map(item=>({id:item.id,...item.data()}));
+        router();
+      },
+      ()=>{state.quizzes=[];router()}
+    )
+  );
+
+  state.unsubscribe.push(
+    onSnapshot(
+      query(collection(db,"homework"),orderBy("deadline","asc"),limit(30)),
+      snapshot=>{
+        state.homework=snapshot.docs.map(item=>({id:item.id,...item.data()}));
+        router();
+      },
+      ()=>{state.homework=[];router()}
+    )
+  );
+
+  state.unsubscribe.push(
+    onSnapshot(
+      query(collection(db,"polls"),orderBy("createdAt","desc"),limit(10)),
+      snapshot=>{
+        state.polls=snapshot.docs.map(item=>({id:item.id,...item.data()}));
+        router();
+      },
+      ()=>{state.polls=[];router()}
+    )
+  );
+
+  state.unsubscribe.push(
+    onSnapshot(
+      query(collection(db,"confessions"),orderBy("createdAt","desc"),limit(30)),
+      snapshot=>{
+        state.approvedConfessions=snapshot.docs
+          .map(item=>({id:item.id,...item.data()}))
+          .filter(item=>item.status==="approved");
+        router();
+      },
+      ()=>{state.approvedConfessions=[];router()}
+    )
+  );
+
+  state.unsubscribe.push(
+    onSnapshot(
+      query(collection(db,"popups"),orderBy("createdAt","desc"),limit(1)),
+      snapshot=>{
+        state.notice=snapshot.docs.length
+          ? {id:snapshot.docs[0].id,...snapshot.docs[0].data()}
+          : null;
+        maybeShowNotice();
+      }
+    )
+  );
+}
+
+function currentRoute(){
+  const raw=location.hash.replace(/^#/,"");
+  return raw||"trang-chu";
+}
+
+function router(){
+  const route=currentRoute();
+
+  document.querySelectorAll("[data-route-link]").forEach(link=>{
+    link.classList.toggle("active",link.dataset.routeLink===route);
+  });
+
+  let html="";
+
+  switch(route){
+    case "trang-chu":html=homePage();break;
+    case "thanh-vien":html=membersPage();break;
+    case "to-chi-tiet":html=teamPage(state.selectedTeam||"Tổ 1");break;
+    case "thi-dua":html=competitionPage();break;
+    case "hoc-tap":html=studyPage();break;
+    case "trac-nghiem":html=quizPage();break;
+    case "giai-tri":html=entertainmentPage();break;
+    case "confession":html=confessionPage();break;
+    case "profile":html=profilePage();break;
+    default:
+      location.hash="#trang-chu";
+      return;
+  }
+
+  $("app").innerHTML=html;
+  bindRouteEvents();
+  refreshAOS();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+window.addEventListener("hashchange",router);
+
+function sectionTitle(eyebrow,title,description=""){
+  return `
+    <div class="mb-10" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+      <span class="badge">${eyebrow}</span>
+      <h1 class="text-4xl md:text-5xl font-black font-display mt-4">${title}</h1>
+      ${description?`<p class="mt-3 text-slate-500 dark:text-slate-400 max-w-3xl leading-7">${description}</p>`:""}
+    </div>
+  `;
+}
+
+function homePage(){
+  const boys=state.students.filter(x=>x.gender==="Nam").length||20;
+  const girls=state.students.filter(x=>x.gender==="Nữ").length||20;
+  const total=state.students.length||40;
+
+  return `
+  <section class="relative min-h-[680px] overflow-hidden flex items-center">
+    <div class="hero-grid"></div>
+    <div class="orb w-64 h-64 bg-teal-400/20 -top-20 left-[8%]"></div>
+    <div class="orb w-80 h-80 bg-blue-500/20 top-[35%] right-[4%]" style="animation-delay:2s"></div>
+
+    <div class="relative z-10 w-[min(1180px,calc(100%-2rem))] mx-auto py-20">
+      <div class="max-w-4xl" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+        <span class="badge">🏫 ${CLASS_NAME}</span>
+        <h1 class="hero-title text-5xl md:text-7xl font-black font-display leading-[1.02] mt-6">
+          8A8
+          <span class="gradient-text">Bứt phá giới hạn.</span>
+        </h1>
+        <p class="text-xl md:text-2xl mt-6 text-slate-600 dark:text-slate-300 leading-relaxed">
+          Đoàn kết đập tan mọi thách thức!
+        </p>
+        <p class="mt-6 max-w-2xl text-slate-500 dark:text-slate-400 leading-7">
+          Portal 8A8 là không gian số dành cho học sinh, phụ huynh và giáo viên:
+          nơi thành tích được ghi nhận, bài học được kết nối, hoạt động lớp được
+          cập nhật và những kỷ niệm đẹp được lưu giữ.
+        </p>
+        <div class="flex flex-wrap gap-3 mt-8">
+          <a href="#thanh-vien" class="btn btn-primary" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">👥 Khám phá thành viên</a>
+          <a href="#trac-nghiem" class="btn btn-soft" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">🧠 Làm trắc nghiệm</a>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-16">
+        ${statCard("👥","Sĩ số",total,"thành viên")}
+        ${statCard("♂️","Nam",boys,"học sinh")}
+        ${statCard("♀️","Nữ",girls,"học sinh")}
+        ${statCard("🎓","GVCN","Cô Hoàn","đồng hành cùng lớp")}
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section">
+    ${sectionTitle("✨ CÂU CHUYỆN 8A8","Một tập thể — nhiều cá tính — một tinh thần","")}
+    <div class="grid lg:grid-cols-2 gap-6">
+      <article class="glass rounded-3xl p-7 card-3d" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+        <div class="text-4xl mb-5">🚀</div>
+        <h2 class="text-2xl font-black">Hành trình xây dựng tập thể</h2>
+        <p class="mt-4 leading-8 text-slate-600 dark:text-slate-300">
+          8A8 được xây dựng trên tinh thần mỗi thành viên đều có một thế mạnh
+          riêng nhưng không đứng riêng lẻ. Trong lớp học, một bài toán khó có
+          thể cần một người giỏi tư duy, một bài thuyết trình cần một người tự
+          tin, một tiết văn nghệ cần người giàu cảm xúc, còn một hoạt động tập
+          thể cần tất cả cùng chung nhịp. Chính sự khác biệt ấy tạo nên sức mạnh
+          chung của lớp.
+        </p>
+        <p class="mt-4 leading-8 text-slate-600 dark:text-slate-300">
+          Mỗi ngày đến trường không chỉ là thêm một bài học trong sách giáo khoa.
+          Đó còn là cơ hội để học cách lắng nghe, hợp tác, chịu trách nhiệm,
+          giúp đỡ bạn bè và biết trân trọng công sức của thầy cô. Portal 8A8
+          được tạo ra để những điều ấy không bị trôi qua theo thời gian.
+        </p>
+      </article>
+
+      <article class="glass rounded-3xl p-7 card-3d" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+        <div class="text-4xl mb-5">🏆</div>
+        <h2 class="text-2xl font-black">Tinh thần thi đua tích cực</h2>
+        <p class="mt-4 leading-8 text-slate-600 dark:text-slate-300">
+          Thi đua ở 8A8 hướng tới việc biến một điểm cộng nhỏ thành động lực lớn.
+          Một lời khen đúng lúc có thể khiến một bạn mạnh dạn hơn; một lời nhắc
+          nhở đúng cách có thể giúp một bạn điều chỉnh hành vi. Hệ thống điểm
+          được thiết kế để minh bạch lịch sử cộng trừ, hiển thị lý do và ghi nhận
+          tiến bộ thay vì chỉ tập trung vào một con số.
+        </p>
+        <p class="mt-4 leading-8 text-slate-600 dark:text-slate-300">
+          Những thành tích học tập, văn nghệ, thể thao, hoạt động trải nghiệm
+          hay đóng góp cho tập thể đều có thể được ghi lại để cuối kỳ nhìn lại,
+          cả lớp thấy mình đã cùng nhau đi xa đến đâu.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <section class="page-section">
+    ${sectionTitle("👑 BAN CÁN SỰ","Những người kết nối tập thể","")}
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      ${leaderCard("👩‍🏫","GVCN","Cô Hoàn","Người đồng hành")}
+      ${leaderCard("⭐","Lớp trưởng","Thùy Linh","Điều phối tập thể")}
+      ${leaderCard("📚","LP Học tập","Ngọc Ánh","Kết nối học tập")}
+      ${leaderCard("🎤","LP Văn nghệ","Khánh Ngọc","Hoạt động văn nghệ")}
+      ${leaderCard("1️⃣","Tổ 1","Phạm Hoàng Long","Tổ trưởng")}
+      ${leaderCard("2️⃣","Tổ 2","Vũ Khánh Linh","Tổ trưởng")}
+      ${leaderCard("3️⃣","Tổ 3","Đỗ Đức Mạnh","Tổ trưởng")}
+      ${leaderCard("4️⃣","Tổ 4","Bùi Phương Thảo","Tổ trưởng")}
+    </div>
+  </section>
+
+  <section class="page-section">
+    ${sectionTitle("⏱️ COUNTDOWN","Các cột mốc đáng nhớ","")}
+    <div class="grid md:grid-cols-3 gap-5" id="countdown-grid">
+      ${countdownCard("📖","Thi học kỳ","2026-12-15T08:00:00")}
+      ${countdownCard("🏕️","Trại thu","2026-10-01T07:00:00")}
+      ${countdownCard("🌷","Ngày Nhà giáo Việt Nam","2026-11-20T00:00:00")}
+    </div>
+  </section>
+  `;
+}
+
+function statCard(icon,label,value,note){
+  return `
+  <div class="glass rounded-3xl p-5 card-3d" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+    <div class="text-3xl">${icon}</div>
+    <div class="text-sm text-slate-500 mt-3">${label}</div>
+    <div class="text-3xl font-black mt-1">${escapeHtml(value)}</div>
+    <div class="text-xs text-slate-500 mt-1">${note}</div>
+  </div>`;
+}
+
+function leaderCard(icon,role,name,note){
+ return `<div class="glass rounded-3xl p-5 card-3d" data-aos="flip-left" data-aos-mirror="true" data-aos-once="false">
+   <div class="text-3xl">${icon}</div>
+   <div class="text-xs text-teal-500 font-black mt-4">${role}</div>
+   <div class="text-lg font-black mt-1">${name}</div>
+   <div class="text-sm text-slate-500 mt-1">${note}</div>
+ </div>`;
+}
+
+function countdownCard(icon,title,date){
+ return `<div class="glass rounded-3xl p-6 card-3d" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+   <div class="text-3xl">${icon}</div>
+   <div class="font-black mt-4">${title}</div>
+   <div class="text-xs text-slate-500 mt-1">${date}</div>
+   <div class="countdown-value text-2xl font-black mt-4" data-countdown="${date}">Đang tính...</div>
+ </div>`;
+}
+
+function membersPage(){
+ const teams=["Tổ 1","Tổ 2","Tổ 3","Tổ 4"];
+ return `
+ <section class="page-section">
+   ${sectionTitle("👥 THÀNH VIÊN","Đại gia đình 8A8","Chọn một tổ để xem danh sách thành viên và hồ sơ chi tiết.")}
+   <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+    ${teams.map((team,i)=>`
+      <button class="team-card glass rounded-3xl p-6 text-left card-3d" data-team="${team}" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+        <div class="text-4xl">${["1️⃣","2️⃣","3️⃣","4️⃣"][i]}</div>
+        <div class="text-xl font-black mt-5">${team}</div>
+        <div class="text-sm text-slate-500 mt-2">${state.students.filter(s=>s.team===team).length||10} thành viên</div>
+        <div class="text-xs text-teal-500 font-bold mt-4">Tổ trưởng: ${TEAM_LEADERS[team]}</div>
+      </button>
+    `).join("")}
+   </div>
+ </section>
+ `;
+}
+
+function teamPage(team){
+ const members=state.students.filter(s=>s.team===team);
+ return `
+ <section class="page-section">
+   <button class="btn btn-soft mb-6" onclick="location.hash='#thanh-vien'" data-aos="fade-right" data-aos-mirror="true" data-aos-once="false">← Tất cả tổ</button>
+   ${sectionTitle("🏫 "+team,`Thành viên ${team}`,"Chạm vào hồ sơ để xem điểm thi đua, huy hiệu và lịch sử.")}
+   <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    ${members.map((s,index)=>studentCard(s,index)).join("")}
+   </div>
+ </section>
+ `;
+}
+
+function studentCard(student,index){
+ const score=Number(student.score??10);
+ const badge=score>=12?"📚":score<8?"⚡":"🌱";
+ return `
+ <button class="student-card glass rounded-3xl p-5 text-left card-3d" data-student-id="${escapeHtml(student.id)}" data-aos="${index%2?"flip-left":"fade-up"}" data-aos-mirror="true" data-aos-once="false">
+   <div class="flex items-center justify-between">
+     <div class="avatar">${escapeHtml(student.name?.charAt(0)||"?")}</div>
+     <span class="badge">${badge} ${score} điểm</span>
+   </div>
+   <div class="font-black mt-5">${escapeHtml(student.name)}</div>
+   <div class="text-xs text-slate-500 mt-1">${escapeHtml(student.gender||"")} · ${escapeHtml(student.classRole||"Thành viên")}</div>
+   <div class="text-xs text-teal-500 font-bold mt-4">Xem hồ sơ →</div>
+ </button>`;
+}
+
+function openStudent(student){
+ state.selectedStudent=student;
+ const score=Number(student.score??10);
+ const badges=[];
+ if(score>=12) badges.push("📚 Chăm ngoan học giỏi");
+ if(score<8) badges.push("⚡ Cần cố gắng");
+ if(!badges.length) badges.push("🌱 Đang tiến bộ");
+ state.boardScores=state.students.slice().sort((a,b)=>Number(b.score??10)-Number(a.score??10));
+ const rank=Math.max(1,state.boardScores.findIndex(x=>x.id===student.id)+1);
+ if(rank===1) badges.unshift("🥇 Top 1 Thi đua");
+
+ $("student-modal-content").innerHTML=`
+  <div class="flex justify-between gap-4">
+   <div class="flex items-center gap-4">
+    <div class="avatar w-16 h-16 text-2xl">${escapeHtml(student.name?.charAt(0)||"?")}</div>
+    <div>
+     <div class="text-xs text-teal-500 font-black">${escapeHtml(student.team||"")}</div>
+     <h2 class="text-2xl font-black">${escapeHtml(student.name)}</h2>
+     <div class="text-sm text-slate-500">${escapeHtml(student.classRole||"Thành viên")}</div>
+    </div>
+   </div>
+   <button class="btn btn-soft modal-close-student" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">×</button>
+  </div>
+
+  <div class="grid grid-cols-2 gap-3 mt-7">
+   ${infoBox("🎂","Ngày sinh",student.dob||"Chưa cập nhật")}
+   ${infoBox("⚧","Giới tính",student.gender||"Chưa cập nhật")}
+   ${infoBox("🏫","Tổ",student.team||"Chưa cập nhật")}
+   ${infoBox("🏆","Xếp hạng",`#${rank}`)}
+  </div>
+
+  <div class="mt-5 glass rounded-2xl p-5" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+   <div class="text-sm text-slate-500">Điểm thi đua</div>
+   <div class="text-4xl font-black mt-1">${score}</div>
+  </div>
+
+  <div class="mt-5">
+   <div class="font-black">Huy hiệu</div>
+   <div class="flex flex-wrap gap-2 mt-3">${badges.map(x=>`<span class="badge" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">${x}</span>`).join("")}</div>
+  </div>
+
+  <div class="mt-6">
+   <div class="font-black">Lịch sử thưởng / phạt</div>
+   <div class="mt-3 space-y-2 max-h-52 overflow-auto">
+    ${(student.history||[]).length
+      ? student.history.slice().reverse().map(h=>`
+        <div class="p-3 rounded-2xl bg-slate-500/10" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+          <div class="font-bold ${Number(h.points)>0?"text-emerald-500":"text-rose-500"}">${Number(h.points)>0?"+":""}${h.points} điểm</div>
+          <div class="text-sm mt-1">${escapeHtml(h.reason||"Không có lý do")}</div>
+        </div>`).join("")
+      :`<div class="text-sm text-slate-500">Chưa có lịch sử.</div>`}
+   </div>
+  </div>
+ `;
+ openModal("student-modal");
+ $("student-modal-content").querySelector(".modal-close-student").addEventListener("click",()=>closeModal("student-modal"));
+ refreshAOS();
+}
+
+function infoBox(icon,label,value){
+ return `<div class="rounded-2xl p-4 bg-slate-500/10" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+   <div>${icon}</div><div class="text-xs text-slate-500 mt-2">${label}</div><div class="font-bold mt-1">${escapeHtml(value)}</div>
+ </div>`;
+}
+
+function competitionPage(){
+ const ranked=state.students.slice().sort((a,b)=>Number(b.score??10)-Number(a.score??10));
+ const praises=state.students.flatMap(s=>(s.history||[]).filter(h=>Number(h.points)>0).map(h=>({...h,student:s}))).slice(-8).reverse();
+ const warnings=state.students.flatMap(s=>(s.history||[]).filter(h=>Number(h.points)<0).map(h=>({...h,student:s}))).slice(-8).reverse();
+
+ return `
+ <section class="page-section">
+  ${sectionTitle("🏆 THI ĐUA REALTIME","Bảng thành tích 8A8","Điểm được cập nhật theo dữ liệu Firestore khi Admin ghi nhận khen thưởng hoặc nhắc nhở.")}
+  <div class="grid lg:grid-cols-2 gap-6">
+   <div class="glass rounded-3xl p-6" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+    <div class="text-xl font-black">🌟 Góc Vinh danh</div>
+    <div class="space-y-3 mt-5">
+     ${praises.length?praises.map(item=>`
+       <div class="rounded-2xl p-4 bg-emerald-500/10" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+        <div class="font-black text-emerald-500">+${item.points} · ${escapeHtml(item.student.name)}</div>
+        <div class="text-sm mt-1">${escapeHtml(item.reason||"Được ghi nhận")}</div>
+       </div>`).join("")
+       :`<div class="text-sm text-slate-500">Chưa có dữ liệu vinh danh.</div>`}
+    </div>
+   </div>
+
+   <div class="glass rounded-3xl p-6" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+    <div class="text-xl font-black">📝 Góc Nhắc nhở</div>
+    <div class="space-y-3 mt-5">
+     ${warnings.length?warnings.map(item=>`
+       <div class="rounded-2xl p-4 bg-rose-500/10" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+        <div class="font-black text-rose-500">${item.points} · ${escapeHtml(item.student.name)}</div>
+        <div class="text-sm mt-1">${escapeHtml(item.reason||"Cần chú ý")}</div>
+       </div>`).join("")
+       :`<div class="text-sm text-slate-500">Chưa có dữ liệu nhắc nhở.</div>`}
+    </div>
+   </div>
+  </div>
+
+  <div class="glass rounded-3xl p-6 mt-6 overflow-auto" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+   <div class="flex justify-between items-center gap-3 mb-5">
+    <div class="text-xl font-black">📊 Xếp hạng thi đua</div>
+    <span class="badge">Realtime</span>
+   </div>
+   <table>
+    <thead><tr><th>#</th><th>Học sinh</th><th>Tổ</th><th>Điểm</th><th>Huy hiệu</th></tr></thead>
+    <tbody>
+     ${ranked.map((s,i)=>`
+      <tr data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+       <td class="font-black">${i+1}</td>
+       <td>${escapeHtml(s.name)}</td>
+       <td>${escapeHtml(s.team||"")}</td>
+       <td class="font-black">${Number(s.score??10)}</td>
+       <td>${i===0?"🥇":Number(s.score??10)>=12?"📚":Number(s.score??10)<8?"⚡":"🌱"}</td>
+      </tr>`).join("")}
+    </tbody>
+   </table>
+  </div>
+ </section>`;
+}
+
+function studyPage(){
+ const day=new Date().getDay();
+ const today=SCHEDULE[day]||["Nghỉ / Hoạt động tự chọn"];
+
+ return `
+ <section class="page-section">
+  ${sectionTitle("📚 HỌC TẬP","Trung tâm học tập 8A8","Thời khóa biểu, bài tập và tình hình điểm danh được tập trung tại một nơi.")}
+  <div class="glass rounded-3xl p-6" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+   <div class="flex justify-between items-center">
+    <div>
+     <div class="text-xs text-teal-500 font-black">HÔM NAY</div>
+     <div class="text-2xl font-black mt-1">${new Date().toLocaleDateString("vi-VN",{weekday:"long",day:"2-digit",month:"2-digit",year:"numeric"})}</div>
+    </div>
+    <div class="badge">🟢 Môn học hôm nay</div>
+   </div>
+   <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+    ${today.map((subject,index)=>`
+      <div class="rounded-2xl p-5 ${index===0?"bg-teal-500/15 border-teal-400/40":"bg-slate-500/10"} border" data-aos="${index%2?"zoom-in":"flip-left"}" data-aos-mirror="true" data-aos-once="false">
+       <div class="text-xs text-slate-500">Tiết ${index+1}</div>
+       <div class="font-black mt-2">${subject}</div>
+       ${index===0?'<div class="text-xs text-teal-500 font-bold mt-3">⭐ Đang ưu tiên</div>':""}
+      </div>`).join("")}
+   </div>
+  </div>
+
+  <div class="grid lg:grid-cols-2 gap-6 mt-6">
+   <div class="glass rounded-3xl p-6" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+    <div class="text-xl font-black">📝 Bài tập về nhà</div>
+    <div class="space-y-3 mt-5">
+     ${state.homework.length
+       ?state.homework.map(hw=>homeworkCard(hw)).join("")
+       :`<div class="text-sm text-slate-500">Chưa có bài tập được giao.</div>`}
+    </div>
+   </div>
+
+   <div class="glass rounded-3xl p-6" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+    <div class="text-xl font-black">📋 Sổ đầu bài & điểm danh</div>
+    <div class="grid grid-cols-3 gap-3 mt-5">
+     ${infoBox("✅","Có mặt","Đang cập nhật")}
+     ${infoBox("❌","Vắng","Đang cập nhật")}
+     ${infoBox("⏰","Muộn","Đang cập nhật")}
+    </div>
+    <div class="mt-5 text-sm text-slate-500">
+      Dữ liệu điểm danh được thiết kế để Admin cập nhật theo ngày ở bảng quản trị.
+     </div>
+   </div>
+  </div>
+
+  <div class="mt-8 text-center" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+   <a href="#trac-nghiem" class="btn btn-primary">🧠 Chuyển tới Trắc nghiệm</a>
+  </div>
+ </section>`;
+}
+
+function homeworkCard(hw){
+ const deadline=hw.deadline?new Date(hw.deadline):null;
+ const remaining=deadline?deadline-Date.now():0;
+ const overdue=remaining<0;
+ return `<div class="p-4 rounded-2xl bg-slate-500/10" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+   <div class="flex justify-between gap-3">
+    <div>
+     <div class="text-xs text-teal-500 font-black">${escapeHtml(hw.subject||"Môn học")}</div>
+     <div class="font-black mt-1">${escapeHtml(hw.title||"Bài tập")}</div>
+    </div>
+    <span class="badge">${overdue?"Đã quá hạn":"Đang mở"}</span>
+   </div>
+   <div class="text-xs text-slate-500 mt-3">Hạn: ${deadline?deadline.toLocaleString("vi-VN"):"Chưa xác định"}</div>
+   ${deadline?`<div class="text-xs font-bold mt-2" data-deadline="${deadline.toISOString()}">${formatRemaining(remaining)}</div>`:""}
+ </div>`;
+}
+
+function formatRemaining(ms){
+ if(ms<=0)return"Đã hết hạn";
+ const total=Math.floor(ms/1000);
+ const d=Math.floor(total/86400);
+ const h=Math.floor(total%86400/3600);
+ const m=Math.floor(total%3600/60);
+ const s=total%60;
+ return `${d} ngày ${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+}
+
+function quizPage(){
+ const subjects=[...new Set(state.quizzes.map(q=>q.subject).filter(Boolean))];
+ return `
+ <section class="page-section">
+  ${sectionTitle("🧠 TRẮC NGHIỆM","Quiz Arena 8A8","Đề thi được lấy trực tiếp từ Firestore. Admin có thể tạo đề theo từng môn, thêm câu hỏi A/B/C/D, đáp án và lời giải.")}
+  <div class="flex flex-wrap gap-2 mb-7">
+   ${SUBJECTS.map(subject=>`<button class="subject-filter btn btn-soft" data-subject="${subject}" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">${subject}</button>`).join("")}
+  </div>
+  <div id="quiz-list" class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+   ${quizCards(state.quizzes)}
+  </div>
+ </section>`;
+}
+
+function quizCards(quizzes){
+ if(!quizzes.length){
+  return `<div class="md:col-span-2 lg:col-span-3 glass rounded-3xl p-10 text-center" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+    <div class="text-5xl">🧪</div>
+    <div class="text-2xl font-black mt-5">Chưa có đề thi</div>
+    <p class="text-slate-500 mt-2">Admin hãy vào trang quản trị để tạo đề trắc nghiệm đầu tiên.</p>
+  </div>`;
+ }
+ return quizzes.map(q=>`
+  <article class="quiz-card glass rounded-3xl p-6 card-3d" data-subject="${escapeHtml(q.subject||"")}" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+   <span class="badge">${escapeHtml(q.subject||"Môn học")}</span>
+   <h2 class="text-xl font-black mt-5">${escapeHtml(q.title||"Bài trắc nghiệm")}</h2>
+   <div class="text-sm text-slate-500 mt-2">${(q.questions||[]).length} câu · ${Number(q.duration||10)} phút</div>
+   <button class="start-quiz btn btn-primary w-full mt-6" data-id="${escapeHtml(q.id)}" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">Bắt đầu làm bài</button>
+  </article>`).join("");
+}
+
+function startQuiz(id){
+ const quiz=state.quizzes.find(q=>q.id===id);
+ if(!quiz)return;
+ if(!state.user){
+  Swal.fire({
+   icon:"info",
+   title:"Hãy đăng nhập trước",
+   text:"Bạn cần tài khoản thành viên để làm bài và ghi nhận kết quả."
+  }).then(()=>openModal("login-modal"));
+  return;
+ }
+
+ state.currentQuiz=quiz;
+ state.quizIndex=0;
+ state.quizAnswers=Array((quiz.questions||[]).length).fill(null);
+ state.quizSeconds=Math.max(1,Number(quiz.duration||10))*60;
+ renderQuizModal();
+ clearInterval(state.quizTimer);
+ state.quizTimer=setInterval(()=>{
+  state.quizSeconds--;
+  const timer=$("quiz-timer");
+  if(timer)timer.textContent=formatRemaining(state.quizSeconds*1000);
+  if(state.quizSeconds<=0){
+   clearInterval(state.quizTimer);
+   submitQuiz();
+  }
+ },1000);
+}
+
+function renderQuizModal(){
+ const q=state.currentQuiz.questions?.[state.quizIndex];
+ if(!q)return;
+
+ $("student-modal-content").innerHTML=`
+ <div class="flex justify-between gap-3">
+  <div>
+   <span class="badge">${escapeHtml(state.currentQuiz.subject||"")}</span>
+   <h2 class="text-2xl font-black mt-3">${escapeHtml(state.currentQuiz.title||"Bài trắc nghiệm")}</h2>
+  </div>
+  <div id="quiz-timer" class="badge">00:00:00</div>
+ </div>
+
+ <div class="mt-6">
+  <div class="flex justify-between text-xs text-slate-500">
+   <span>Câu ${state.quizIndex+1}/${state.currentQuiz.questions.length}</span>
+   <span>${Math.round((state.quizIndex/state.currentQuiz.questions.length)*100)}%</span>
+  </div>
+  <div class="progress mt-2"><div style="width:${((state.quizIndex)/state.currentQuiz.questions.length)*100}%"></div></div>
+ </div>
+
+ <div class="mt-7" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+  <div class="text-xl font-black leading-8">${escapeHtml(q.question)}</div>
+  <div class="grid gap-3 mt-5">
+   ${(q.options||[]).map((option,index)=>`
+    <button class="quiz-option p-4 rounded-2xl text-left border ${state.quizAnswers[state.quizIndex]===index?"border-teal-500 bg-teal-500/10":"border-slate-300/20 bg-slate-500/10"}"
+      data-answer-index="${index}" data-aos="${index%2?"zoom-in":"fade-up"}" data-aos-mirror="true" data-aos-once="false">
+      <span class="font-black mr-2">${String.fromCharCode(65+index)}.</span>${escapeHtml(option)}
+    </button>`).join("")}
+  </div>
+ </div>
+
+ <div class="flex justify-between gap-3 mt-7">
+  <button id="quiz-prev" class="btn btn-soft" ${state.quizIndex===0?"disabled":""} data-aos="fade-right" data-aos-mirror="true" data-aos-once="false">← Câu trước</button>
+  <button id="quiz-next" class="btn btn-primary" data-aos="fade-left" data-aos-mirror="true" data-aos-once="false">
+   ${state.quizIndex===state.currentQuiz.questions.length-1?"Nộp bài":"Câu tiếp theo →"}
+  </button>
+ </div>
+ `;
+
+ openModal("student-modal");
+ $("quiz-timer").textContent=formatRemaining(state.quizSeconds*1000);
+
+ document.querySelectorAll(".quiz-option").forEach(button=>{
+  button.addEventListener("click",()=>{
+   state.quizAnswers[state.quizIndex]=Number(button.dataset.answerIndex);
+   renderQuizModal();
+  });
+ });
+
+ $("quiz-prev").addEventListener("click",()=>{
+  if(state.quizIndex>0){
+   state.quizIndex--;
+   renderQuizModal();
+  }
+ });
+
+ $("quiz-next").addEventListener("click",()=>{
+  if(state.quizIndex===state.currentQuiz.questions.length-1)submitQuiz();
+  else{
+   state.quizIndex++;
+   renderQuizModal();
+  }
+ });
+
+ refreshAOS();
+}
+
+async function submitQuiz(){
+ clearInterval(state.quizTimer);
+
+ const questions=state.currentQuiz.questions||[];
+ let correct=0;
+
+ const results=questions.map((q,index)=>{
+  const selected=state.quizAnswers[index];
+  const answer=typeof q.answer==="number"
+    ?q.answer
+    :String(q.answer||"").toUpperCase().charCodeAt(0)-65;
+  const isCorrect=selected===answer;
+  if(isCorrect)correct++;
+  return {q,selected,answer,isCorrect};
+ });
+
+ const score=questions.length?Math.round(correct/questions.length*100):0;
+
+ try{
+  await addDoc(collection(db,"quizResults"),{
+   uid:state.user?.uid||null,
+   displayName:state.userProfile?.displayName||state.user?.displayName||"Ẩn danh",
+   quizId:state.currentQuiz.id,
+   quizTitle:state.currentQuiz.title||"",
+   subject:state.currentQuiz.subject||"",
+   correct,
+   total:questions.length,
+   score,
+   createdAt:serverTimestamp()
+  });
+ }catch(error){
+  console.warn("Không ghi được quizResults:",error);
+ }
+
+ $("student-modal-content").innerHTML=`
+ <div class="text-center" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+  <div class="text-6xl">🎉</div>
+  <div class="text-3xl font-black mt-4">Hoàn thành bài!</div>
+  <div class="text-6xl font-black gradient-text mt-4">${score}%</div>
+  <div class="text-slate-500 mt-2">Đúng ${correct}/${questions.length} câu</div>
+ </div>
+
+ <div class="mt-7 space-y-4">
+ ${results.map((r,index)=>`
+  <div class="rounded-2xl p-4 ${r.isCorrect?"bg-emerald-500/10":"bg-rose-500/10"}" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+   <div class="font-black">${r.isCorrect?"✅":"❌"} Câu ${index+1}: ${escapeHtml(r.q.question)}</div>
+   <div class="text-sm mt-2">Đáp án đúng: <b>${escapeHtml(r.q.options?.[r.answer]||"")}</b></div>
+   ${r.q.explanation?`<div class="text-sm text-slate-500 mt-2">💡 ${escapeHtml(r.q.explanation)}</div>`:""}
+  </div>`).join("")}
+ </div>
+
+ <button class="btn btn-primary w-full mt-7 close-result" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">Đóng kết quả</button>
+ `;
+ $("student-modal-content").querySelector(".close-result").addEventListener("click",()=>closeModal("student-modal"));
+ refreshAOS();
+
+ if(window.confetti){
+  confetti({particleCount:120,spread:80,origin:{y:.65}});
+ }
+}
+
+function entertainmentPage(){
+ return `
+ <section class="page-section">
+  ${sectionTitle("🎮 GIẢI TRÍ","Không gian thư giãn 8A8","Sau giờ học, cùng chơi một ván game và xem những hoạt động đang diễn ra trong lớp.")}
+  <div class="grid lg:grid-cols-2 gap-6">
+   <div class="glass rounded-3xl p-6" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+    <div class="text-xl font-black">❎⭕ Tic-Tac-Toe</div>
+    <div id="tic-tac-toe" class="grid grid-cols-3 gap-3 max-w-[360px] mx-auto mt-6"></div>
+    <div id="game-status" class="text-center font-bold mt-5">Lượt X</div>
+    <button id="reset-game" class="btn btn-soft w-full mt-4" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">Chơi lại</button>
+   </div>
+
+   <div class="glass rounded-3xl p-6" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+    <div class="text-xl font-black">🎵 Memory Capsule</div>
+    <p class="text-sm text-slate-500 mt-2">Kho kỷ niệm có thể kết nối với album ảnh và trình phát nhạc của lớp.</p>
+    <div class="rounded-3xl aspect-video bg-gradient-to-br from-teal-500/20 to-blue-500/20 mt-6 grid place-items-center">
+      <div class="text-center">
+       <div class="text-6xl">📸</div>
+       <div class="font-black mt-3">Kỷ niệm 8A8</div>
+       <div class="text-sm text-slate-500">Album ảnh sẽ được quản lý trong phiên bản Admin.</div>
+      </div>
+    </div>
+   </div>
+  </div>
+
+  <div class="mt-8">
+   <div class="flex items-center justify-between mb-5">
+    <div class="text-2xl font-black">📊 Bình chọn realtime</div>
+    <a href="#confession" class="btn btn-soft">Confession →</a>
+   </div>
+   <div class="grid md:grid-cols-2 gap-5">
+    ${state.polls.filter(p=>p.active!==false).map(pollCard).join("")||
+      `<div class="glass rounded-3xl p-8 text-slate-500" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">Chưa có cuộc bình chọn đang hoạt động.</div>`}
+   </div>
+  </div>
+ </section>`;
+}
+
+function pollCard(poll){
+ const options=poll.options||[];
+ const total=options.reduce((sum,o)=>sum+Number(o.votes||0),0);
+ return `<article class="glass rounded-3xl p-6" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+   <div class="badge">📊 Poll</div>
+   <h2 class="text-xl font-black mt-4">${escapeHtml(poll.question)}</h2>
+   <div class="space-y-4 mt-5">
+    ${options.map((o,index)=>{
+      const votes=Number(o.votes||0);
+      const pct=total?Math.round(votes/total*100):0;
+      return `<div data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+       <button class="poll-vote btn btn-soft w-full justify-between" data-poll="${escapeHtml(poll.id)}" data-option="${escapeHtml(o.id||String(index))}">
+        <span>${escapeHtml(o.text)}</span><span>${pct}%</span>
+       </button>
+       <div class="progress mt-2"><div style="width:${pct}%"></div></div>
+      </div>`;
+    }).join("")}
+   </div>
+   <div class="text-xs text-slate-500 mt-4">${total} lượt bình chọn</div>
+ </article>`;
+}
+
+function confessionPage(){
+ return `
+ <section class="page-section">
+  ${sectionTitle("💬 CONFESSION","Góc tâm sự ẩn danh","Nội dung gửi đi không hiển thị tên người gửi. Admin phải duyệt trước khi xuất hiện công khai.")}
+  <div class="grid lg:grid-cols-2 gap-6">
+   <div class="glass rounded-3xl p-6" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+    <div class="text-xl font-black">✍️ Gửi confession</div>
+    <form id="confession-form" class="mt-5">
+      <textarea id="confession-content" class="input min-h-44 resize-y" maxlength="1000" required placeholder="Viết lời chúc, tâm sự hoặc một điều bạn muốn chia sẻ..."></textarea>
+      <button class="btn btn-primary w-full mt-4" type="submit" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">Gửi ẩn danh</button>
+    </form>
+   </div>
+
+   <div class="glass rounded-3xl p-6" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+    <div class="text-xl font-black">📮 Góp ý riêng tư</div>
+    <form id="private-feedback-form" class="mt-5 space-y-4">
+      <select id="feedback-recipient" class="input">
+       <option value="Cô Hoàn">Cô Hoàn</option>
+       <option value="Thùy Linh">Lớp trưởng Thùy Linh</option>
+      </select>
+      <textarea id="feedback-content" class="input min-h-36" maxlength="1000" required placeholder="Nội dung góp ý..."></textarea>
+      <button class="btn btn-primary w-full" type="submit" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">Gửi riêng tư</button>
+    </form>
+   </div>
+  </div>
+
+  <div class="mt-8">
+   <div class="text-2xl font-black mb-5">🌟 Những lời đã được duyệt</div>
+   <div class="grid md:grid-cols-2 gap-4">
+    ${state.approvedConfessions.map(c=>`
+      <article class="glass rounded-3xl p-6" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
+       <div class="text-3xl">💌</div>
+       <p class="mt-4 leading-7 whitespace-pre-wrap">${escapeHtml(c.content)}</p>
+       <div class="text-xs text-slate-500 mt-4">— Thành viên 8A8</div>
+      </article>`).join("")||
+      `<div class="glass rounded-3xl p-8 text-slate-500" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">Chưa có confession được duyệt.</div>`}
+   </div>
+  </div>
+ </section>`;
+}
+
+function profilePage(){
+ if(!state.user){
+  return `<section class="page-section text-center">
+   <div class="glass rounded-3xl p-12" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+    <div class="text-5xl">🔐</div>
+    <h1 class="text-3xl font-black mt-5">Bạn chưa đăng nhập</h1>
+    <p class="text-slate-500 mt-2">Đăng nhập để xem hồ sơ tài khoản.</p>
+    <button id="profile-login" class="btn btn-primary mt-6" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">Đăng nhập</button>
+   </div>
+  </section>`;
+ }
+
+ const p=state.userProfile||{};
+ return `<section class="page-section">
+   ${sectionTitle("👤 PROFILE","Hồ sơ tài khoản","Thông tin tài khoản hiện tại của bạn.")}
+   <div class="max-w-2xl glass rounded-3xl p-7" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
+    <div class="flex items-center gap-5">
+     <div class="avatar w-20 h-20 text-3xl">${escapeHtml((p.displayName||"T").charAt(0))}</div>
+     <div>
+      <div class="text-2xl font-black">${escapeHtml(p.displayName||"Thành viên")}</div>
+      <div class="text-sm text-slate-500">${escapeHtml(p.email||state.user.email||"")}</div>
+      <span class="badge mt-2">${roleName(p.role)}</span>
+     </div>
+    </div>
+    <div class="grid sm:grid-cols-2 gap-4 mt-7">
+      ${infoBox("🎓","Chức vụ",p.classRole||"Thành viên")}
+      ${infoBox("🏫","Tổ",p.team||"Chưa cập nhật")}
+    </div>
+   </div>
+ </section>`;
+}
+
+function bindRouteEvents(){
+ document.querySelectorAll(".team-card").forEach(button=>{
+  button.addEventListener("click",()=>{
+   state.selectedTeam=button.dataset.team;
+   location.hash="#to-chi-tiet";
+  });
+ });
+
+ document.querySelectorAll(".student-card").forEach(button=>{
+  button.addEventListener("click",()=>{
+   const student=state.students.find(s=>s.id===button.dataset.studentId);
+   if(student)openStudent(student);
+  });
+ });
+
+ document.querySelectorAll(".start-quiz").forEach(button=>{
+  button.addEventListener("click",()=>startQuiz(button.dataset.id));
+ });
+
+ document.querySelectorAll(".subject-filter").forEach(button=>{
+  button.addEventListener("click",()=>{
+   const subject=button.dataset.subject;
+   $("quiz-list").innerHTML=quizCards(
+    subject==="Tất cả"?state.quizzes:state.quizzes.filter(q=>q.subject===subject)
+   );
+   bindRouteEvents();
+   refreshAOS();
+  });
+ });
+
+ document.querySelectorAll(".poll-vote").forEach(button=>{
+  button.addEventListener("click",()=>votePoll(button.dataset.poll,button.dataset.option));
+ });
+
+ if($("confession-form")){
+  $("confession-form").addEventListener("submit",submitConfession);
+ }
+
+ if($("private-feedback-form")){
+  $("private-feedback-form").addEventListener("submit",submitPrivateFeedback);
+ }
+
+ if($("profile-login")){
+  $("profile-login").addEventListener("click",()=>openModal("login-modal"));
+ }
+
+ initGame();
+ initCountdowns();
+}
+
+async function submitConfession(event){
+ event.preventDefault();
+ if(!state.user){
+  Swal.fire({icon:"info",title:"Hãy đăng nhập",text:"Bạn cần đăng nhập để gửi confession."});
+  return;
+ }
+
+ const content=$("confession-content").value.trim();
+ if(!content)return;
+
+ try{
+  await addDoc(collection(db,"confessions"),{
+   content,
+   status:"pending",
+   createdAt:serverTimestamp()
+  });
+
+  $("confession-form").reset();
+
+  await swalSuccess(
+   "Đã gửi!",
+   "Confession đã được đưa vào hàng chờ duyệt. Tên của bạn không được công khai."
+  );
+ }catch(error){
+  Swal.fire({icon:"error",title:"Không thể gửi",text:"Firestore chưa cho phép thao tác này hoặc đang có lỗi kết nối."});
+ }
+}
+
+async function submitPrivateFeedback(event){
+ event.preventDefault();
+
+ if(!state.user){
+  Swal.fire({icon:"info",title:"Hãy đăng nhập",text:"Bạn cần đăng nhập để gửi góp ý riêng tư."});
+  return;
+ }
+
+ const recipient=$("feedback-recipient").value;
+ const content=$("feedback-content").value.trim();
+
+ if(!content)return;
+
+ try{
+  await addDoc(collection(db,"privateFeedback"),{
+   recipient,
+   content,
+   uid:state.user.uid,
+   displayName:state.userProfile?.displayName||state.user.displayName||"",
+   createdAt:serverTimestamp(),
+   status:"unread"
+  });
+
+  $("private-feedback-form").reset();
+
+  await swalSuccess(
+   "Đã gửi góp ý!",
+   `Góp ý riêng tư đã được gửi tới ${recipient}.`
+  );
+ }catch(error){
+  Swal.fire({icon:"error",title:"Không thể gửi",text:"Vui lòng thử lại sau."});
+ }
+}
+
+async function votePoll(pollId,optionId){
+ if(!state.user){
+  Swal.fire({icon:"info",title:"Hãy đăng nhập",text:"Bạn cần đăng nhập để bình chọn."});
+  return;
+ }
+
+ const voteKey=`a8a8-vote-${pollId}`;
+
+ if(localStorage.getItem(voteKey)){
+  toast("Bạn đã bình chọn cuộc này trên thiết bị này.");
+  return;
+ }
+
+ const poll=state.polls.find(p=>p.id===pollId);
+ if(!poll)return;
+
+ const index=(poll.options||[]).findIndex(
+  option=>String(option.id)===String(optionId)
+ );
+
+ if(index<0)return;
+
+ try{
+  const options=(poll.options||[]).map((option,i)=>
+    i===index
+      ?{...option,votes:Number(option.votes||0)+1}
+      :option
+  );
+
+  await updateDoc(doc(db,"polls",pollId),{options});
+
+  localStorage.setItem(voteKey,"1");
+  toast("Đã ghi nhận bình chọn.");
+ }catch(error){
+  Swal.fire({icon:"error",title:"Không thể bình chọn",text:"Bạn chưa được cấp quyền hoặc dữ liệu đang có lỗi."});
+ }
+}
+
+function initGame(){
+ const board=$("tic-tac-toe");
+ if(!board)return;
+
+ let cells=Array(9).fill("");
+ let turn="X";
+ let over=false;
+
+ function draw(){
+  board.innerHTML=cells.map((value,index)=>`
+    <button class="aspect-square rounded-2xl bg-slate-500/10 border border-slate-300/20 text-4xl font-black"
+      data-cell="${index}" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">${value}</button>
+  `).join("");
+
+  board.querySelectorAll("[data-cell]").forEach(button=>{
+   button.addEventListener("click",()=>{
+    const index=Number(button.dataset.cell);
+    if(over||cells[index])return;
+
+    cells[index]=turn;
+    const result=winner(cells);
+
+    if(result){
+     over=true;
+     $("game-status").textContent=result==="draw"?"🤝 Hòa!":`🏆 ${result} thắng!`;
+    }else{
+     turn=turn==="X"?"O":"X";
+     $("game-status").textContent=`Lượt ${turn}`;
+    }
+    draw();
+   });
+  });
+
+  refreshAOS();
+ }
+
+ function reset(){
+  cells=Array(9).fill("");
+  turn="X";
+  over=false;
+  $("game-status").textContent="Lượt X";
+  draw();
+ }
+
+ $("reset-game").onclick=reset;
+ draw();
+}
+
+function winner(cells){
+ const lines=[
+  [0,1,2],[3,4,5],[6,7,8],
+  [0,3,6],[1,4,7],[2,5,8],
+  [0,4,8],[2,4,6]
+ ];
+ for(const [a,b,c] of lines){
+  if(cells[a]&&cells[a]===cells[b]&&cells[a]===cells[c])return cells[a];
+ }
+ return cells.every(Boolean)?"draw":null;
+}
+
+function initCountdowns(){
+ document.querySelectorAll("[data-countdown]").forEach(node=>{
+  const date=node.dataset.countdown;
+  const update=()=>{
+   const target=new Date(date).getTime();
+   node.textContent=formatRemaining(target-Date.now());
+  };
+  update();
+  setInterval(update,1000);
+ });
+
+ document.querySelectorAll("[data-deadline]").forEach(node=>{
+  const date=node.dataset.deadline;
+  const update=()=>{
+   node.textContent=formatRemaining(new Date(date).getTime()-Date.now());
+  };
+  update();
+  setInterval(update,1000);
+ });
+}
+
+async function checkBirthday(){
+ const today=new Date();
+ const day=today.getDate();
+ const month=today.getMonth()+1;
+
+ const birthdayStudents=state.students.filter(student=>{
+  if(!student.dob)return false;
+  const date=new Date(student.dob);
+  return date.getDate()===day&&date.getMonth()+1===month;
+ });
+
+ if(!birthdayStudents.length)return;
+
+ const names=birthdayStudents.map(s=>s.name).join(", ");
+ const key=`birthday-${today.getFullYear()}-${month}-${day}-${names}`;
+
+ if(localStorage.getItem(key))return;
+
+ localStorage.setItem(key,"1");
+
+ setTimeout(()=>{
+  if(window.confetti){
+   const duration=3000;
+   const end=Date.now()+duration;
+
+   (function frame(){
+    confetti({
+     particleCount:7,
+     angle:60,
+     spread:55,
+     origin:{x:0}
+    });
+    confetti({
+     particleCount:7,
+     angle:120,
+     spread:55,
+     origin:{x:1}
+    });
+
+    if(Date.now()<end)requestAnimationFrame(frame);
+   })();
+  }
+ },500);
+
+ Swal.fire({
+  icon:"success",
+  title:"🎂 Chúc mừng sinh nhật!",
+  html:`Hôm nay là sinh nhật của <b>${escapeHtml(names)}</b>!<br>Chúc bạn tuổi mới thật vui, khỏe và luôn tỏa sáng cùng 8A8!`,
+  confirmButtonText:"Gửi lời chúc 🎉",
+  confirmButtonColor:"#14b8a6"
+ });
+}
+
+function todayKey(){
+ const now=new Date();
+ return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}-${String(now.getDate()).padStart(2,"0")}`;
+}
+
+function maybeShowNotice(){
+ const notice=state.notice;
+ if(!notice||notice.active===false)return;
+
+ const noticeId=notice.id;
+ const stored=localStorage.getItem("a8a8-notice-read");
+ const readData=stored?JSON.parse(stored):null;
+
+ if(readData?.noticeId===noticeId&&readData?.date===todayKey())return;
+
+ $("notice-title").textContent=notice.title||"Thông báo";
+ $("notice-content").textContent=notice.content||"";
+
+ const button=$("notice-read-button");
+ const close=$("notice-close-temporary");
+
+ let seconds=3;
+ button.disabled=true;
+ button.textContent=`Tôi đã đọc (${seconds})`;
+
+ clearInterval(window.noticeCountdown);
+
+ window.noticeCountdown=setInterval(()=>{
+  seconds--;
+
+  if(seconds>0){
+   button.textContent=`Tôi đã đọc (${seconds})`;
+  }else{
+   clearInterval(window.noticeCountdown);
+   button.disabled=false;
+   button.textContent="Bố đọc rồi";
+  }
+ },1000);
+
+ close.onclick=()=>{
+  closeModal("notice-modal");
+ };
+
+ button.onclick=()=>{
+  localStorage.setItem("a8a8-notice-read",JSON.stringify({
+   noticeId,
+   date:todayKey()
+  }));
+  closeModal("notice-modal");
+ };
+
+ openModal("notice-modal");
+}
+
+window.addEventListener("storage",event=>{
+ if(event.key==="a8a8-notice-read")maybeShowNotice();
+});
+
+window.addEventListener("load",()=>{
+ setTimeout(()=>{
+  refreshAOS();
+ },200);
+});
+
+if("serviceWorker" in navigator){
+ window.addEventListener("load",()=>{
+  navigator.serviceWorker.register("./service-worker.js").catch(error=>{
+   console.warn("Service Worker chưa được đăng ký:",error);
+  });
+ });
+}
+
+window.addEventListener("beforeunload",()=>{
+ state.unsubscribe.forEach(fn=>fn());
+});
+</script>
+
+<!--
+==============================================================
+PHẦN HOOK CHO SEASONAL THEME ENGINE — LẦN 4
+==============================================================
+
+Lần 4 sẽ cung cấp:
+./seasonal-theme-engine.js
+
+Không dùng emoji/icon rơi chung chung.
+Engine sẽ tự quyết định atmosphere dựa trên ngày:
+- Quốc Khánh Việt Nam
+- Trung Thu
+- Tết Nguyên Đán
+- Ngày Nhà Giáo Việt Nam
+- 8/3
+- 20/10
+- Halloween
+- Giáng Sinh
+- ngày thường
+
+Khi file được triển khai, thêm dòng sau trước </body>:
+
+<script src="./seasonal-theme-engine.js"></script>
+
+==============================================================
+-->
+</body>
+</html>

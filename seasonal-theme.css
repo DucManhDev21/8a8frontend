@@ -1,0 +1,290 @@
+/*
+ * 8A8 Seasonal Theme Engine — visual layer
+ * Không dùng hiệu ứng icon rơi chung chung.
+ * Mỗi lễ có một không khí, bảng màu và bộ trang trí riêng.
+ */
+
+:root{
+  --season-bg:#071a2f;
+  --season-surface:rgba(255,255,255,.075);
+  --season-line:rgba(255,255,255,.16);
+  --season-text:#eef8ff;
+  --season-muted:#a9c0d6;
+  --season-primary:#65e6cf;
+  --season-secondary:#7cb8ff;
+  --season-glow:rgba(101,230,207,.24);
+  --season-accent:#f5c84b;
+}
+
+html[data-season="normal"]{
+  --season-bg:#071a2f;
+  --season-surface:rgba(13,44,67,.68);
+  --season-line:rgba(117,229,214,.18);
+  --season-text:#effcff;
+  --season-muted:#a9c4d7;
+  --season-primary:#65e6cf;
+  --season-secondary:#7bb7ff;
+  --season-glow:rgba(101,230,207,.24);
+  --season-accent:#9de8ff;
+}
+
+html[data-season="national"]{
+  --season-bg:#330608;
+  --season-surface:rgba(92,5,9,.70);
+  --season-line:rgba(255,211,62,.34);
+  --season-text:#fff8df;
+  --season-muted:#ffdca2;
+  --season-primary:#ffd43b;
+  --season-secondary:#ff6b4a;
+  --season-glow:rgba(255,211,59,.34);
+  --season-accent:#ffdf35;
+}
+
+html[data-season="mid-autumn"]{
+  --season-bg:#071330;
+  --season-surface:rgba(13,28,67,.72);
+  --season-line:rgba(255,211,99,.28);
+  --season-text:#fff8df;
+  --season-muted:#c7c8dc;
+  --season-primary:#ffd76b;
+  --season-secondary:#79b7ff;
+  --season-glow:rgba(255,215,107,.27);
+  --season-accent:#bce9d1;
+}
+
+html[data-season="tet"]{
+  --season-bg:#350507;
+  --season-surface:rgba(101,8,12,.70);
+  --season-line:rgba(255,211,81,.34);
+  --season-text:#fff7dd;
+  --season-muted:#ffd6a0;
+  --season-primary:#ffd34e;
+  --season-secondary:#ef7b37;
+  --season-glow:rgba(255,211,78,.3);
+  --season-accent:#ff5b45;
+}
+
+html[data-season="teachers"]{
+  --season-bg:#102b27;
+  --season-surface:rgba(22,67,57,.67);
+  --season-line:rgba(176,231,183,.25);
+  --season-text:#effff3;
+  --season-muted:#c1d9cb;
+  --season-primary:#b4e5a2;
+  --season-secondary:#f2c67d;
+  --season-glow:rgba(180,229,162,.22);
+  --season-accent:#f3a8a8;
+}
+
+html[data-season="women"]{
+  --season-bg:#24112d;
+  --season-surface:rgba(68,30,74,.68);
+  --season-line:rgba(255,180,218,.27);
+  --season-text:#fff2fa;
+  --season-muted:#e2c3d9;
+  --season-primary:#ffb6dc;
+  --season-secondary:#c5a5ff;
+  --season-glow:rgba(255,182,220,.27);
+  --season-accent:#ffd0e9;
+}
+
+html[data-season="halloween"]{
+  --season-bg:#130a09;
+  --season-surface:rgba(55,22,12,.72);
+  --season-line:rgba(255,137,45,.27);
+  --season-text:#fff2df;
+  --season-muted:#d9bba1;
+  --season-primary:#ff8b2e;
+  --season-secondary:#a86bff;
+  --season-glow:rgba(255,139,46,.28);
+  --season-accent:#ffd15b;
+}
+
+html[data-season="christmas"]{
+  --season-bg:#071d1b;
+  --season-surface:rgba(12,57,48,.70);
+  --season-line:rgba(233,240,216,.22);
+  --season-text:#f7fff0;
+  --season-muted:#c4d5c9;
+  --season-primary:#e85e68;
+  --season-secondary:#77d39b;
+  --season-glow:rgba(119,211,155,.22);
+  --season-accent:#f4d06f;
+}
+
+/* Global atmosphere */
+body.seasonal-active{
+  background:
+    radial-gradient(circle at 12% 12%,var(--season-glow),transparent 34%),
+    radial-gradient(circle at 88% 78%,rgba(124,184,255,.10),transparent 34%),
+    var(--season-bg);
+  color:var(--season-text);
+  transition:background 900ms ease,color 500ms ease;
+}
+body.seasonal-active .glass,
+body.seasonal-active .card,
+body.seasonal-active .modal-content,
+body.seasonal-active .panel{
+  background:var(--season-surface);
+  border-color:var(--season-line);
+  box-shadow:0 24px 80px rgba(0,0,0,.22),0 0 36px var(--season-glow);
+}
+body.seasonal-active .neon-border{
+  border-color:var(--season-primary);
+  box-shadow:0 0 0 1px var(--season-primary),0 0 25px var(--season-glow);
+}
+body.seasonal-active .seasonal-accent{
+  color:var(--season-primary);
+}
+
+/* Dedicated scene layer */
+#seasonalScene{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  overflow:hidden;
+  opacity:1;
+}
+#seasonalCanvas{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+}
+.seasonal-sky-glow{
+  position:absolute;
+  width:55vw;
+  height:55vw;
+  max-width:850px;
+  max-height:850px;
+  border-radius:50%;
+  filter:blur(55px);
+  opacity:.17;
+  transform:translate(-20%,-25%);
+  background:var(--season-primary);
+}
+.seasonal-title{
+  position:fixed;
+  top:82px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:5;
+  pointer-events:none;
+  text-align:center;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--season-primary);
+  text-shadow:0 0 25px var(--season-glow);
+  opacity:0;
+  transition:opacity .5s ease,transform .7s ease;
+}
+.seasonal-title.show{opacity:1}
+
+/* National Day: flags + star + fireworks */
+.season-national .national-flag{
+  display:block;
+}
+.national-flag{
+  display:none;
+  position:fixed;
+  top:86px;
+  width:86px;
+  height:58px;
+  background:#d61f2c;
+  border:1px solid rgba(255,218,71,.42);
+  box-shadow:0 0 28px rgba(255,211,58,.20);
+  transform-style:preserve-3d;
+  animation:flagWave 3.1s ease-in-out infinite;
+}
+.national-flag::after{
+  content:"★";
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  color:#ffd735;
+  font-size:34px;
+  text-shadow:0 0 15px rgba(255,215,53,.65);
+}
+.national-flag.left{left:18px;transform-origin:left center}
+.national-flag.right{right:18px;transform-origin:right center;animation-delay:-1.5s}
+@keyframes flagWave{0%,100%{transform:perspective(500px) rotateY(0) skewY(0)}50%{transform:perspective(500px) rotateY(-10deg) skewY(3deg)}}
+
+/* Mid Autumn: moon + lantern edge */
+.moon-disc{
+  display:none;
+  position:fixed;
+  right:8vw;
+  top:13vh;
+  width:min(27vw,310px);
+  aspect-ratio:1;
+  border-radius:50%;
+  background:radial-gradient(circle at 34% 30%,#fff9d9,#ffe9a5 55%,#f2bf59 100%);
+  box-shadow:0 0 35px #ffd76b,0 0 120px rgba(255,215,107,.36);
+}
+.moon-disc::before,.moon-disc::after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  background:rgba(180,133,63,.12);
+}
+.moon-disc::before{width:21%;height:21%;left:21%;top:26%;box-shadow:105px 40px 0 rgba(180,133,63,.10),40px 110px 0 rgba(180,133,63,.09)}
+.moon-disc::after{width:13%;height:13%;right:23%;bottom:23%}
+.lantern-rail{display:none;position:fixed;top:0;bottom:0;width:70px}
+.lantern-rail.left{left:0}.lantern-rail.right{right:0}
+.lantern{position:absolute;width:34px;height:48px;border-radius:45% 45% 38% 38%;background:linear-gradient(90deg,#b62c35,#ffd25c,#b62c35);box-shadow:0 0 25px rgba(255,190,71,.55)}
+.lantern::before{content:"";position:absolute;left:50%;top:-13px;width:1px;height:15px;background:#e8c679}
+.lantern:nth-child(1){top:19%;left:18px}.lantern:nth-child(2){top:42%;left:32px;transform:scale(.8)}.lantern:nth-child(3){top:66%;left:12px;transform:scale(.92)}
+.lantern-rail.right .lantern{left:auto;right:18px}
+
+/* Tet: couplets and blossom branches */
+.couplet{display:none;position:fixed;top:14%;width:52px;min-height:230px;background:#9f1119;border:2px solid #efc64e;box-shadow:0 0 30px rgba(255,206,67,.18);color:#ffd76c;padding:13px 8px;writing-mode:vertical-rl;text-align:center;font-weight:800;letter-spacing:.12em;z-index:2}
+.couplet.left{left:16px}.couplet.right{right:16px}
+.blossom-branch{display:none;position:fixed;width:180px;height:180px;border-left:5px solid #5d311d;border-radius:50%;transform:rotate(-35deg)}
+.blossom-branch::after{content:"";position:absolute;width:100%;height:100%;background:radial-gradient(circle at 28% 35%,#ff7f8c 0 7px,transparent 8px),radial-gradient(circle at 55% 22%,#ffd4a2 0 6px,transparent 7px),radial-gradient(circle at 74% 50%,#ff8d9c 0 7px,transparent 8px),radial-gradient(circle at 40% 70%,#ffb0bd 0 6px,transparent 7px)}
+.blossom-branch.left{left:-30px;top:12%}.blossom-branch.right{right:-30px;top:16%;transform:scaleX(-1) rotate(-35deg)}
+
+/* Teachers' Day: tribute ribbon + rose */
+.tribute-ribbon{display:none;position:fixed;left:50%;top:83px;transform:translateX(-50%);padding:10px 22px;border:1px solid rgba(180,229,162,.35);border-radius:999px;background:rgba(15,54,43,.72);box-shadow:0 0 30px rgba(180,229,162,.18);font-weight:800;color:#dfffdc}
+.rose-corner{display:none;position:fixed;bottom:20px;width:120px;height:120px}
+.rose-corner.left{left:0}.rose-corner.right{right:0;transform:scaleX(-1)}
+.rose-corner::before{content:"🌹";font-size:70px;filter:drop-shadow(0 0 12px rgba(255,150,150,.3))}
+
+/* Women days: soft heart/flower frames */
+.women-halo{display:none;position:fixed;left:50%;top:9%;width:45vw;height:45vw;max-width:600px;max-height:600px;transform:translateX(-50%);border-radius:50%;border:1px solid rgba(255,182,220,.18);box-shadow:inset 0 0 80px rgba(255,182,220,.08),0 0 90px rgba(197,165,255,.10)}
+
+/* Halloween: pumpkin + bat silhouettes */
+.pumpkin{display:none;position:fixed;bottom:28px;left:6vw;width:90px;height:76px;border-radius:48% 48% 42% 42%;background:radial-gradient(ellipse,#ffae3e,#d45115 72%);box-shadow:0 0 32px rgba(255,139,46,.45)}
+.pumpkin::before{content:"";position:absolute;left:25px;top:29px;width:12px;height:12px;background:#170a09;box-shadow:35px 0 #170a09,17px 17px 0 -1px #170a09;transform:rotate(45deg)}
+.pumpkin::after{content:"";position:absolute;left:42px;top:-12px;width:12px;height:18px;background:#4d7c35;border-radius:4px;transform:rotate(10deg)}
+.bat{display:none;position:fixed;width:85px;height:34px;background:#09080d;clip-path:polygon(0 35%,25% 0,42% 29%,50% 10%,58% 29%,75% 0,100% 35%,76% 65%,61% 54%,50% 100%,39% 54%,24% 65%);filter:drop-shadow(0 0 12px rgba(168,107,255,.3));animation:batFloat 5s ease-in-out infinite}
+.bat.one{right:10%;top:22%}.bat.two{left:20%;top:34%;transform:scale(.65);animation-delay:-2s}
+@keyframes batFloat{50%{transform:translateY(-14px) rotate(-3deg)}}
+
+/* Christmas: tree + snow canvas */
+.xmas-tree{display:none;position:fixed;bottom:0;right:5vw;width:150px;height:220px}
+.xmas-tree::before{content:"";position:absolute;bottom:25px;left:50%;transform:translateX(-50%);border-left:75px solid transparent;border-right:75px solid transparent;border-bottom:170px solid #17724d;filter:drop-shadow(0 0 25px rgba(119,211,155,.22))}
+.xmas-tree::after{content:"★";position:absolute;top:0;left:50%;transform:translateX(-50%);font-size:34px;color:#f4d06f;text-shadow:0 0 18px #f4d06f}
+.tree-trunk{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:30px;height:42px;background:#68422d}
+
+/* State visibility */
+html[data-season="national"] .national-flag,
+html[data-season="mid-autumn"] .moon-disc,
+html[data-season="mid-autumn"] .lantern-rail,
+html[data-season="tet"] .couplet,
+html[data-season="tet"] .blossom-branch,
+html[data-season="teachers"] .tribute-ribbon,
+html[data-season="teachers"] .rose-corner,
+html[data-season="women"] .women-halo,
+html[data-season="halloween"] .pumpkin,
+html[data-season="halloween"] .bat,
+html[data-season="christmas"] .xmas-tree{display:block}
+
+@media(max-width:700px){
+  .national-flag{width:64px;height:43px;top:76px}.national-flag::after{font-size:25px}
+  .moon-disc{right:5vw;top:15vh;width:180px}
+  .couplet{width:42px;min-height:180px;font-size:.78rem}
+  .xmas-tree{transform:scale(.7);transform-origin:bottom right}
+}
