@@ -395,6 +395,18 @@ function escapeHtml(value=""){
   }[m]));
 }
 
+/* Safe LocalStorage collection helper: tự tạo key khi chưa tồn tại. */
+const COLLECTION_PREFIX="a8a8-collection-";
+const COLLECTION_DEFAULTS={students:[],quizzes:[],homework:[],polls:[],approvedConfessions:[],privateFeedback:[],settings:{},adminSession:{}};
+function cloneDefault(value){return Array.isArray(value)?[...value]:(value&&typeof value==="object"?{...value}:value);}
+function getCollection(key,defaultValue=[]){
+ const storageKey=`${COLLECTION_PREFIX}${String(key)}`; const fallback=cloneDefault(defaultValue);
+ try{const raw=localStorage.getItem(storageKey);if(raw===null||raw===undefined){localStorage.setItem(storageKey,JSON.stringify(fallback));return fallback;}const value=JSON.parse(raw);if(value===null||value===undefined){localStorage.setItem(storageKey,JSON.stringify(fallback));return fallback;}return value;}
+ catch(error){console.error(`[Collection] ${storageKey}:`,error);try{localStorage.setItem(storageKey,JSON.stringify(fallback));}catch(storageError){console.error(`[Collection] init ${storageKey}:`,storageError);}return fallback;}
+}
+function setCollection(key,value){try{localStorage.setItem(`${COLLECTION_PREFIX}${String(key)}`,JSON.stringify(value));}catch(error){console.error(`[Collection] write ${key}:`,error);}return value;}
+Object.entries(COLLECTION_DEFAULTS).forEach(([key,value])=>getCollection(key,value));
+
 // Hàm hỗ trợ render AOS chỉ ở trang giới thiệu để tránh rối mắt khi đã đăng nhập
 function getAos(anim = "fade-up") {
   return !state.user ? `data-aos="${anim}" data-aos-mirror="true" data-aos-once="false"` : '';
@@ -514,25 +526,16 @@ $("register-form").addEventListener("submit",async event=>{
 });
 
 onAuthStateChanged(auth,async user=>{
+ try{
   state.user=user;
-
   if(user){
-    try{
-      const profileSnap=await getDoc(doc(db,"users",user.uid));
-      state.userProfile=profileSnap.exists() ? profileSnap.data() : {uid:user.uid, email:user.email, displayName:user.displayName||"Thành viên", role:"student"};
-    }catch(error){
-      state.userProfile={uid:user.uid, email:user.email, displayName:user.displayName||"Thành viên", role:"student"};
-    }
-    renderProfileFrame();
-    toast(`🎉 Chào mừng ${state.userProfile.displayName} quay trở lại!`);
-  }else{
-    state.userProfile=null;
-    renderProfileFrame();
-  }
-
-  await checkBirthday();
-  await loadRealtimeData();
-  router();
+   const key=`user-profile-${user.uid}`,cached=getCollection(key,{});
+   try{const snap=await getDoc(doc(db,"users",user.uid));state.userProfile=snap.exists()?{uid:user.uid,email:user.email,...snap.data()}:{uid:user.uid,email:user.email,displayName:user.displayName||"Thành viên",role:"student",classRole:"",team:""};setCollection(key,state.userProfile);}
+   catch(error){console.error("[Auth] profile",error);state.userProfile=cached&&Object.keys(cached).length?cached:{uid:user.uid,email:user.email,displayName:user.displayName||"Thành viên",role:"student",classRole:"",team:""};}
+   renderProfileFrame();toast(`🎉 Chào mừng ${state.userProfile.displayName||user.displayName||"bạn"} quay trở lại!`);
+  }else{state.userProfile=null;renderProfileFrame();}
+  await checkBirthday();await loadRealtimeData();router();
+ }catch(error){console.error("[Auth] state",error);state.userProfile=state.user?getCollection(`user-profile-${state.user.uid}`,{}):null;renderProfileFrame();await loadRealtimeData();router();}
 });
 
 function roleName(role){
@@ -548,6 +551,8 @@ function renderProfileFrame(){
   if(!state.user){
     login.classList.remove("hidden");
     register.classList.remove("hidden");
+    register.removeAttribute("hidden");
+    register.disabled=false;
     frame.classList.add("hidden");
     // Ẩn menu khi chưa đăng nhập
     nav.classList.add("opacity-0", "pointer-events-none");
@@ -557,6 +562,8 @@ function renderProfileFrame(){
 
   login.classList.add("hidden");
   register.classList.add("hidden");
+  register.setAttribute("hidden","");
+  register.disabled=true;
   frame.classList.remove("hidden");
   // Hiện menu khi đã đăng nhập
   nav.classList.remove("opacity-0", "pointer-events-none");
@@ -589,41 +596,17 @@ function renderProfileFrame(){
 }
 
 async function loadRealtimeData(){
-  state.unsubscribe.forEach(fn=>fn());
-  state.unsubscribe=[];
-  
-  // Giả lập load data nhanh để hiển thị ngay
-  state.students=[...MOCK_STUDENTS];
-  
-  const studentsQuery=query(collection(db,"students"),orderBy("name"));
-  state.unsubscribe.push(
-    onSnapshot(studentsQuery,snapshot=>{
-      if(snapshot.docs.length) {
-         state.students=snapshot.docs.map(item=>({id:item.id,...item.data()}));
-      }
-      router();
-    },()=>{ router(); })
-  );
-
-  state.unsubscribe.push(onSnapshot(query(collection(db,"quizzes"),orderBy("createdAt","desc"),limit(50)),snapshot=>{
-        state.quizzes=snapshot.docs.map(item=>({id:item.id,...item.data()})); router();
-  },()=>{state.quizzes=[]; router()}));
-
-  state.unsubscribe.push(onSnapshot(query(collection(db,"homework"),orderBy("deadline","asc"),limit(30)),snapshot=>{
-        state.homework=snapshot.docs.map(item=>({id:item.id,...item.data()})); router();
-  },()=>{state.homework=[]; router()}));
-
-  state.unsubscribe.push(onSnapshot(query(collection(db,"polls"),orderBy("createdAt","desc"),limit(10)),snapshot=>{
-        state.polls=snapshot.docs.map(item=>({id:item.id,...item.data()})); router();
-  },()=>{state.polls=[]; router()}));
-
-  state.unsubscribe.push(onSnapshot(query(collection(db,"confessions"),orderBy("createdAt","desc"),limit(30)),snapshot=>{
-        state.approvedConfessions=snapshot.docs.map(item=>({id:item.id,...item.data()})).filter(item=>item.status==="approved"); router();
-  },()=>{state.approvedConfessions=[]; router()}));
-
-  state.unsubscribe.push(onSnapshot(query(collection(db,"popups"),orderBy("createdAt","desc"),limit(1)),snapshot=>{
-        state.notice=snapshot.docs.length ? {id:snapshot.docs[0].id,...snapshot.docs[0].data()} : null; maybeShowNotice();
-  }));
+ try{
+  state.unsubscribe.forEach(fn=>{try{fn();}catch(error){console.error("[Realtime] unsubscribe",error);}});state.unsubscribe=[];
+  const cs=getCollection("students",[]);state.students=Array.isArray(cs)&&cs.length?[...cs]:[...MOCK_STUDENTS];
+  state.quizzes=getCollection("quizzes",[]);state.homework=getCollection("homework",[]);state.polls=getCollection("polls",[]);state.approvedConfessions=getCollection("approvedConfessions",[]);
+  state.unsubscribe.push(onSnapshot(query(collection(db,"students"),orderBy("name")),snap=>{state.students=snap.docs.length?snap.docs.map(d=>({id:d.id,...d.data()})):[...MOCK_STUDENTS];setCollection("students",state.students);router();},e=>{console.error("[Firestore students]",e);router();}));
+  state.unsubscribe.push(onSnapshot(query(collection(db,"quizzes"),orderBy("createdAt","desc"),limit(50)),snap=>{state.quizzes=snap.docs.map(d=>({id:d.id,...d.data()}));setCollection("quizzes",state.quizzes);router();},e=>{console.error("[Firestore quizzes]",e);state.quizzes=getCollection("quizzes",[]);router();}));
+  state.unsubscribe.push(onSnapshot(query(collection(db,"homework"),orderBy("deadline","asc"),limit(30)),snap=>{state.homework=snap.docs.map(d=>({id:d.id,...d.data()}));setCollection("homework",state.homework);router();},e=>{console.error("[Firestore homework]",e);state.homework=getCollection("homework",[]);router();}));
+  state.unsubscribe.push(onSnapshot(query(collection(db,"polls"),orderBy("createdAt","desc"),limit(10)),snap=>{state.polls=snap.docs.map(d=>({id:d.id,...d.data()}));setCollection("polls",state.polls);router();},e=>{console.error("[Firestore polls]",e);state.polls=getCollection("polls",[]);router();}));
+  state.unsubscribe.push(onSnapshot(query(collection(db,"confessions"),orderBy("createdAt","desc"),limit(30)),snap=>{state.approvedConfessions=snap.docs.map(d=>({id:d.id,...d.data()})).filter(d=>d.status==="approved");setCollection("approvedConfessions",state.approvedConfessions);router();},e=>{console.error("[Firestore confessions]",e);state.approvedConfessions=getCollection("approvedConfessions",[]);router();}));
+  state.unsubscribe.push(onSnapshot(query(collection(db,"popups"),orderBy("createdAt","desc"),limit(1)),snap=>{state.notice=snap.docs.length?{id:snap.docs[0].id,...snap.docs[0].data()}:null;maybeShowNotice();},e=>console.error("[Firestore popups]",e)));
+ }catch(error){console.error("[Realtime] init",error);state.students=state.students?.length?state.students:[...MOCK_STUDENTS];state.quizzes=getCollection("quizzes",[]);state.homework=getCollection("homework",[]);state.polls=getCollection("polls",[]);state.approvedConfessions=getCollection("approvedConfessions",[]);router();}
 }
 
 function currentRoute(){
@@ -1374,6 +1357,8 @@ function profilePage(){
  </section>`;
 }
 
+function bindPrivateFeedbackEvents(){const form=$("private-feedback-form");if(!form||form.dataset.bound==="true")return;form.dataset.bound="true";form.addEventListener("submit",submitPrivateFeedback);}
+
 function bindRouteEvents(){
  document.querySelectorAll(".team-card").forEach(button=>{
   button.addEventListener("click",()=>{
@@ -1412,7 +1397,7 @@ function bindRouteEvents(){
  });
 
  if($("confession-form")) $("confession-form").addEventListener("submit",submitConfession);
- if($("private-feedback-form")) $("private-feedback-form").addEventListener("submit",submitPrivateFeedback);
+ bindPrivateFeedbackEvents();
 
  initGame();
  initCountdowns();
@@ -1432,23 +1417,17 @@ async function submitConfession(event){
 }
 
 async function submitPrivateFeedback(event){
- event.preventDefault();
- const recipient=$("feedback-recipient").value;
- const content=$("feedback-content").value.trim();
- if(!content)return;
- try{
-  await addDoc(collection(db,"privateFeedback"),{
-   recipient, content, uid:state.user.uid, displayName:state.userProfile?.displayName||state.user.displayName||"", createdAt:serverTimestamp(), status:"unread"
-  });
-  $("private-feedback-form").reset();
-  await swalSuccess("Đã gửi!","Góp ý đã được gửi bí mật tới "+recipient);
- }catch(error){ Swal.fire({icon:"error",title:"Lỗi",text:"Vui lòng thử lại sau."}); }
+ event.preventDefault();if(!state.user){toast("🔐 Bạn cần đăng nhập để gửi góp ý riêng tư.","warning");openModal("login-modal");return;}
+ const recipient=$("feedback-recipient")?.value?.trim()||"",content=$("feedback-content")?.value?.trim()||"";if(!recipient||!content)return;
+ try{await addDoc(collection(db,"privateFeedback"),{recipient,content,uid:state.user.uid,displayName:state.userProfile?.displayName||state.user.displayName||"",createdAt:serverTimestamp(),status:"unread"});const cached=getCollection("privateFeedback",[]);if(Array.isArray(cached)){cached.push({recipient,content,uid:state.user.uid,displayName:state.userProfile?.displayName||state.user.displayName||"",createdAt:new Date().toISOString(),status:"unread"});setCollection("privateFeedback",cached.slice(-100));}$("private-feedback-form")?.reset();await swalSuccess("Đã gửi!",`Góp ý đã được gửi bí mật tới ${recipient}.`);}
+ catch(error){console.error("[Private Feedback]",error);Swal.fire({icon:"error",title:"Lỗi",text:"Vui lòng thử lại sau."});}
 }
 
 async function votePoll(pollId,optionId){
  const voteKey=`a8a8-vote-${pollId}`;
  if(localStorage.getItem(voteKey)){ toast("Bạn đã bình chọn mục này rồi.","warning"); return; }
- const poll=state.polls.find(p=>p.id===pollId);
+ const polls=Array.isArray(state.polls)?state.polls:getCollection("polls",[]);
+ const poll=polls.find(p=>String(p.id)===String(pollId));
  if(!poll)return;
  const index=(poll.options||[]).findIndex(option=>String(option.id)===String(optionId));
  if(index<0)return;
@@ -1460,6 +1439,8 @@ async function votePoll(pollId,optionId){
   toast("✅ Đã ghi nhận bình chọn của bạn.");
  }catch(error){ Swal.fire({icon:"error",title:"Lỗi",text:"Không thể bình chọn."}); }
 }
+
+function pollVote(pollId,optionId){return votePoll(pollId,optionId);}
 
 function initGame(){
  const board=$("tic-tac-toe");
@@ -1503,18 +1484,11 @@ function winner(cells){
  return cells.every(Boolean)?"draw":null;
 }
 
-function initCountdowns(){
- document.querySelectorAll("[data-countdown]").forEach(node=>{
-  const date=node.dataset.countdown;
-  const update=()=> node.textContent=formatRemaining(new Date(date).getTime()-Date.now());
-  update(); setInterval(update,1000);
- });
- document.querySelectorAll("[data-deadline]").forEach(node=>{
-  const date=node.dataset.deadline;
-  const update=()=> node.textContent=formatRemaining(new Date(date).getTime()-Date.now());
-  update(); setInterval(update,1000);
- });
-}
+const countdownTimers=new Set();
+function formatCountdown(ms){if(!Number.isFinite(ms)||ms<=0)return "Đã hết hạn";const t=Math.floor(ms/1000),d=Math.floor(t/86400),h=Math.floor(t%86400/3600),m=Math.floor(t%3600/60),sec=t%60;return `${d>0?d+" ngày ":""}${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(sec).padStart(2,"0")}`;}
+function countdown(node,dateValue){if(!node)return()=>{};const target=new Date(dateValue).getTime(),update=()=>node.textContent=formatCountdown(target-Date.now());update();const timer=setInterval(update,1000);countdownTimers.add(timer);return()=>{clearInterval(timer);countdownTimers.delete(timer);};}
+function clearCountdowns(){countdownTimers.forEach(clearInterval);countdownTimers.clear();}
+function initCountdowns(){clearCountdowns();document.querySelectorAll("[data-countdown]").forEach(n=>countdown(n,n.dataset.countdown));document.querySelectorAll("[data-deadline]").forEach(n=>countdown(n,n.dataset.deadline));}
 
 async function checkBirthday(){
  const today=new Date(); const day=today.getDate(); const month=today.getMonth()+1;
@@ -1556,8 +1530,7 @@ function maybeShowNotice(){
  const notice=state.notice;
  if(!notice||notice.active===false)return;
  const noticeId=notice.id;
- const stored=localStorage.getItem("a8a8-notice-read");
- const readData=stored?JSON.parse(stored):null;
+ let readData=null;try{const stored=localStorage.getItem("a8a8-notice-read");readData=stored?JSON.parse(stored):null;}catch(error){console.error("[Notice] invalid read state",error);localStorage.removeItem("a8a8-notice-read");}
  if(readData?.noticeId===noticeId&&readData?.date===todayKey())return;
 
  $("notice-title").textContent=notice.title||"Thông báo";
@@ -1592,8 +1565,6 @@ if("serviceWorker" in navigator){
 window.addEventListener("beforeunload",()=>{ state.unsubscribe.forEach(fn=>fn()); });
 </script>
 
-<!--
 <script src="./seasonal-theme-engine.js"></script>
--->
 </body>
 </html>

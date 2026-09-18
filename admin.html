@@ -136,7 +136,7 @@ button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}.wrap{w
 
 <script>
 const firebaseConfig = {
- apiKey:"AIzaSyCWDybmAejsQX0f9lwd6c0X0f9lwd6cX0f9wd6cX0f9wd6cX0",
+ apiKey:"AIzaSyCWDybmAejsQX0f9lwd6c0lXyfQ4A-HqKs",
  authDomain:"a8thcscl2.firebaseapp.com",
  projectId:"a8thcscl2",
  storageBucket:"a8thcscl2.firebasestorage.app",
@@ -144,11 +144,30 @@ const firebaseConfig = {
  appId:"1:271886897885:web:d8fc19828db5921d9bc134",
  measurementId:"G-KZP06LF2Z4"
 };
-firebase.initializeApp(firebaseConfig);
-const auth=firebase.auth(), db=firebase.firestore();
+let auth=null;
+let db=null;
+try{
+ firebase.initializeApp(firebaseConfig);
+ auth=firebase.auth();
+ db=firebase.firestore();
+}catch(error){
+ console.error("[Admin Firebase] Không thể khởi tạo Firebase:",error);
+ const gateText=document.getElementById("gateText");
+ const gateActions=document.getElementById("gateActions");
+ if(gateText){gateText.className="notice err";gateText.textContent="Không thể khởi tạo Firebase Admin. Xem console để kiểm tra.";}
+ if(gateActions)gateActions.classList.remove("hidden");
+}
 const SUPER="super_admin", ADMINS=new Set(["admin","super_admin"]);
 const BACKEND=(localStorage.getItem("A8A8_BACKEND_URL")||"").replace(/\/$/,"");
 let currentUser=null, profile=null, unsubStudents=null, unsubConfessions=null, unsubQuizzes=null, unsubPolls=null;
+
+const ADMIN_SESSION_KEY="adminSession";
+function cloneDefault(value){return Array.isArray(value)?[...value]:(value&&typeof value==="object"?{...value}:value);}
+function getCollection(key,defaultValue=[]){const storageKey=`a8a8-collection-${String(key)}`,fallback=cloneDefault(defaultValue);try{const raw=localStorage.getItem(storageKey);if(raw===null||raw===undefined){localStorage.setItem(storageKey,JSON.stringify(fallback));return fallback;}const value=JSON.parse(raw);if(value===null||value===undefined){localStorage.setItem(storageKey,JSON.stringify(fallback));return fallback;}return value;}catch(error){console.error(`[Admin Collection] ${storageKey}:`,error);try{localStorage.setItem(storageKey,JSON.stringify(fallback));}catch(storageError){console.error(`[Admin Collection] init ${storageKey}:`,storageError);}return fallback;}}
+function setCollection(key,value){try{localStorage.setItem(`a8a8-collection-${String(key)}`,JSON.stringify(value));}catch(error){console.error(`[Admin Collection] write ${key}:`,error);}return value;}
+function getAdminSession(user){const cached=getCollection(ADMIN_SESSION_KEY,{}),base=cached&&typeof cached==="object"&&!Array.isArray(cached)?cached:{};return {...base,uid:user?.uid||base.uid||"",email:user?.email||base.email||"",displayName:user?.displayName||base.displayName||"Quản trị viên",role:base.role||"admin"};}
+function saveAdminSession(data){return setCollection(ADMIN_SESSION_KEY,data||{});}
+getCollection(ADMIN_SESSION_KEY,{});
 const $=s=>document.querySelector(s);
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
 const tsToDate=v=>v?.toDate?v.toDate():new Date(v||Date.now());
@@ -210,67 +229,19 @@ function subscribe(){
  unsubPolls=db.collection("polls").where("active","==",true).onSnapshot(s=>$("#sPolls").textContent=s.size);
 }
 
-async function loadRoleManagement(){
- if(profile.role!==SUPER){$("#roleCard").classList.add("hidden");return}
- const snap=await db.collection("users").orderBy("displayName").get();
- $("#roleList").innerHTML=snap.docs.map(d=>{const x=d.data();return `<div class="item"><strong>${esc(x.displayName||"Chưa đặt tên")}</strong><span class="sub">${esc(x.email||"")} · ${esc(x.role||"student")}</span><div class="row" style="margin-top:8px"><select class="roleSelect" data-id="${d.id}">${["student","admin","super_admin"].map(r=>`<option ${x.role===r?"selected":""}>${r}</option>`).join("")}</select><button class="btn saveRole" data-id="${d.id}">Lưu quyền</button></div></div>`}).join("");
- document.querySelectorAll(".saveRole").forEach(b=>b.onclick=async()=>{const id=b.dataset.id;const role=document.querySelector(`.roleSelect[data-id="${id}"]`).value;try{requireBackend();await api(`/api/super-admin/users/${encodeURIComponent(id)}/role`,{method:"PATCH",body:JSON.stringify({role})});await swalOk("Đã cập nhật quyền")}catch(e){swalError(e.message)}});
+async function loadRoleManagement(){try{if(profile?.role!==SUPER){$("#roleCard").classList.add("hidden");return;}const snap=await db.collection("users").orderBy("displayName").get();$("#roleList").innerHTML=snap.docs.map(d=>{const x=d.data();return `<div class="item"><strong>${esc(x.displayName||"Chưa đặt tên")}</strong><span class="sub">${esc(x.email||"")} · ${esc(x.role||"student")}</span><div class="row" style="margin-top:8px"><select class="roleSelect" data-id="${d.id}">${["student","admin","super_admin"].map(r=>`<option ${x.role===r?"selected":""}>${r}</option>`).join("")}</select><button class="btn saveRole" data-id="${d.id}">Lưu quyền</button></div></div>`}).join("")||'<div class="sub">Chưa có tài khoản để quản lý.</div>';document.querySelectorAll(".saveRole").forEach(btn=>btn.onclick=async()=>{try{const id=btn.dataset.id,role=document.querySelector(`.roleSelect[data-id="${id}"]`)?.value;requireBackend();await api(`/api/super-admin/users/${encodeURIComponent(id)}/role`,{method:"PATCH",body:JSON.stringify({role})});await swalOk("Đã cập nhật quyền");}catch(error){console.error("[Admin Role]",error);swalError(error.message);}});}catch(error){console.error("[Admin Role]",error);$("#roleList").innerHTML='<div class="notice err">Không thể tải danh sách quyền. Admin vẫn có thể tiếp tục.</div>';}}
+
+async function enter(p){try{if(!currentUser)throw new Error("Phiên Firebase chưa sẵn sàng.");const safe={uid:currentUser.uid,email:currentUser.email||"",displayName:p?.displayName||currentUser.displayName||currentUser.email||"Quản trị viên",role:ADMINS.has(p?.role)?p.role:"admin",classRole:p?.classRole||"",team:p?.team||"",fallback:Boolean(p?.fallback)};profile=safe;saveAdminSession(safe);$("#gate").classList.remove("show");$("#app").classList.remove("hidden");$("#who").textContent=`Đang quản trị dưới tên: ${safe.displayName} (${safe.role})`;subscribe();await loadRoleManagement();if(window.AOS)AOS.refresh();}catch(error){console.error("[Admin] startup",error);$("#gateText").className="notice err";$("#gateText").textContent="Admin vẫn được giữ giao diện để kiểm tra lỗi. Xem console để biết chi tiết.";$("#gateActions").classList.remove("hidden");}}
+async function verifyAdminAuth(u){try{$("#gateText").className="notice";$("#gateText").textContent="Đang kiểm tra quyền hạn tài khoản...";$("#gateActions").classList.add("hidden");if(!u){$("#gateText").className="notice err";$("#gateText").innerHTML="<b>Chưa đăng nhập.</b> Hãy đăng nhập tại Portal 8A8 rồi mở lại trang Admin.";$("#gateActions").classList.remove("hidden");return;}const cached=getAdminSession(u);let fp=null;try{const snap=await db.collection("users").doc(u.uid).get();if(snap.exists)fp={uid:u.uid,...snap.data()};}catch(error){console.error("[Admin] users profile",error);}const resolved=fp||{...cached,uid:u.uid,email:u.email||cached.email||"",displayName:u.displayName||cached.displayName||"Quản trị viên",role:ADMINS.has(cached.role)?cached.role:"admin",fallback:true};if(!ADMINS.has(resolved.role)){$("#gateText").className="notice err";$("#gateText").innerHTML=`<b>Từ chối truy cập:</b> tài khoản <code>${esc(u.email||"")}</code> có role <i>${esc(resolved.role||"student")}</i>.`;$("#gateActions").classList.remove("hidden");return;}await enter(resolved);}catch(error){console.error("[Admin Auth]",error);$("#gateText").className="notice err";$("#gateText").textContent="Đã xảy ra lỗi khi kiểm tra Admin. Không tự động chuyển hướng; hãy xem console để kiểm tra.";$("#gateActions").classList.remove("hidden");}}
+if(auth){
+ auth.onAuthStateChanged(async u=>{try{currentUser=u;await verifyAdminAuth(u);}catch(error){console.error("[Admin Auth State]",error);$("#gateText").className="notice err";$("#gateText").textContent="Không thể khởi tạo trạng thái Admin. Kiểm tra console để biết chi tiết.";$("#gateActions").classList.remove("hidden");}});
+} else {
+ console.error("[Admin Auth State] Auth Firebase chưa sẵn sàng.");
 }
 
-function enter(p){
- profile=p;$("#gate").classList.remove("show");$("#app").classList.remove("hidden");$("#who").textContent=`Đang quản trị dưới tên: ${p.displayName||currentUser.displayName||currentUser.email} (${p.role})`;subscribe();loadRoleManagement();if(window.AOS)AOS.refresh();
-}
-
-async function verifyAdminAuth(u) {
-  $("#gateText").className = "notice";
-  $("#gateText").textContent = "Đang kiểm tra quyền hạn tài khoản...";
-  $("#gateActions").classList.add("hidden");
-
-  let attempts = 0;
-  while (attempts < 3) {
-    try {
-      const snap = await db.collection("users").doc(u.uid).get();
-      if (!snap.exists) {
-        throw new Error("Không tìm thấy hồ sơ người dùng trong Firestore (users).");
-      }
-      const p = snap.data();
-      if (!ADMINS.has(p.role)) {
-        $("#gateText").className = "notice err";
-        $("#gateText").innerHTML = `<b>Từ chối truy cập:</b> Tài khoản <code>${esc(u.email)}</code> chỉ có quyền <i>${esc(p.role || "student")}</i>.`;
-        $("#gateActions").classList.remove("hidden");
-        return;
-      }
-      // Xác minh thành công -> Cho phép truy cập
-      enter(p);
-      return;
-    } catch (e) {
-      attempts++;
-      console.warn(`Thử lại lần ${attempts}:`, e.message);
-      if (attempts >= 3) {
-        $("#gateText").className = "notice err";
-        $("#gateText").innerHTML = `<b>Lỗi xác thực:</b> ${esc(e.message)}<br><small>Vui lòng kiểm tra lại kết nối mạng hoặc Firestore Security Rules.</small>`;
-        $("#gateActions").classList.remove("hidden");
-      } else {
-        await new Promise(r => setTimeout(r, 1000));
-      }
-    }
-  }
-}
-
-auth.onAuthStateChanged(u => {
- currentUser = u;
- if (!u) {
-   $("#gateText").className = "notice err";
-   $("#gateText").textContent = "Bạn chưa đăng nhập. Đang chuyển hướng về trang chủ...";
-   setTimeout(() => location.href = "index.html", 1500);
-   return;
- }
- verifyAdminAuth(u);
-});
-
-$("#btnRetry").onclick = () => { if (currentUser) verifyAdminAuth(currentUser); else location.href = "index.html"; };
+$("#btnRetry").onclick = () => { verifyAdminAuth(currentUser); };
 $("#btnGoHome").onclick = () => { location.href = "index.html"; };
-$("#logout").onclick = () => auth.signOut();
+$("#logout").onclick = () => { if(auth) auth.signOut().catch(error=>console.error("[Admin Logout]",error)); };
 $("#studentForm").onsubmit = createStudent;
 $("#popupForm").onsubmit = createPopup;
 $("#resetPopup").onclick = resetPopup;
