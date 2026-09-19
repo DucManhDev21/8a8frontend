@@ -11,6 +11,8 @@
 <meta property="og:description" content="8A8 - Bứt phá giới hạn, Đoàn kết đập tan mọi thách thức!">
 <meta property="og:type" content="website">
 <link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="./logo.png">
 <title>8A8 Portal | Trường THCS Cẩm Lý 2</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
@@ -123,6 +125,39 @@ button{cursor:pointer}
 table{width:100%;border-collapse:collapse; min-width: 600px;}
 th,td{padding:.8rem;text-align:left;border-bottom:1px solid var(--border)}
 @media(max-width:800px){.desktop-nav{display:none}.page-section{padding:3rem 0}.hero-title{font-size:2.6rem}}
+
+/* ===== 8A8 RESPONSIVE / HAMBURGER UPGRADE ===== */
+:root{--nav-h:74px}
+html,body{max-width:100%;overflow-x:hidden}
+body{padding-bottom:env(safe-area-inset-bottom)}
+.site-header{position:sticky;top:0;z-index:80;width:100%;padding-top:env(safe-area-inset-top);background:color-mix(in srgb,var(--page) 68%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.site-header-inner{min-height:var(--nav-h);width:min(1280px,calc(100% - 1rem));margin:auto;display:flex;align-items:center;gap:.6rem;padding:.65rem .25rem}
+.brand-mark{width:46px;height:46px;border-radius:16px;object-fit:cover;display:block;box-shadow:0 10px 30px rgba(20,184,166,.2)}
+.brand-fallback{width:46px;height:46px;border-radius:16px;display:grid;place-items:center;font-weight:900;color:#fff;background:linear-gradient(135deg,#14b8a6,#2563eb);box-shadow:0 10px 30px rgba(37,99,235,.22)}
+.brand-copy{min-width:0}.brand-title{font-weight:900;line-height:1}.brand-subtitle{font-size:.68rem;margin-top:.22rem;color:var(--muted);white-space:nowrap}
+.desktop-nav{display:flex;flex:1;justify-content:center;gap:1.15rem;min-width:0}
+.header-actions{display:flex;align-items:center;gap:.45rem;margin-left:auto}.header-actions .btn{white-space:nowrap}
+.hamburger{display:none;width:46px;height:46px;border-radius:16px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:1.35rem;box-shadow:0 10px 30px rgba(15,23,42,.08)}
+.mobile-menu{position:fixed;top:calc(var(--nav-h) + env(safe-area-inset-top) + .35rem);left:.55rem;right:.55rem;z-index:75;display:none;padding:.7rem;border:1px solid var(--border);background:color-mix(in srgb,var(--page) 72%,transparent);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-radius:22px;box-shadow:0 25px 70px rgba(2,6,23,.2)}
+.mobile-menu.open{display:grid}.mobile-menu a{padding:.9rem 1rem;border-radius:15px;font-weight:800}.mobile-menu a:hover,.mobile-menu a:focus{background:rgba(20,184,166,.10)}
+.mobile-menu .mobile-user-box{padding:.85rem 1rem;border-radius:17px;background:rgba(148,163,184,.08);margin-bottom:.35rem}
+.mobile-menu-backdrop{position:fixed;inset:0;z-index:70;display:none;background:rgba(2,6,23,.22)}.mobile-menu-backdrop.open{display:block}
+/* Khi đã đăng nhập: giữ chuyển động nhẹ, không dùng animation nặng */
+body.logged-in .orb,body.logged-in .hero-grid{animation:none!important}
+body.logged-in [data-aos]{opacity:1!important;transform:none!important;transition:none!important}
+body.logged-in .card-3d:hover{transform:none;box-shadow:0 20px 60px rgba(15,23,42,.12)}
+body.logged-in .btn:hover{transform:none}
+@media(max-width:1024px){.desktop-nav{display:none!important}.hamburger{display:inline-grid;place-items:center}.site-header-inner{width:min(100%,calc(100% - 1rem))}.brand-copy{display:none}.header-actions .theme-only{display:inline-flex}.header-actions #register-button{display:none!important}}
+@media(max-width:640px){
+  :root{--nav-h:66px}
+  .site-header-inner{gap:.45rem;padding:.45rem 0}.brand-mark,.brand-fallback,.hamburger{width:42px;height:42px;border-radius:14px}.hamburger{font-size:1.2rem}
+  .header-actions{gap:.35rem}.header-actions .btn{padding:.65rem .75rem;border-radius:13px;font-size:.82rem}.header-actions #login-button{max-width:110px;overflow:hidden;text-overflow:ellipsis}
+  .page-section{width:min(100% - 1rem,1180px);padding:2.6rem 0}.hero-title{font-size:clamp(2.3rem,13vw,4.2rem)!important}.mobile-menu{top:calc(var(--nav-h) + .35rem)}
+  .toast-stack{left:.6rem;right:.6rem;bottom:calc(.6rem + env(safe-area-inset-bottom))}.toast{max-width:none}
+  .auth-panel{border-radius:24px;padding:1.1rem!important}.modal-backdrop{padding:.6rem}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
 </style>
 </head>
 
@@ -130,34 +165,50 @@ th,td{padding:.8rem;text-align:left;border-bottom:1px solid var(--border)}
 <div id="seasonal-canvas-root"></div>
 <div id="seasonal-banner"></div>
 
-<header class="sticky top-0 z-50 border-b border-slate-300/20 glass" data-aos="fade-down" data-aos-once="true">
- <div class="max-w-[1280px] mx-auto px-4 py-3 flex items-center gap-3">
-  <a href="#trang-chu" class="flex items-center gap-3 shrink-0">
-   <div class="w-11 h-11 rounded-2xl grid place-items-center font-black text-white text-xl bg-gradient-to-br from-teal-500 to-blue-600 shadow-neon">8A8</div>
-   <div class="hidden sm:block">
-    <div class="font-black font-display">PORTAL 8A8</div>
-    <div class="text-xs text-slate-500 dark:text-slate-400">THCS Cẩm Lý 2</div>
+<header id="site-header" class="site-header border-b border-slate-300/20 glass">
+ <div class="site-header-inner">
+  <a href="#trang-chu" class="flex items-center gap-2 min-w-0" aria-label="Portal 8A8 - Trang chủ">
+   <img src="./logo.png" alt="Logo lớp 8A8" class="brand-mark" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'brand-fallback',textContent:'8A8'}))">
+   <div class="brand-copy">
+    <div class="brand-title">PORTAL 8A8</div>
+    <div class="brand-subtitle">Trường THCS Cẩm Lý 2</div>
    </div>
   </a>
 
-  <!-- Menu Nav sẽ được JS kiểm soát ẩn/hiện dựa vào trạng thái đăng nhập -->
-  <nav id="main-nav" class="desktop-nav flex-1 flex justify-center gap-5 text-sm font-bold opacity-0 pointer-events-none transition-opacity duration-300">
-   <a class="nav-link" href="#trang-chu" data-route-link="trang-chu">Dashboard</a>
+  <nav id="main-nav" class="desktop-nav text-sm font-bold" aria-label="Điều hướng chính">
+   <a class="nav-link" href="#trang-chu" data-route-link="trang-chu">Trang chủ</a>
    <a class="nav-link" href="#thanh-vien" data-route-link="thanh-vien">Thành viên</a>
    <a class="nav-link" href="#thi-dua" data-route-link="thi-dua">Thi đua</a>
    <a class="nav-link" href="#hoc-tap" data-route-link="hoc-tap">Học tập</a>
    <a class="nav-link" href="#trac-nghiem" data-route-link="trac-nghiem">Trắc nghiệm</a>
    <a class="nav-link" href="#giai-tri" data-route-link="giai-tri">Giải trí</a>
+   <a class="nav-link" href="#confession" data-route-link="confession">Confession</a>
   </nav>
 
-  <div class="flex items-center gap-2 shrink-0">
-   <button id="theme-toggle" class="btn btn-soft" aria-label="Đổi giao diện">🌙</button>
+  <button id="hamburger-button" class="hamburger" type="button" aria-label="Mở menu" aria-expanded="false" aria-controls="mobile-menu">☰</button>
+
+  <div class="header-actions">
+   <button id="theme-toggle" class="btn btn-soft theme-only" aria-label="Đổi giao diện">🌙</button>
    <button id="login-button" class="btn btn-primary">Đăng nhập</button>
-   <button id="register-button" class="btn btn-soft hidden sm:inline-flex">Tạo tài khoản</button>
+   <button id="register-button" class="btn btn-soft hidden">Tạo tài khoản</button>
    <div id="profile-frame" class="hidden"></div>
   </div>
  </div>
 </header>
+
+<div id="mobile-menu-backdrop" class="mobile-menu-backdrop" aria-hidden="true"></div>
+<nav id="mobile-menu" class="mobile-menu" aria-label="Menu trên thiết bị di động">
+ <div id="mobile-user-box" class="mobile-user-box hidden"></div>
+ <a href="#trang-chu" data-route-link="trang-chu">🏠 Trang chủ</a>
+ <a href="#thanh-vien" data-route-link="thanh-vien">👥 Thành viên</a>
+ <a href="#thi-dua" data-route-link="thi-dua">🏆 Thi đua</a>
+ <a href="#hoc-tap" data-route-link="hoc-tap">📚 Học tập</a>
+ <a href="#trac-nghiem" data-route-link="trac-nghiem">🧠 Trắc nghiệm</a>
+ <a href="#giai-tri" data-route-link="giai-tri">🎮 Giải trí</a>
+ <a href="#confession" data-route-link="confession">💬 Confession</a>
+ <a id="mobile-admin-link" href="./admin.html" class="hidden">⚙️ Control Center</a>
+ <button id="mobile-logout" type="button" class="btn btn-soft w-full justify-center hidden">🚪 Đăng xuất</button>
+</nav>
 
 <main id="app" aria-live="polite" class="min-h-[70vh]"></main>
 
@@ -293,6 +344,7 @@ import {
   addDoc,
   updateDoc,
   query,
+  where,
   orderBy,
   limit,
   onSnapshot,
@@ -336,39 +388,39 @@ const state = {
   boardScores:[]
 };
 
-const MOCK_STUDENTS = Array.from({length:40},(_,i)=>{
-  const names=[
-    "Phạm Hoàng Long","Vũ Khánh Linh","Đỗ Đức Mạnh","Bùi Phương Thảo",
-    "Nguyễn Minh Anh","Trần Ngọc Anh","Lê Gia Huy","Nguyễn Thu Trang",
-    "Phạm Quang Minh","Đặng Khánh Linh","Nguyễn Hải Nam","Hoàng Mai Anh",
-    "Vũ Đức Anh","Bùi Ngọc Hà","Trần Minh Đức","Nguyễn Phương Linh",
-    "Lê Tuấn Anh","Phạm Khánh Huyền","Đỗ Minh Quân","Vũ Hà My",
-    "Nguyễn Thành Đạt","Bùi Thùy Dương","Trần Đức Anh","Phạm Ngọc Mai",
-    "Lê Hoàng Nam","Nguyễn Khánh Vy","Đặng Minh Khang","Vũ Ngọc Linh",
-    "Bùi Anh Tú","Trần Quỳnh Anh","Nguyễn Đức Minh","Lê Phương Anh",
-    "Phạm Minh Khôi","Đỗ Khánh Hòa","Vũ Hoàng Long","Nguyễn Thảo Chi",
-    "Bùi Minh Quân","Trần Hải Yến","Lê Đức Anh","Nguyễn Mai Phương"
-  ];
-  const team=Math.floor(i/10)+1;
-  return {
-    id:"mock-"+String(i+1).padStart(2,"0"),
-    name:names[i],
-    dob:`2012-${String((i%12)+1).padStart(2,"0")}-${String((i%27)+1).padStart(2,"0")}`,
-    gender:i%2===0?"Nam":"Nữ",
-    team:`Tổ ${team}`,
-    classRole:
-      i===0?"Tổ trưởng Tổ 1":
-      i===1?"Tổ trưởng Tổ 2":
-      i===2?"Tổ trưởng Tổ 3":
-      i===3?"Tổ trưởng Tổ 4":
-      i===4?"Lớp trưởng Thùy Linh":
-      i===5?"LP Học tập Ngọc Ánh":
-      i===6?"LP Văn nghệ Khánh Ngọc":"",
-    score:10,
-    badges:[],
-    history:[]
-  };
-});
+const ROSTER_PLAN = [
+  {team:"Tổ 1", count:10},
+  {team:"Tổ 2", count:10},
+  {team:"Tổ 3", count:12},
+  {team:"Tổ 4", count:8}
+];
+const MOCK_NAMES=[
+ "Phạm Hoàng Long","Vũ Khánh Linh","Đỗ Đức Mạnh","Bùi Phương Thảo","Nguyễn Minh Anh","Trần Ngọc Anh","Lê Gia Huy","Nguyễn Thu Trang","Phạm Quang Minh","Đặng Khánh Linh",
+ "Nguyễn Hải Nam","Hoàng Mai Anh","Vũ Đức Anh","Bùi Ngọc Hà","Trần Minh Đức","Nguyễn Phương Linh","Lê Tuấn Anh","Phạm Khánh Huyền","Đỗ Minh Quân","Vũ Hà My",
+ "Nguyễn Thành Đạt","Bùi Thùy Dương","Trần Đức Anh","Phạm Ngọc Mai","Lê Hoàng Nam","Nguyễn Khánh Vy","Đặng Minh Khang","Vũ Ngọc Linh","Bùi Anh Tú","Trần Quỳnh Anh","Nguyễn Đức Minh","Lê Phương Anh",
+ "Phạm Minh Khôi","Đỗ Khánh Hòa","Vũ Hoàng Long","Nguyễn Thảo Chi","Bùi Minh Quân","Trần Hải Yến","Lê Đức Anh","Nguyễn Mai Phương"
+];
+const MOCK_GENDERS=[
+ ...Array(16).fill("Nam"),
+ ...Array(24).fill("Nữ")
+];
+function buildMockStudents(){
+  const students=[];let cursor=0;
+  ROSTER_PLAN.forEach(plan=>{
+    for(let i=0;i<plan.count;i++,cursor++){
+      students.push({
+        id:"mock-"+String(cursor+1).padStart(2,"0"),name:MOCK_NAMES[cursor]||`Thành viên ${cursor+1}`,
+        dob:`2012-${String((cursor%12)+1).padStart(2,"0")}-${String((cursor%27)+1).padStart(2,"0")}`,
+        gender:MOCK_GENDERS[cursor],team:plan.team,
+        classRole:cursor===4?"Lớp trưởng Thùy Linh":cursor===5?"LP Học tập Ngọc Ánh":cursor===6?"LP Văn nghệ Khánh Ngọc":i===0?`Tổ trưởng ${plan.team}`:"",
+        score:10,badges:[],history:[]
+      });
+    }
+  });
+  return students;
+}
+const MOCK_STUDENTS=buildMockStudents();
+const CLASS_STATS={total:40,male:16,female:24,teams:{"Tổ 1":10,"Tổ 2":10,"Tổ 3":12,"Tổ 4":8}};
 
 const TEAM_LEADERS={
  "Tổ 1":"Hồng Thảo",
@@ -389,6 +441,13 @@ const SCHEDULE={
 };
 
 function $(id){return document.getElementById(id)}
+function toMillis(value){
+  if(!value)return 0;
+  if(typeof value.toMillis==="function")return value.toMillis();
+  if(value.seconds!=null)return Number(value.seconds)*1000;
+  const time=new Date(value).getTime();
+  return Number.isFinite(time)?time:0;
+}
 function escapeHtml(value=""){
   return String(value).replace(/[&<>"']/g,m=>({
     "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
@@ -532,8 +591,17 @@ onAuthStateChanged(auth,async user=>{
    const key=`user-profile-${user.uid}`,cached=getCollection(key,{});
    try{const snap=await getDoc(doc(db,"users",user.uid));state.userProfile=snap.exists()?{uid:user.uid,email:user.email,...snap.data()}:{uid:user.uid,email:user.email,displayName:user.displayName||"Thành viên",role:"student",classRole:"",team:""};setCollection(key,state.userProfile);}
    catch(error){console.error("[Auth] profile",error);state.userProfile=cached&&Object.keys(cached).length?cached:{uid:user.uid,email:user.email,displayName:user.displayName||"Thành viên",role:"student",classRole:"",team:""};}
-   renderProfileFrame();toast(`🎉 Chào mừng ${state.userProfile.displayName||user.displayName||"bạn"} quay trở lại!`);
-  }else{state.userProfile=null;renderProfileFrame();}
+   renderProfileFrame();
+   toast(`🎉 Chào mừng ${state.userProfile.displayName||user.displayName||"bạn"} quay trở lại Portal 8A8!`);
+  }else{
+    state.userProfile=null;
+    state.unsubscribe.forEach(fn=>{try{fn()}catch(error){console.error("[Auth] unsubscribe",error)}});
+    state.unsubscribe=[];
+    state.students=[...MOCK_STUDENTS];state.quizzes=[];state.homework=[];state.polls=[];state.approvedConfessions=[];state.notice=null;
+    renderProfileFrame();
+    router();
+    return;
+  }
   await checkBirthday();await loadRealtimeData();router();
  }catch(error){console.error("[Auth] state",error);state.userProfile=state.user?getCollection(`user-profile-${state.user.uid}`,{}):null;renderProfileFrame();await loadRealtimeData();router();}
 });
@@ -542,58 +610,51 @@ function roleName(role){
   return ({"super_admin":"Super Admin","admin":"Admin","teacher":"GVCN","student":"Học sinh"})[role]||"Thành viên";
 }
 
-function renderProfileFrame(){
-  const login=$("login-button");
-  const register=$("register-button");
-  const frame=$("profile-frame");
-  const nav=$("main-nav");
+function syncMobileMenu(){
+  const menu=$("mobile-menu"),backdrop=$("mobile-menu-backdrop"),btn=$("hamburger-button");
+  const close=()=>{menu?.classList.remove("open");backdrop?.classList.remove("open");btn?.setAttribute("aria-expanded","false");};
+  document.querySelectorAll("#mobile-menu a").forEach(a=>a.addEventListener("click",close));
+  backdrop?.addEventListener("click",close);
+  btn?.addEventListener("click",()=>{const open=!menu.classList.contains("open");menu.classList.toggle("open",open);backdrop.classList.toggle("open",open);btn.setAttribute("aria-expanded",String(open));});
+  $("mobile-logout")?.addEventListener("click",async()=>{await signOut(auth);close();});
+  window.addEventListener("resize",()=>{if(window.innerWidth>1024)close();},{passive:true});
+}
 
+function renderProfileFrame(){
+  const login=$("login-button"),register=$("register-button"),frame=$("profile-frame"),nav=$("main-nav");
+  const mobileUser=$("mobile-user-box"),mobileAdmin=$("mobile-admin-link"),mobileLogout=$("mobile-logout"),btnMobileMenu=$("hamburger-button");
+  document.body.classList.toggle("logged-in",Boolean(state.user));
   if(!state.user){
-    login.classList.remove("hidden");
-    register.classList.remove("hidden");
-    register.removeAttribute("hidden");
-    register.disabled=false;
-    frame.classList.add("hidden");
-    // Ẩn menu khi chưa đăng nhập
-    nav.classList.add("opacity-0", "pointer-events-none");
-    nav.classList.remove("opacity-100", "pointer-events-auto");
+    login.classList.remove("hidden"); register.classList.remove("hidden"); register.disabled=false;
+    frame.classList.add("hidden"); nav.classList.add("opacity-0","pointer-events-none"); nav.classList.remove("opacity-100","pointer-events-auto");
+    document.querySelectorAll("#mobile-menu [data-route-link]").forEach(a=>a.classList.toggle("hidden",a.dataset.routeLink!=="trang-chu"));
+    btnMobileMenu?.classList.add("hidden");
+    mobileUser?.classList.add("hidden"); mobileAdmin?.classList.add("hidden"); mobileLogout?.classList.add("hidden");
     return;
   }
-
   login.classList.add("hidden");
-  register.classList.add("hidden");
-  register.setAttribute("hidden","");
-  register.disabled=true;
-  frame.classList.remove("hidden");
-  // Hiện menu khi đã đăng nhập
-  nav.classList.remove("opacity-0", "pointer-events-none");
-  nav.classList.add("opacity-100", "pointer-events-auto");
-
-  const name=state.userProfile?.displayName||state.user.displayName||"Thành viên";
-  const role=roleName(state.userProfile?.role);
-
-  frame.innerHTML=`
-    <div class="flex items-center gap-2">
-      <a href="#profile" class="glass rounded-2xl px-3 py-2 flex items-center gap-2">
-        <div class="avatar">${escapeHtml(name.charAt(0).toUpperCase())}</div>
-        <div class="hidden md:block text-left">
-          <div class="text-xs text-slate-500">Xin chào</div>
-          <div class="text-sm font-black max-w-[120px] truncate">${escapeHtml(name)}</div>
-          <div class="text-[10px] text-teal-500 font-bold">${escapeHtml(role)}</div>
-        </div>
-      </a>
-      ${(state.userProfile?.role==="admin"||state.userProfile?.role==="super_admin")
-        ?`<a href="./admin.html" class="btn btn-primary hidden lg:inline-flex">⚙️ Admin</a>`:""}
-      <button id="logout-button" class="btn btn-soft">Thoát</button>
-    </div>
-  `;
-
-  $("logout-button").addEventListener("click",async()=>{
-    await signOut(auth);
-    toast("Bạn đã đăng xuất.");
-    location.hash="#trang-chu";
-  });
+  register.classList.add("hidden"); register.disabled=true; register.setAttribute("hidden","");
+  frame.classList.remove("hidden"); nav.classList.remove("opacity-0","pointer-events-none"); nav.classList.add("opacity-100","pointer-events-auto");
+  const name=state.userProfile?.displayName||state.user.displayName||"Thành viên",role=roleName(state.userProfile?.role);
+  const initials=escapeHtml(name.charAt(0).toUpperCase());
+  const canAdmin=state.userProfile?.role==="admin"||state.userProfile?.role==="super_admin";
+  frame.innerHTML=`<div class="flex items-center gap-2">
+    <a href="#profile" class="glass rounded-2xl px-2.5 py-2 flex items-center gap-2" aria-label="Mở hồ sơ ${escapeHtml(name)}">
+      <div class="avatar">${initials}</div>
+      <div class="hidden lg:block text-left"><div class="text-[10px] text-slate-500">Xin chào</div><div class="text-sm font-black max-w-[120px] truncate">${escapeHtml(name)}</div><div class="text-[10px] text-teal-500 font-bold">${escapeHtml(role)}</div></div>
+    </a>
+    <button id="logout-button" class="btn btn-soft" type="button">Thoát</button>
+   </div>`;
+  btnMobileMenu?.classList.remove("hidden");
+  document.querySelectorAll("#mobile-menu [data-route-link]").forEach(a=>a.classList.remove("hidden"));
+  mobileUser?.classList.remove("hidden");
+  if(mobileUser)mobileUser.innerHTML=`<div class="font-black">Xin chào, ${escapeHtml(name)} 👋</div><div class="text-xs text-slate-500 mt-1">${escapeHtml(role)} · Lớp 8A8</div>`;
+  mobileAdmin?.classList.toggle("hidden",!canAdmin); mobileLogout?.classList.remove("hidden");
+  $("logout-button")?.addEventListener("click",()=>signOut(auth));
+  $("mobile-logout")?.addEventListener("click",()=>signOut(auth));
 }
+
+syncMobileMenu();
 
 async function loadRealtimeData(){
  try{
@@ -604,8 +665,13 @@ async function loadRealtimeData(){
   state.unsubscribe.push(onSnapshot(query(collection(db,"quizzes"),orderBy("createdAt","desc"),limit(50)),snap=>{state.quizzes=snap.docs.map(d=>({id:d.id,...d.data()}));setCollection("quizzes",state.quizzes);router();},e=>{console.error("[Firestore quizzes]",e);state.quizzes=getCollection("quizzes",[]);router();}));
   state.unsubscribe.push(onSnapshot(query(collection(db,"homework"),orderBy("deadline","asc"),limit(30)),snap=>{state.homework=snap.docs.map(d=>({id:d.id,...d.data()}));setCollection("homework",state.homework);router();},e=>{console.error("[Firestore homework]",e);state.homework=getCollection("homework",[]);router();}));
   state.unsubscribe.push(onSnapshot(query(collection(db,"polls"),orderBy("createdAt","desc"),limit(10)),snap=>{state.polls=snap.docs.map(d=>({id:d.id,...d.data()}));setCollection("polls",state.polls);router();},e=>{console.error("[Firestore polls]",e);state.polls=getCollection("polls",[]);router();}));
-  state.unsubscribe.push(onSnapshot(query(collection(db,"confessions"),orderBy("createdAt","desc"),limit(30)),snap=>{state.approvedConfessions=snap.docs.map(d=>({id:d.id,...d.data()})).filter(d=>d.status==="approved");setCollection("approvedConfessions",state.approvedConfessions);router();},e=>{console.error("[Firestore confessions]",e);state.approvedConfessions=getCollection("approvedConfessions",[]);router();}));
-  state.unsubscribe.push(onSnapshot(query(collection(db,"popups"),orderBy("createdAt","desc"),limit(1)),snap=>{state.notice=snap.docs.length?{id:snap.docs[0].id,...snap.docs[0].data()}:null;maybeShowNotice();},e=>console.error("[Firestore popups]",e)));
+  state.unsubscribe.push(onSnapshot(query(collection(db,"confessions"),where("status","==","approved"),limit(50)),snap=>{state.approvedConfessions=snap.docs.map(d=>({id:d.id,...d.data()}));state.approvedConfessions.sort((a,b)=>toMillis(b.createdAt)-toMillis(a.createdAt));setCollection("approvedConfessions",state.approvedConfessions);router();},e=>{console.error("[Firestore confessions]",e);state.approvedConfessions=getCollection("approvedConfessions",[]);router();}));
+  state.unsubscribe.push(onSnapshot(query(collection(db,"popups"),where("active","==",true),limit(20)),snap=>{
+  const active=snap.docs.map(d=>({id:d.id,...d.data()}));
+  active.sort((a,b)=>toMillis(b.createdAt)-toMillis(a.createdAt));
+  state.notice=active[0]||null;
+  maybeShowNotice();
+},e=>console.error("[Firestore popups]",e)));
  }catch(error){console.error("[Realtime] init",error);state.students=state.students?.length?state.students:[...MOCK_STUDENTS];state.quizzes=getCollection("quizzes",[]);state.homework=getCollection("homework",[]);state.polls=getCollection("polls",[]);state.approvedConfessions=getCollection("approvedConfessions",[]);router();}
 }
 
@@ -615,7 +681,11 @@ function currentRoute(){
 }
 
 function router(){
-  const route=currentRoute();
+  let route=currentRoute();
+  if(!state.user && route!=="trang-chu"){
+    history.replaceState(null,"","#trang-chu");
+    route="trang-chu";
+  }
 
   document.querySelectorAll("[data-route-link]").forEach(link=>{
     link.classList.toggle("active",link.dataset.routeLink===route);
@@ -724,6 +794,19 @@ function guestIntroPage() {
           Ngoài ra, Bảng xếp hạng Thi đua sẽ hiển thị công khai lịch sử cộng/trừ điểm. Mọi sự tiến bộ hay cố gắng đều được quy đổi thành "Huy hiệu vinh dự", giúp biến thi đua thành niềm vui thay vì áp lực.
         </p>
       </article>
+    </div>
+  </section>
+
+  <section class="page-section">
+    ${sectionTitle("📊 QUY MÔ TẬP THỂ","40 thành viên — 4 tổ — cùng một tinh thần","Thông tin tổng quan của lớp 8A8 được trình bày rõ ràng để khách ghé thăm có thể hiểu nhanh về tập thể.")}
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+      <article class="glass rounded-3xl p-6" data-aos="zoom-in"><div class="text-3xl">👥</div><div class="text-3xl font-black mt-3">40</div><div class="text-sm text-slate-500 mt-1">Tổng thành viên</div></article>
+      <article class="glass rounded-3xl p-6" data-aos="zoom-in" data-aos-delay="80"><div class="text-3xl">👦</div><div class="text-3xl font-black mt-3">16</div><div class="text-sm text-slate-500 mt-1">Nam</div></article>
+      <article class="glass rounded-3xl p-6" data-aos="zoom-in" data-aos-delay="160"><div class="text-3xl">👧</div><div class="text-3xl font-black mt-3">24</div><div class="text-sm text-slate-500 mt-1">Nữ</div></article>
+      <article class="glass rounded-3xl p-6" data-aos="zoom-in" data-aos-delay="240"><div class="text-3xl">🏫</div><div class="text-3xl font-black mt-3">4</div><div class="text-sm text-slate-500 mt-1">Tổ học tập</div></article>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+      ${ROSTER_PLAN.map((x,i)=>`<div class="glass rounded-2xl p-5" data-aos="fade-up" data-aos-delay="${i*70}"><div class="font-black">${x.team}</div><div class="text-sm text-slate-500 mt-1">${x.count} thành viên</div></div>`).join("")}
     </div>
   </section>
 
@@ -1527,39 +1610,34 @@ function todayKey(){
 }
 
 function maybeShowNotice(){
- const notice=state.notice;
- if(!notice||notice.active===false)return;
- const noticeId=notice.id;
- let readData=null;try{const stored=localStorage.getItem("a8a8-notice-read");readData=stored?JSON.parse(stored):null;}catch(error){console.error("[Notice] invalid read state",error);localStorage.removeItem("a8a8-notice-read");}
- if(readData?.noticeId===noticeId&&readData?.date===todayKey())return;
-
- $("notice-title").textContent=notice.title||"Thông báo";
- $("notice-content").textContent=notice.content||"";
- const button=$("notice-read-button");
- const close=$("notice-close-temporary");
-
- let seconds=5;
- button.disabled=true; button.textContent=`Tôi đã đọc (${seconds})`;
- clearInterval(window.noticeCountdown);
-
- window.noticeCountdown=setInterval(()=>{
-  seconds--;
-  if(seconds>0) button.textContent=`Tôi đã đọc (${seconds})`;
-  else{ clearInterval(window.noticeCountdown); button.disabled=false; button.textContent="Tôi đã đọc & hiểu rõ"; }
- },1000);
-
- close.onclick=()=> closeModal("notice-modal");
- button.onclick=()=>{
-  localStorage.setItem("a8a8-notice-read",JSON.stringify({noticeId,date:todayKey()}));
-  closeModal("notice-modal");
- };
- openModal("notice-modal");
+  if(!state.user)return;
+  const notice=state.notice;
+  if(!notice||notice.active===false)return;
+  const version=String(notice.dailyResetNonce||notice.updatedAt?.seconds||toMillis(notice.updatedAt)||notice.createdAt?.seconds||toMillis(notice.createdAt)||notice.id);
+  const noticeKey=`${notice.id}:${version}`;
+  let readData=null;
+  try{const stored=localStorage.getItem("a8a8-notice-read-v2");readData=stored?JSON.parse(stored):null;}catch(error){console.error("[Notice] invalid read state",error);}
+  if(readData?.key===noticeKey&&readData?.date===todayKey())return;
+  $("notice-title").textContent=notice.title||"Thông báo";
+  $("notice-content").textContent=notice.content||"";
+  const button=$("notice-read-button"),close=$("notice-close-temporary");
+  let seconds=3; button.disabled=true; button.textContent=`Tôi đã đọc (${seconds})`;
+  clearInterval(window.noticeCountdown);
+  window.noticeCountdown=setInterval(()=>{seconds--;if(seconds>0)button.textContent=`Tôi đã đọc (${seconds})`;else{clearInterval(window.noticeCountdown);button.disabled=false;button.textContent="Tôi đã đọc & hiểu rõ";}},1000);
+  close.onclick=()=>closeModal("notice-modal");
+  button.onclick=()=>{localStorage.setItem("a8a8-notice-read-v2",JSON.stringify({key:noticeKey,date:todayKey()}));closeModal("notice-modal");};
+  openModal("notice-modal");
 }
-
 window.addEventListener("storage",event=>{ if(event.key==="a8a8-notice-read")maybeShowNotice(); });
 
 if("serviceWorker" in navigator){
- window.addEventListener("load",()=>{ navigator.serviceWorker.register("./service-worker.js").catch(()=>{}); });
+ window.addEventListener("load",async()=>{
+  try{
+   const registrations=await navigator.serviceWorker.getRegistrations();
+   await Promise.all(registrations.filter(reg=>reg.active?.scriptURL.includes("/sw.js")).map(reg=>reg.unregister()));
+  }catch(error){console.warn("[ServiceWorker] legacy cleanup",error);}
+  navigator.serviceWorker.register("./service-worker.js",{updateViaCache:"none"}).catch(error=>console.warn("[ServiceWorker] register",error));
+ });
 }
 
 window.addEventListener("beforeunload",()=>{ state.unsubscribe.forEach(fn=>fn()); });

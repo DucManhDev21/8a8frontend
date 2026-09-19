@@ -2,272 +2,143 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#071a2f">
-<title>Quản trị — 8A8 Cẩm Lý 2</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#061425">
+<link rel="icon" href="./favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="./logo.png">
+<title>8A8 Control Center | Quản trị</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <style>
-:root{--bg:#071a2f;--panel:rgba(13,35,58,.72);--panel2:rgba(255,255,255,.08);--text:#eef7ff;--muted:#a8bed3;--line:rgba(130,210,255,.18);--accent:#59e1c8;--accent2:#7bb7ff;--danger:#ff7187;--shadow:0 24px 70px rgba(0,0,0,.35)}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:"Be Vietnam Pro",system-ui,sans-serif;background:radial-gradient(circle at 15% 10%,#123d62 0,transparent 35%),radial-gradient(circle at 90% 80%,#173d55 0,transparent 32%),var(--bg);color:var(--text);min-height:100vh}
-button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}.wrap{width:min(1440px,94%);margin:auto}.top{position:sticky;top:0;z-index:20;background:rgba(4,15,28,.78);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}.topin{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 0}.brand{font-weight:800}.brand small{display:block;color:var(--muted);font-weight:500}.who{color:var(--muted);font-size:.9rem}.btn{padding:11px 15px;border-radius:13px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#04111d;font-weight:800;box-shadow:0 8px 30px rgba(89,225,200,.18)}.btn.ghost{background:var(--panel2);color:var(--text);border:1px solid var(--line);box-shadow:none}.btn.danger{background:rgba(255,113,135,.14);color:#ffd9df;border:1px solid rgba(255,113,135,.35);box-shadow:none}.hero{padding:42px 0 24px}.hero h1{font-size:clamp(2rem,5vw,4.2rem);line-height:1.03;margin:.2rem 0}.hero p{color:var(--muted);max-width:800px}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px;padding-bottom:60px}.card{grid-column:span 6;background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:var(--shadow);backdrop-filter:blur(20px);transform-style:preserve-3d}.wide{grid-column:1/-1}.third{grid-column:span 4}.card h2{margin:0 0 14px}.sub{color:var(--muted);font-size:.9rem}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:.82rem;color:var(--muted)}.field input,.field select,.field textarea{width:100%;padding:12px 13px;border-radius:13px;border:1px solid var(--line);background:rgba(0,0,0,.18);color:var(--text);outline:0}.field textarea{min-height:100px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(89,225,200,.1)}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-size:.78rem;text-transform:uppercase}tbody tr{transition:.2s}tbody tr:hover{background:rgba(255,255,255,.04)}.pill{display:inline-flex;padding:5px 9px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);font-size:.78rem}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.stat{padding:16px;border:1px solid var(--line);border-radius:17px;background:rgba(255,255,255,.04)}.stat b{display:block;font-size:1.65rem}.list{display:grid;gap:10px;max-height:440px;overflow:auto}.item{padding:13px;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.035)}.item strong{display:block}.qbox{border:1px solid var(--line);border-radius:18px;padding:16px;margin-top:12px;background:rgba(0,0,0,.12)}.qhead{display:flex;justify-content:space-between;gap:8px}.optgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.62);backdrop-filter:blur(10px);z-index:50}.modal.show{display:flex}.modalbox{width:min(600px,100%);max-height:90vh;overflow:auto;background:#0b223a;border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:var(--shadow)}.notice{padding:12px;border-radius:14px;background:rgba(89,225,200,.08);border:1px solid rgba(89,225,200,.2);color:#cffff6}.notice.err{background:rgba(255,113,135,.12);border-color:rgba(255,113,135,.3);color:#ffd9df}.hidden{display:none!important}.footer{padding:0 0 50px;color:var(--muted);text-align:center}@media(max-width:900px){.card,.third{grid-column:1/-1}.stats{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.topin{align-items:flex-start;flex-direction:column}.formgrid,.optgrid{grid-template-columns:1fr}th:nth-child(3),td:nth-child(3){display:none}}
+:root{--bg:#061425;--bg2:#0a2239;--panel:rgba(10,32,53,.78);--panel2:rgba(255,255,255,.06);--text:#eef7ff;--muted:#9bb2c7;--line:rgba(130,210,255,.16);--accent:#57e0c3;--accent2:#72a9ff;--danger:#ff6f8b;--warning:#ffc857;--shadow:0 24px 90px rgba(0,0,0,.34);--radius:24px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;font-family:"Be Vietnam Pro",system-ui,sans-serif;color:var(--text);background:radial-gradient(circle at 8% 5%,#123d62 0,transparent 28rem),radial-gradient(circle at 92% 85%,#153852 0,transparent 30rem),linear-gradient(135deg,var(--bg),var(--bg2));overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(148,163,184,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(148,163,184,.035) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,black,transparent 90%);z-index:-1}
+button,input,select,textarea{font:inherit;max-width:100%}button{border:0;cursor:pointer}.wrap{width:min(1480px,calc(100% - 30px));margin:auto}.top{position:sticky;top:0;z-index:80;border-bottom:1px solid var(--line);background:rgba(4,15,28,.76);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}.topin{display:flex;align-items:center;gap:12px;min-height:72px}.brand{display:flex;align-items:center;gap:10px;min-width:0}.logo{width:46px;height:46px;border-radius:15px;object-fit:cover;flex:0 0 auto}.brand-fallback{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;font-weight:900;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2))}.brand-text{min-width:0}.brand-title{font-family:"Space Grotesk";font-weight:900;letter-spacing:.02em}.brand-sub{font-size:.72rem;color:var(--muted);margin-top:2px}.top-actions{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;padding:.72rem .95rem;border-radius:14px;font-weight:800;transition:.2s;white-space:nowrap}.btn:hover{transform:translateY(-2px)}.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#04101d;box-shadow:0 10px 28px rgba(87,224,195,.16)}.btn-soft{background:var(--panel2);color:var(--text);border:1px solid var(--line)}.btn-danger{background:rgba(255,111,139,.13);color:#ffdce4;border:1px solid rgba(255,111,139,.3)}.btn-warning{background:rgba(255,200,87,.12);color:#ffe9ae;border:1px solid rgba(255,200,87,.25)}.hidden{display:none!important}.hero{padding:36px 0 24px}.hero-kicker{display:inline-flex;padding:6px 10px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);font-size:.76rem;font-weight:900}.hero h1{font-size:clamp(2.2rem,5vw,4.4rem);line-height:1.02;margin:.7rem 0}.hero p{max-width:920px;color:var(--muted);line-height:1.7}.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px;padding-bottom:70px}.card{grid-column:span 6;padding:22px;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);box-shadow:var(--shadow);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);min-width:0}.card.full{grid-column:1/-1}.card h2{margin:0;font-size:1.18rem}.card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}.sub{color:var(--muted);font-size:.9rem;line-height:1.6}.stats{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px}.stat{padding:14px;border-radius:17px;background:rgba(255,255,255,.04);border:1px solid var(--line);min-width:0}.stat b{display:block;font-size:1.55rem;margin-top:4px}.field{display:flex;flex-direction:column;gap:6px;min-width:0}.field label{font-size:.78rem;color:var(--muted);font-weight:700}.field input,.field select,.field textarea{width:100%;padding:.82rem .9rem;border-radius:14px;border:1px solid var(--line);outline:none;background:rgba(0,0,0,.18);color:var(--text)}.field textarea{min-height:110px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(87,224,195,.08)}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.field.full{grid-column:1/-1}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between}.toolbar-left,.toolbar-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.list{display:grid;gap:10px;max-height:560px;overflow:auto;padding-right:2px}.item{padding:14px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.035)}.item-title{font-weight:900}.item-meta{font-size:.78rem;color:var(--muted);margin-top:3px;line-height:1.5}.item-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.tag{display:inline-flex;padding:4px 8px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);font-size:.72rem;font-weight:800}.danger-text{color:#ff9db0}.ok-text{color:#8df3de}.table-wrap{width:100%;overflow:auto;border:1px solid var(--line);border-radius:18px}.table-wrap table{width:100%;min-width:760px;border-collapse:collapse}.table-wrap th,.table-wrap td{text-align:left;padding:12px;border-bottom:1px solid var(--line);vertical-align:top}.table-wrap th{font-size:.74rem;text-transform:uppercase;color:var(--muted);position:sticky;top:0;background:#0a2037}.score{font-weight:900;font-size:1.1rem}.qbox{padding:16px;border:1px solid var(--line);border-radius:20px;margin-top:12px;background:rgba(0,0,0,.12)}.qhead{display:flex;align-items:center;justify-content:space-between;gap:10px}.optgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.section-note{padding:11px 12px;border-radius:14px;background:rgba(87,224,195,.08);border:1px solid rgba(87,224,195,.18);color:#cffff6}.backend-bar{margin-top:12px;padding:12px 14px;border-radius:17px;border:1px solid var(--line);background:rgba(255,255,255,.035)}.backend-dot{width:9px;height:9px;border-radius:50%;display:inline-block;background:#64748b}.backend-dot.ok{background:#57e0c3;box-shadow:0 0 16px rgba(87,224,195,.55)}.backend-dot.bad{background:#ff6f8b;box-shadow:0 0 16px rgba(255,111,139,.45)}
+.modal{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.62);backdrop-filter:blur(12px)}.modal.show{display:flex}.modalbox{width:min(600px,100%);max-height:92vh;overflow:auto;padding:22px;border:1px solid var(--line);border-radius:24px;background:#09213a;box-shadow:var(--shadow)}
+@media(max-width:1200px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}.card{grid-column:1/-1}}
+@media(max-width:760px){.wrap{width:min(100% - 16px,1480px)}.topin{min-height:66px}.brand-text{display:none}.top-actions{gap:6px}.top-actions .btn{padding:.62rem .72rem;font-size:.8rem}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.formgrid,.optgrid{grid-template-columns:1fr}.card{padding:16px;border-radius:20px}.hero{padding-top:24px}.hero h1{font-size:2.35rem}.table-wrap table{min-width:680px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
-<div id="gate" class="modal show">
- <div class="modalbox" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
-  <h2>🔐 Đang kiểm tra quyền quản trị</h2><p class="sub">Chỉ <b>admin</b> và <b>super_admin</b> mới được vào khu vực này.</p>
-  <div id="gateText" class="notice">Đang xác thực Firebase...</div>
-  <div id="gateActions" class="row hidden" style="margin-top:14px">
-    <button id="btnRetry" class="btn">Thử lại</button>
-    <button id="btnGoHome" class="btn ghost">Về trang chủ</button>
-  </div>
- </div>
-</div>
-
-<header class="top">
- <div class="wrap topin">
-  <div class="brand">8A8 CONTROL CENTER <small>Trường THCS Cẩm Lý 2</small></div>
-  <div class="row"><span id="who" class="who">Chưa xác thực</span><button id="logout" class="btn danger">Đăng xuất</button></div>
- </div>
-</header>
+<div id="gate" class="modal show"><div class="modalbox"><div class="hero-kicker">🔐 8A8 CONTROL CENTER</div><h2 style="font-size:1.55rem;margin:.75rem 0">Đang xác thực quyền quản trị</h2><div id="gateText" class="section-note">Đang kết nối Firebase...</div><div class="row" style="margin-top:12px"><button id="btnRetry" class="btn btn-primary hidden">Thử lại</button><button id="btnGoHome" class="btn btn-soft">Về trang chủ</button></div></div></div>
+<header class="top"><div class="wrap topin"><div class="brand"><img src="./logo.png" class="logo" alt="Logo 8A8" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'brand-fallback',textContent:'8A8'}))"><div class="brand-text"><div class="brand-title">8A8 CONTROL CENTER</div><div class="brand-sub">Trường THCS Cẩm Lý 2</div></div></div><div class="top-actions"><span id="who" class="sub">Chưa xác thực</span><button id="refreshAll" class="btn btn-soft">↻ Làm mới</button><button id="logout" class="btn btn-danger">Đăng xuất</button></div></div></header>
 
 <main id="app" class="wrap hidden">
-<section class="hero" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
- <span class="pill">SUPER ADMIN / ADMIN</span>
- <h1>Trung tâm quản trị<br>8A8</h1>
- <p>Quản lý thành viên, thi đua, học tập, quiz, confession, khảo sát và thông báo. Các thao tác đặc quyền được backend Firebase Admin xác thực lại.</p>
-</section>
-
+<section class="hero"><span class="hero-kicker">SUPER ADMIN / ADMIN</span><h1>Trung tâm quản trị 8A8</h1><p>Quản lý tập trung thành viên, điểm thi đua, Popup, Poll, Quiz, bài tập, điểm danh, Confession, góp ý riêng tư và kết quả. Nội dung đã tạo đều có khu vực quản lý và nút xóa tương ứng.</p><div class="backend-bar"><span id="backendDot" class="backend-dot"></span> <b>Backend:</b> <span id="backendText">Chưa kiểm tra</span></div></section>
 <section class="grid">
- <div class="card wide" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
-  <h2>📊 Tổng quan</h2>
-  <div class="stats">
-   <div class="stat"><span class="sub">Học sinh</span><b id="sStudents">0</b></div>
-   <div class="stat"><span class="sub">Quiz</span><b id="sQuizzes">0</b></div>
-   <div class="stat"><span class="sub">Confession chờ duyệt</span><b id="sConfessions">0</b></div>
-   <div class="stat"><span class="sub">Poll đang hoạt động</span><b id="sPolls">0</b></div>
-  </div>
- </div>
+ <div class="card full"><div class="card-head"><div><h2>📊 Tổng quan</h2><div class="sub">Số liệu cập nhật từ Firestore.</div></div></div><div class="stats"><div class="stat"><span class="sub">Học sinh</span><b id="sStudents">0</b></div><div class="stat"><span class="sub">Quiz</span><b id="sQuizzes">0</b></div><div class="stat"><span class="sub">Confession</span><b id="sConfessions">0</b></div><div class="stat"><span class="sub">Poll hoạt động</span><b id="sPolls">0</b></div><div class="stat"><span class="sub">Popup hoạt động</span><b id="sPopups">0</b></div><div class="stat"><span class="sub">Bài tập</span><b id="sHomework">0</b></div><div class="stat"><span class="sub">Góp ý chưa đọc</span><b id="sFeedback">0</b></div></div></div>
 
- <div class="card" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
-  <h2>👤 Tạo tài khoản học sinh</h2>
-  <p class="sub">Backend tự tạo Firebase Auth + users + students. Mật khẩu tạm chỉ trả về một lần cho admin.</p>
-  <form id="studentForm" class="formgrid">
-   <div class="field full"><label>Họ và tên</label><input name="name" required placeholder="Nguyễn Văn A"></div>
-   <div class="field"><label>Ngày sinh</label><input name="dob" type="date"></div>
-   <div class="field"><label>Giới tính</label><select name="gender"><option>Nam</option><option>Nữ</option></select></div>
-   <div class="field"><label>Tổ</label><select name="team"><option>Tổ 1</option><option>Tổ 2</option><option>Tổ 3</option><option>Tổ 4</option></select></div>
-   <div class="field"><label>Chức vụ</label><input name="classRole" placeholder="Học sinh"></div>
-   <div class="field full"><button class="btn">Tạo tài khoản</button></div>
-  </form>
- </div>
+ <div class="card"><div class="card-head"><div><h2>👤 Tạo tài khoản học sinh</h2><div class="sub">Backend tạo Firebase Auth + users + students.</div></div></div><form id="studentForm" class="formgrid"><div class="field full"><label>Họ và tên</label><input name="name" required maxlength="80" placeholder="Nguyễn Văn A"></div><div class="field"><label>Ngày sinh</label><input name="dob" type="date"></div><div class="field"><label>Giới tính</label><select name="gender"><option>Nam</option><option>Nữ</option></select></div><div class="field"><label>Tổ</label><select name="team"><option>Tổ 1</option><option>Tổ 2</option><option>Tổ 3</option><option>Tổ 4</option></select></div><div class="field"><label>Chức vụ</label><input name="classRole" value="Học sinh"></div><div class="field full"><button class="btn btn-primary">＋ Tạo tài khoản</button></div></form></div>
 
- <div class="card" data-aos="flip-left" data-aos-mirror="true" data-aos-once="false">
-  <h2>📢 Popup toàn lớp</h2>
-  <form id="popupForm" class="formgrid">
-   <div class="field full"><label>Tiêu đề</label><input name="title" required></div>
-   <div class="field full"><label>Nội dung</label><textarea name="content" required></textarea></div>
-   <div class="field"><label>Hiển thị</label><select name="active"><option value="true">Có</option><option value="false">Không</option></select></div>
-   <div class="field"><label>&nbsp;</label><button class="btn">Đăng popup</button></div>
-  </form>
-  <div class="row" style="margin-top:10px"><button id="resetPopup" class="btn ghost">Reset trạng thái đọc</button></div>
- </div>
+ <div class="card"><div class="card-head"><div><h2>📢 Popup toàn lớp</h2><div class="sub">Tạo, bật/tắt, reset trạng thái đọc và xóa Popup.</div></div></div><form id="popupForm" class="formgrid"><div class="field full"><label>Tiêu đề</label><input name="title" required maxlength="120" placeholder="THÔNG BÁO"></div><div class="field full"><label>Nội dung</label><textarea name="content" required maxlength="3000" placeholder="Nội dung thông báo..."></textarea></div><div class="field"><label>Hiển thị</label><select name="active"><option value="true">Có</option><option value="false">Không</option></select></div><div class="field"><label>&nbsp;</label><button class="btn btn-primary">📣 Đăng Popup</button></div></form><div class="row" style="margin-top:10px"><button id="resetPopup" class="btn btn-soft">🔄 Reset đã đọc</button></div><div id="popupList" class="list" style="margin-top:12px"></div></div>
 
- <div class="card wide" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
-  <div class="row" style="justify-content:space-between"><div><h2>🧠 Quiz Builder</h2><p class="sub">Tạo quiz động với câu hỏi A/B/C/D, đáp án và lời giải.</p></div><button id="addQuestion" class="btn ghost">＋ Thêm câu</button></div>
-  <form id="quizForm">
-   <div class="formgrid">
-    <div class="field"><label>Môn</label><select name="subject"><option>Toán</option><option>Ngữ văn</option><option>Tiếng Anh</option><option>Vật lý</option><option>Hóa học</option><option>Sinh học</option><option>Lịch sử</option><option>Địa lý</option><option>GDCD</option><option>Tin học</option></select></div>
-    <div class="field"><label>Thời lượng (phút)</label><input name="duration" type="number" min="1" value="15" required></div>
-    <div class="field full"><label>Tiêu đề quiz</label><input name="title" required placeholder="Ôn tập chương 1"></div>
-   </div>
-   <div id="questions"></div>
-   <button class="btn" style="margin-top:14px">Lưu quiz</button>
-  </form>
- </div>
+ <div class="card"><div class="card-head"><div><h2>📊 Poll</h2><div class="sub">Tạo Poll và xóa từng Poll.</div></div></div><form id="pollForm" class="formgrid"><div class="field full"><label>Câu hỏi</label><input name="question" required maxlength="250"></div><div class="field full"><label>Lựa chọn, mỗi dòng một phương án</label><textarea name="options" required placeholder="Lựa chọn A\nLựa chọn B\nLựa chọn C"></textarea></div><div class="field"><label>Trạng thái</label><select name="active"><option value="true">Đang hoạt động</option><option value="false">Tạm dừng</option></select></div><div class="field"><label>&nbsp;</label><button class="btn btn-primary">＋ Tạo Poll</button></div></form><div id="pollList" class="list" style="margin-top:12px"></div></div>
 
- <div class="card wide" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
-  <div class="row" style="justify-content:space-between"><div><h2>🏆 Quản lý thi đua</h2><p class="sub">Điểm khởi tạo 10. Dữ liệu realtime từ Firestore.</p></div><button id="refreshStudents" class="btn ghost">Làm mới</button></div>
-  <div style="overflow:auto"><table><thead><tr><th>Học sinh</th><th>Tổ</th><th>Điểm</th><th>Thao tác</th></tr></thead><tbody id="studentRows"></tbody></table></div>
- </div>
+ <div class="card full"><div class="card-head"><div><h2>🧠 Quiz Builder</h2><div class="sub">Tạo Quiz A/B/C/D, chỉnh câu hỏi và có thể xóa Quiz sau khi tạo.</div></div><button id="addQuestion" class="btn btn-soft" type="button">＋ Thêm câu</button></div><form id="quizForm"><div class="formgrid"><div class="field"><label>Môn</label><select name="subject"><option>Toán</option><option>Ngữ văn</option><option>Tiếng Anh</option><option>Vật lý</option><option>Hóa học</option><option>Sinh học</option><option>Lịch sử</option><option>Địa lý</option><option>GDCD</option><option>Tin học</option></select></div><div class="field"><label>Thời lượng (phút)</label><input name="duration" type="number" min="1" max="300" value="15" required></div><div class="field full"><label>Tiêu đề Quiz</label><input name="title" required maxlength="200"></div></div><div id="questions"></div><button class="btn btn-primary" style="margin-top:14px">💾 Lưu Quiz</button></form><div id="quizList" class="list" style="margin-top:14px"></div></div>
 
- <div class="card wide" data-aos="fade-up" data-aos-mirror="true" data-aos-once="false">
-  <h2>📝 Confession chờ duyệt</h2>
-  <div id="confessions" class="list"></div>
- </div>
+ <div class="card full"><div class="card-head"><div><h2>📚 Bài tập</h2><div class="sub">Đăng bài tập và xóa khi không còn cần.</div></div></div><form id="homeworkForm" class="formgrid"><div class="field"><label>Môn</label><input name="subject" required></div><div class="field"><label>Deadline</label><input name="deadline" type="datetime-local" required></div><div class="field full"><label>Tiêu đề</label><input name="title" required maxlength="200"></div><div class="field full"><label>Mô tả</label><textarea name="description" maxlength="2500"></textarea></div><div class="field full"><button class="btn btn-primary">＋ Đăng bài tập</button></div></form><div id="homeworkList" class="list" style="margin-top:12px"></div></div>
 
- <div class="card" data-aos="flip-left" data-aos-mirror="true" data-aos-once="false">
-  <h2>📊 Tạo Poll</h2>
-  <form id="pollForm" class="formgrid">
-   <div class="field full"><label>Câu hỏi</label><input name="question" required></div>
-   <div class="field full"><label>Lựa chọn, mỗi dòng một đáp án</label><textarea name="options" required placeholder="Lựa chọn A&#10;Lựa chọn B&#10;Lựa chọn C"></textarea></div>
-   <div class="field full"><button class="btn">Tạo poll</button></div>
-  </form>
- </div>
+ <div class="card"><div class="card-head"><div><h2>📝 Confession</h2><div class="sub">Duyệt / từ chối / xóa confession.</div></div></div><div id="confessionList" class="list"></div></div>
+ <div class="card"><div class="card-head"><div><h2>📮 Góp ý riêng tư</h2><div class="sub">Đánh dấu đã đọc hoặc xóa.</div></div></div><div id="feedbackList" class="list"></div></div>
 
- <div class="card" id="roleCard" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
-  <h2>🛡️ Quản lý quyền</h2>
-  <p class="sub">Chỉ Super Admin mới thấy và sử dụng khu vực này.</p>
-  <div id="roleList" class="list"></div>
- </div>
+ <div class="card full"><div class="card-head"><div><h2>🏆 Quản lý thi đua</h2><div class="sub">Cộng / trừ điểm và xóa hồ sơ học sinh. Xóa hồ sơ không tự động xóa tài khoản nếu chưa cấu hình Backend.</div></div></div><div class="table-wrap"><table><thead><tr><th>Học sinh</th><th>Tổ</th><th>Giới tính</th><th>Điểm</th><th>Thao tác</th></tr></thead><tbody id="studentRows"></tbody></table></div></div>
+
+ <div class="card"><div class="card-head"><div><h2>📅 Điểm danh</h2><div class="sub">Tạo bản ghi điểm danh và xóa bản ghi.</div></div></div><form id="attendanceForm" class="formgrid"><div class="field"><label>Ngày</label><input name="date" type="date" required></div><div class="field"><label>Số có mặt</label><input name="present" type="number" min="0" max="40" value="40" required></div><div class="field full"><label>Ghi chú</label><input name="note"></div><div class="field full"><button class="btn btn-primary">💾 Lưu điểm danh</button></div></form><div id="attendanceList" class="list" style="margin-top:12px"></div></div>
+
+ <div class="card"><div class="card-head"><div><h2>🧪 Kết quả Quiz</h2><div class="sub">Theo dõi và xóa kết quả không hợp lệ.</div></div></div><div id="resultList" class="list"></div></div>
+
+ <div id="roleCard" class="card full"><div class="card-head"><div><h2>🛡️ Phân quyền</h2><div class="sub">Chỉ Super Admin mới được đổi quyền. Không cho hạ quyền tài khoản Super Admin chính.</div></div></div><div id="roleList" class="list"></div></div>
 </section>
-<div class="footer">8A8 — Bứt phá giới hạn, Đoàn kết đập tan mọi thách thức!</div>
+<div style="padding:0 0 60px;text-align:center;color:var(--muted)">8A8 — Bứt phá giới hạn, Đoàn kết đập tan mọi thách thức!</div>
 </main>
 
-<div id="scoreModal" class="modal">
- <div class="modalbox" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false">
-  <h2 id="scoreTitle">Cập nhật thi đua</h2>
-  <form id="scoreForm">
-   <input type="hidden" name="uid">
-   <div class="field"><label>Loại</label><select name="type"><option value="praise">Khen thưởng +1</option><option value="criticism">Nhắc nhở -1</option></select></div>
-   <div class="field"><label>Lý do</label><textarea name="reason" required></textarea></div>
-   <div class="row" style="margin-top:12px"><button class="btn">Lưu</button><button type="button" class="btn ghost" id="closeScore">Hủy</button></div>
-  </form>
- </div>
-</div>
+<div id="scoreModal" class="modal"><div class="modalbox"><h2 id="scoreTitle" style="margin-top:0">Cập nhật thi đua</h2><form id="scoreForm"><input type="hidden" name="uid"><div class="field"><label>Loại</label><select name="type"><option value="praise">Khen thưởng +1</option><option value="criticism">Nhắc nhở -1</option></select></div><div class="field" style="margin-top:10px"><label>Lý do</label><textarea name="reason" required maxlength="500"></textarea></div><div class="row" style="margin-top:12px"><button class="btn btn-primary">Lưu</button><button id="closeScore" class="btn btn-soft" type="button">Hủy</button></div></form></div></div>
 
 <script>
-const firebaseConfig = {
- apiKey:"AIzaSyCWDybmAejsQX0f9lwd6c0lXyfQ4A-HqKs",
- authDomain:"a8thcscl2.firebaseapp.com",
- projectId:"a8thcscl2",
- storageBucket:"a8thcscl2.firebasestorage.app",
- messagingSenderId:"271886897885",
- appId:"1:271886897885:web:d8fc19828db5921d9bc134",
- measurementId:"G-KZP06LF2Z4"
-};
-let auth=null;
-let db=null;
-try{
- firebase.initializeApp(firebaseConfig);
- auth=firebase.auth();
- db=firebase.firestore();
-}catch(error){
- console.error("[Admin Firebase] Không thể khởi tạo Firebase:",error);
- const gateText=document.getElementById("gateText");
- const gateActions=document.getElementById("gateActions");
- if(gateText){gateText.className="notice err";gateText.textContent="Không thể khởi tạo Firebase Admin. Xem console để kiểm tra.";}
- if(gateActions)gateActions.classList.remove("hidden");
+const firebaseConfig={apiKey:"AIzaSyCWDybmAejsQX0f9lwd6c0lXyfQ4A-HqKs",authDomain:"a8thcscl2.firebaseapp.com",projectId:"a8thcscl2",storageBucket:"a8thcscl2.firebasestorage.app",messagingSenderId:"271886897885",appId:"1:271886897885:web:d8fc19828db5921d9bc134",measurementId:"G-KZP06LF2Z4"};
+firebase.initializeApp(firebaseConfig);const auth=firebase.auth(),db=firebase.firestore();
+const ADMINS=new Set(["admin","super_admin"]),SUPER_EMAIL="tranducmanh2109@gmail.com";
+let currentUser=null,profile=null,unsubs=[];let localStudents=[];
+const BACKEND=String(localStorage.getItem("A8A8_BACKEND_URL")||"").replace(/\/$/,"");
+const $=id=>document.getElementById(id);const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+function millis(v){if(!v)return 0;if(typeof v.toMillis==="function")return v.toMillis();if(v.seconds!=null)return Number(v.seconds)*1000;const n=new Date(v).getTime();return Number.isFinite(n)?n:0}
+function dateText(v){const n=millis(v);return n?new Date(n).toLocaleString("vi-VN"):"—"}
+function confirmDelete(label){return Swal.fire({icon:"warning",title:"Xóa dữ liệu?",html:`Bạn sắp xóa <b>${esc(label)}</b>. Hành động này không thể hoàn tác.`,showCancelButton:true,confirmButtonText:"Xóa luôn",cancelButtonText:"Hủy",confirmButtonColor:"#ef4444"}).then(x=>x.isConfirmed)}
+function ok(title,text=""){return Swal.fire({icon:"success",title,text,timer:1800,showConfirmButton:false})}
+function fail(message){return Swal.fire({icon:"error",title:"Không thể thực hiện",text:message})}
+async function api(path,options={}){if(!currentUser)throw Error("Chưa đăng nhập.");if(!BACKEND)throw Error("Chưa cấu hình A8A8_BACKEND_URL.");const token=await currentUser.getIdToken(true);const r=await fetch(`${BACKEND}${path}`,{...options,headers:{"Content-Type":"application/json",Authorization:`Bearer ${token}`,...(options.headers||{})}});const d=await r.json().catch(()=>({}));if(!r.ok)throw Error(d.message||d.error||`HTTP ${r.status}`);return d}
+async function checkBackend(){if(!BACKEND){$("backendDot").className="backend-dot bad";$("backendText").textContent="Chưa cấu hình A8A8_BACKEND_URL (chức năng tạo tài khoản học sinh sẽ bị khóa).";return}try{const r=await fetch(`${BACKEND}/api/health`);const d=await r.json();$("backendDot").className="backend-dot ok";$("backendText").textContent=d.firebaseReady?`${BACKEND} · Firebase Admin sẵn sàng`:`${BACKEND} · Firebase Admin chưa sẵn sàng`;}catch(e){$("backendDot").className="backend-dot bad";$("backendText").textContent=`Không kết nối được ${BACKEND}`}}
+function clearSnapshots(){unsubs.forEach(fn=>{try{fn()}catch(e){}});unsubs=[]}
+async function verifyAdmin(u){$("gateText").textContent="Đang đọc users/{uid} để kiểm tra role...";try{const snap=await db.collection("users").doc(u.uid).get();const p=snap.exists?snap.data():{};if(!ADMINS.has(p.role)){throw Error(`Tài khoản ${u.email||"này"} chỉ có quyền ${p.role||"student"}.`)}profile={uid:u.uid,email:u.email,...p};$("who").textContent=`Đang quản trị: ${profile.displayName||u.email} (${profile.role})`;$("gate").classList.remove("show");$("app").classList.remove("hidden");await checkBackend();await start();}catch(e){console.error("[AdminAuth]",e);$("gateText").className="section-note";$("gateText").innerHTML=esc(e.message);$("btnRetry").classList.remove("hidden")}}
+function sortDesc(items,field="createdAt"){return [...items].sort((a,b)=>millis(b[field])-millis(a[field]))}
+
+async function start(){clearSnapshots();
+ subscribe("students",null,s=>{localStudents=sortDesc(s.map(d=>({id:d.id,...d.data()})),"updatedAt");renderStudents();renderOverview();});
+ subscribe("quizzes",null,s=>{const items=sortDesc(s.map(d=>({id:d.id,...d.data()})));renderQuizList(items);$("sQuizzes").textContent=items.length});
+ subscribe("popups",null,s=>{const items=sortDesc(s.map(d=>({id:d.id,...d.data()})));renderPopups(items);$("sPopups").textContent=items.filter(x=>x.active!==false).length});
+ subscribe("polls",null,s=>{const items=sortDesc(s.map(d=>({id:d.id,...d.data()})));renderPolls(items);$("sPolls").textContent=items.filter(x=>x.active!==false).length});
+ subscribe("homework",null,s=>{const items=sortDesc(s.map(d=>({id:d.id,...d.data()})));renderHomework(items);$("sHomework").textContent=items.length});
+ subscribe("confessions",null,s=>{const items=sortDesc(s.map(d=>({id:d.id,...d.data()})));renderConfessions(items);$("sConfessions").textContent=items.filter(x=>x.status!=="approved").length});
+ subscribe("privateFeedback",null,s=>{const items=sortDesc(s.map(d=>({id:d.id,...d.data()})));renderFeedback(items);$("sFeedback").textContent=items.filter(x=>x.status!=="read").length});
+ subscribe("attendance",null,s=>renderAttendance(sortDesc(s.map(d=>({id:d.id,...d.data()})),"date")));
+ subscribe("quizResults",null,s=>renderResults(sortDesc(s.map(d=>({id:d.id,...d.data()})))));
+ subscribe("users",null,s=>{if(profile?.role==="super_admin")renderRoles(sortDesc(s.map(d=>({id:d.id,...d.data()})),"displayName"));});
+ renderOverview();
 }
-const SUPER="super_admin", ADMINS=new Set(["admin","super_admin"]);
-const BACKEND=(localStorage.getItem("A8A8_BACKEND_URL")||"").replace(/\/$/,"");
-let currentUser=null, profile=null, unsubStudents=null, unsubConfessions=null, unsubQuizzes=null, unsubPolls=null;
+function subscribe(collectionName,order,sink){const ref=db.collection(collectionName);const fn=ref.onSnapshot(sink,e=>{console.error(`[Firestore ${collectionName}]`,e);});unsubs.push(fn)}
+function renderOverview(){$("sStudents").textContent=localStudents.length}
 
-const ADMIN_SESSION_KEY="adminSession";
-function cloneDefault(value){return Array.isArray(value)?[...value]:(value&&typeof value==="object"?{...value}:value);}
-function getCollection(key,defaultValue=[]){const storageKey=`a8a8-collection-${String(key)}`,fallback=cloneDefault(defaultValue);try{const raw=localStorage.getItem(storageKey);if(raw===null||raw===undefined){localStorage.setItem(storageKey,JSON.stringify(fallback));return fallback;}const value=JSON.parse(raw);if(value===null||value===undefined){localStorage.setItem(storageKey,JSON.stringify(fallback));return fallback;}return value;}catch(error){console.error(`[Admin Collection] ${storageKey}:`,error);try{localStorage.setItem(storageKey,JSON.stringify(fallback));}catch(storageError){console.error(`[Admin Collection] init ${storageKey}:`,storageError);}return fallback;}}
-function setCollection(key,value){try{localStorage.setItem(`a8a8-collection-${String(key)}`,JSON.stringify(value));}catch(error){console.error(`[Admin Collection] write ${key}:`,error);}return value;}
-function getAdminSession(user){const cached=getCollection(ADMIN_SESSION_KEY,{}),base=cached&&typeof cached==="object"&&!Array.isArray(cached)?cached:{};return {...base,uid:user?.uid||base.uid||"",email:user?.email||base.email||"",displayName:user?.displayName||base.displayName||"Quản trị viên",role:base.role||"admin"};}
-function saveAdminSession(data){return setCollection(ADMIN_SESSION_KEY,data||{});}
-getCollection(ADMIN_SESSION_KEY,{});
-const $=s=>document.querySelector(s);
-const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
-const tsToDate=v=>v?.toDate?v.toDate():new Date(v||Date.now());
-
-function swalError(message){return Swal.fire({icon:"error",title:"Không thể thực hiện",text:message});}
-function swalOk(title,text=""){return Swal.fire({icon:"success",title,text,timer:2200,showConfirmButton:false});}
-
-async function api(path,options={}){
- if(!currentUser) throw new Error("Chưa đăng nhập.");
- const token=await currentUser.getIdToken(true);
- const res=await fetch(`${BACKEND}${path}`,{...options,headers:{"Content-Type":"application/json",Authorization:`Bearer ${token}`,...(options.headers||{})}});
- const data=await res.json().catch(()=>({}));
- if(!res.ok) throw new Error(data.message||data.error||`HTTP ${res.status}`);
- return data;
+function renderStudents(){
+ $("studentRows").innerHTML=localStudents.map(s=>`<tr><td><b>${esc(s.name||"Chưa đặt tên")}</b><br><span class="sub">${esc(s.classRole||"Học sinh")}</span></td><td>${esc(s.team||"—")}</td><td>${esc(s.gender||"—")}</td><td class="score">${Number(s.score??10)}</td><td><div class="row"><button class="btn btn-soft scoreBtn" data-id="${esc(s.id)}">＋/− Điểm</button><button class="btn btn-danger deleteStudent" data-id="${esc(s.id)}">🗑️ Xóa</button></div></td></tr>`).join("")||`<tr><td colspan="5" class="sub">Chưa có học sinh.</td></tr>`;
+ document.querySelectorAll(".scoreBtn").forEach(b=>b.onclick=()=>openScore(b.dataset.id));document.querySelectorAll(".deleteStudent").forEach(b=>b.onclick=()=>deleteStudent(b.dataset.id));
 }
+async function openScore(id){const s=localStudents.find(x=>x.id===id);if(!s)return;$("scoreForm [name=uid]").value=id;$("scoreTitle").textContent=`Thi đua — ${s.name}`;$("scoreModal").classList.add("show")}
+async function saveScore(e){e.preventDefault();try{const f=new FormData(e.target);await api(`/api/admin/students/${encodeURIComponent(f.get("uid"))}/score`,{method:"PATCH",body:JSON.stringify({points:f.get("type")==="praise"?1:-1,reason:String(f.get("reason")).trim()})});$("scoreModal").classList.remove("show");e.target.reset();await ok("Đã cập nhật điểm")}catch(e){fail(e.message)}}
+async function deleteStudent(id){const s=localStudents.find(x=>x.id===id);if(!s||!(await confirmDelete(`hồ sơ ${s.name||id} và tài khoản liên kết`)))return;try{await api(`/api/admin/students/${encodeURIComponent(id)}`,{method:"DELETE"});await ok("Đã xóa học sinh","Đã xóa hồ sơ và tài khoản Firebase liên kết.")}catch(e){fail(e.message)}}
 
-function addQuestion(data={}){
- const box=document.createElement("div"); box.className="qbox"; box.dataset.index=$("#questions").children.length;
- box.setAttribute("data-aos","fade-up");box.setAttribute("data-aos-mirror","true");box.setAttribute("data-aos-once","false");
- box.innerHTML=`<div class="qhead"><b>Câu hỏi <span class="qn"></span></b><button type="button" class="btn danger removeQ">Xóa</button></div>
- <div class="field" style="margin-top:10px"><label>Nội dung</label><textarea class="qq" required>${esc(data.question||"")}</textarea></div>
- <div class="optgrid">
- ${["A","B","C","D"].map((l,i)=>`<div class="field"><label>${l}</label><input class="qo" data-letter="${l}" required value="${esc(data.options?.[i]||"")}"></div>`).join("")}
- </div>
- <div class="formgrid" style="margin-top:8px">
-  <div class="field"><label>Đáp án đúng</label><select class="qa">${["A","B","C","D"].map(l=>`<option ${data.answer===l?"selected":""}>${l}</option>`).join("")}</select></div>
-  <div class="field"><label>Lời giải</label><input class="qe" value="${esc(data.explanation||"")}" required></div>
- </div>`;
- box.querySelector(".removeQ").onclick=()=>{box.remove();renumberQuestions()};
- $("#questions").appendChild(box);renumberQuestions();
-}
-function renumberQuestions(){document.querySelectorAll("#questions .qbox").forEach((x,i)=>x.querySelector(".qn").textContent=i+1)}
+function addQuestion(data={}){const root=$("questions"),box=document.createElement("div");box.className="qbox";box.innerHTML=`<div class="qhead"><b>Câu hỏi <span class="qn"></span></b><button type="button" class="btn btn-danger removeQ">Xóa</button></div><div class="field" style="margin-top:10px"><label>Nội dung</label><textarea class="qq" required>${esc(data.question||"")}</textarea></div><div class="optgrid" style="margin-top:10px">${["A","B","C","D"].map((l,i)=>`<div class="field"><label>${l}</label><input class="qo" required value="${esc(data.options?.[i]||"")}"></div>`).join("")}</div><div class="formgrid" style="margin-top:10px"><div class="field"><label>Đáp án đúng</label><select class="qa">${["A","B","C","D"].map(l=>`<option ${data.answer===l?"selected":""}>${l}</option>`).join("")}</select></div><div class="field"><label>Lời giải</label><input class="qe" required value="${esc(data.explanation||"")}"></div></div>`;box.querySelector(".removeQ").onclick=()=>{box.remove();renumberQuestions()};root.appendChild(box);renumberQuestions()}
+function renumberQuestions(){document.querySelectorAll("#questions .qbox").forEach((q,i)=>q.querySelector(".qn").textContent=i+1)}
 function collectQuestions(){return [...document.querySelectorAll("#questions .qbox")].map(q=>({question:q.querySelector(".qq").value.trim(),options:[...q.querySelectorAll(".qo")].map(x=>x.value.trim()),answer:q.querySelector(".qa").value,explanation:q.querySelector(".qe").value.trim()}))}
-function requireBackend(){if(!BACKEND)throw new Error("Chưa cấu hình A8A8_BACKEND_URL. Hãy đặt URL backend Railway trong localStorage.");}
+async function createQuiz(e){e.preventDefault();try{const f=new FormData(e.target),questions=collectQuestions();if(!questions.length)throw Error("Quiz cần ít nhất một câu hỏi.");if(questions.some(q=>q.options.length!==4||q.options.some(x=>!x)))throw Error("Mỗi câu phải có đủ 4 lựa chọn.");await api("/api/admin/content/quizzes",{method:"POST",body:JSON.stringify({subject:String(f.get("subject")),title:String(f.get("title")).trim(),duration:Number(f.get("duration")),questions})});e.target.reset();$("questions").innerHTML="";addQuestion();await ok("Đã tạo Quiz")}catch(e){fail(e.message)}}
+async function deleteDocByCollection(collectionName,id,label){if(!(await confirmDelete(label)))return;try{await api(`/api/admin/content/${encodeURIComponent(collectionName)}/${encodeURIComponent(id)}`,{method:"DELETE"});await ok("Đã xóa",label)}catch(e){fail(e.message)}}
+function renderQuizList(items){$("quizList").innerHTML=items.map(x=>`<div class="item"><div class="item-title">${esc(x.title||"Quiz")}</div><div class="item-meta">${esc(x.subject||"")} · ${Number(x.duration||0)} phút · ${(x.questions||[]).length} câu · ${dateText(x.createdAt)}</div><div class="item-actions"><button class="btn btn-danger delQuiz" data-id="${x.id}" data-label="Quiz ${esc(x.title||"")}">🗑️ Xóa Quiz</button></div></div>`).join("")||`<div class="sub">Chưa có Quiz.</div>`;document.querySelectorAll(".delQuiz").forEach(b=>b.onclick=()=>deleteDocByCollection("quizzes",b.dataset.id,b.dataset.label))}
 
-async function createStudent(e){
- e.preventDefault(); try{requireBackend();const f=new FormData(e.target);const data=await api("/api/admin/students/create",{method:"POST",body:JSON.stringify(Object.fromEntries(f))});await Swal.fire({icon:"success",title:"Đã tạo học sinh",html:`<b>${esc(data.student.name)}</b><br>Email: <code>${esc(data.student.email)}</code><br>Mật khẩu tạm: <code>${esc(data.student.temporaryPassword)}</code><br><small>Hãy sao lưu thông tin này ngay.</small>`});e.target.reset()}catch(err){swalError(err.message)}}
-async function createPopup(e){e.preventDefault();try{requireBackend();const f=new FormData(e.target);await api("/api/admin/popup",{method:"POST",body:JSON.stringify({title:f.get("title"),content:f.get("content"),active:f.get("active")==="true"})});await swalOk("Đã đăng popup");e.target.reset()}catch(err){swalError(err.message)}}
-async function resetPopup(){try{requireBackend();await api("/api/admin/popup/reset",{method:"POST",body:"{}"});await swalOk("Đã reset trạng thái đọc")}catch(err){swalError(err.message)}}
+async function createPopup(e){e.preventDefault();try{const f=new FormData(e.target);await api("/api/admin/popup",{method:"POST",body:JSON.stringify({title:String(f.get("title")).trim(),content:String(f.get("content")).trim(),active:f.get("active")==="true"})});e.target.reset();await ok("Đã đăng Popup","Thông báo mới sẽ xuất hiện cho người đã đăng nhập.")}catch(e){fail(e.message)}}
+function renderPopups(items){$("popupList").innerHTML=items.map(x=>`<div class="item"><div class="item-title">${esc(x.title||"THÔNG BÁO")}</div><div class="item-meta">${x.active!==false?"🟢 Đang hiển thị":"⚪ Tạm tắt"} · ${dateText(x.createdAt)}</div><div style="margin-top:8px;white-space:pre-wrap;line-height:1.6">${esc(x.content||"")}</div><div class="item-actions"><button class="btn btn-soft togglePopup" data-id="${x.id}" data-active="${x.active!==false}">${x.active!==false?"⏸ Tắt":"▶ Bật"}</button><button class="btn btn-danger delPopup" data-id="${x.id}" data-label="Popup ${esc(x.title||"")}">🗑️ Xóa</button></div></div>`).join("")||`<div class="sub">Chưa có Popup.</div>`;document.querySelectorAll(".togglePopup").forEach(b=>b.onclick=()=>togglePopup(b.dataset.id,b.dataset.active==="true"));document.querySelectorAll(".delPopup").forEach(b=>b.onclick=()=>deleteDocByCollection("popups",b.dataset.id,b.dataset.label))}
+async function togglePopup(id,isActive){try{await api(`/api/admin/content/popups/${encodeURIComponent(id)}`,{method:"PATCH",body:JSON.stringify({active:!isActive})});await ok(isActive?"Đã tắt Popup":"Đã bật Popup")}catch(e){fail(e.message)}}
 
-async function createQuiz(e){e.preventDefault();try{const questions=collectQuestions();if(!questions.length)throw new Error("Quiz cần ít nhất một câu hỏi.");if(questions.some(q=>q.options.some(x=>!x)))throw new Error("Mỗi câu cần đủ 4 lựa chọn.");const f=new FormData(e.target);await db.collection("quizzes").add({subject:f.get("subject"),title:f.get("title").trim(),duration:Number(f.get("duration")),questions,createdAt:firebase.firestore.FieldValue.serverTimestamp(),createdBy:currentUser.uid});await swalOk("Đã lưu quiz");e.target.reset();$("#questions").innerHTML="";addQuestion()}catch(err){swalError(err.message)}}
+async function resetPopup(){try{await api("/api/admin/popup/reset",{method:"POST",body:"{}"});await ok("Đã reset trạng thái đọc")}catch(e){fail(e.message)}}
 
-async function changeScore(uid){
- const student=(await db.collection("students").doc(uid).get()).data(); if(!student)return;
- $("#scoreModal").classList.add("show");$("#scoreForm [name=uid]").value=uid;$("#scoreTitle").textContent=`Thi đua — ${student.name}`;
-}
-async function saveScore(e){
- e.preventDefault();const f=new FormData(e.target);try{
-  const ref=db.collection("students").doc(f.get("uid"));await db.runTransaction(async tx=>{const snap=await tx.get(ref);if(!snap.exists)throw new Error("Không tìm thấy học sinh.");const s=snap.data();const points=f.get("type")==="praise"?1:-1;const score=Math.max(0,Number(s.score??10)+points);const history=Array.isArray(s.history)?s.history:[];const badges=[];if(score>=12)badges.push("📚 Chăm ngoan học giỏi");if(score<8)badges.push("⚡ Cần cố gắng");tx.update(ref,{score,badges,history:[...history,{type:f.get("type"),points,reason:f.get("reason").trim(),timestamp:new Date().toISOString()}]})});
- $("#scoreModal").classList.remove("show");e.target.reset();await swalOk("Đã cập nhật điểm")
- }catch(err){swalError(err.message)}}
-async function deleteConfession(id){try{await db.collection("confessions").doc(id).delete();await swalOk("Đã xóa confession")}catch(e){swalError(e.message)}}
-async function approveConfession(id){try{await db.collection("confessions").doc(id).update({status:"approved",approvedAt:firebase.firestore.FieldValue.serverTimestamp(),approvedBy:currentUser.uid});await swalOk("Đã duyệt confession")}catch(e){swalError(e.message)}}
+async function createPoll(e){e.preventDefault();try{const f=new FormData(e.target),opts=String(f.get("options")).split(/\r?\n/).map(x=>x.trim()).filter(Boolean).slice(0,8);if(opts.length<2)throw Error("Poll cần ít nhất 2 lựa chọn.");const options=opts.map((text,i)=>({id:String(i+1),text,votes:0}));await api("/api/admin/content/polls",{method:"POST",body:JSON.stringify({question:String(f.get("question")).trim(),options,active:f.get("active")==="true"})});e.target.reset();await ok("Đã tạo Poll")}catch(e){fail(e.message)}}
+function renderPolls(items){$("pollList").innerHTML=items.map(x=>`<div class="item"><div class="item-title">${esc(x.question||"Poll")}</div><div class="item-meta">${x.active!==false?"🟢 Đang hoạt động":"⚪ Tạm dừng"} · ${dateText(x.createdAt)}</div><div class="item-meta">${(x.options||[]).map(o=>`${esc(o.text)}: ${Number(o.votes||0)}`).join(" · ")}</div><div class="item-actions"><button class="btn btn-soft togglePoll" data-id="${x.id}" data-active="${x.active!==false}">${x.active!==false?"⏸ Tạm dừng":"▶ Bật lại"}</button><button class="btn btn-danger delPoll" data-id="${x.id}" data-label="Poll ${esc(x.question||"")}">🗑️ Xóa</button></div></div>`).join("")||`<div class="sub">Chưa có Poll.</div>`;document.querySelectorAll(".togglePoll").forEach(b=>b.onclick=async()=>{try{await api(`/api/admin/content/polls/${encodeURIComponent(b.dataset.id)}`,{method:"PATCH",body:JSON.stringify({active:!(b.dataset.active==="true")})})}catch(e){fail(e.message)}});document.querySelectorAll(".delPoll").forEach(b=>b.onclick=()=>deleteDocByCollection("polls",b.dataset.id,b.dataset.label))}
 
-function subscribe(){
- unsubStudents=db.collection("students").orderBy("score","desc").onSnapshot(s=>{ $("#sStudents").textContent=s.size;$("#studentRows").innerHTML=s.docs.map(d=>{const x=d.data();return `<tr data-aos="fade-up" data-aos-mirror="true" data-aos-once="false"><td><b>${esc(x.name)}</b><br><span class="sub">${esc(x.classRole||"Học sinh")}</span></td><td>${esc(x.team||"—")}</td><td><b>${Number(x.score??10)}</b></td><td><button class="btn ghost scoreBtn" data-id="${d.id}">＋/− Điểm</button></td></tr>`}).join("");document.querySelectorAll(".scoreBtn").forEach(b=>b.onclick=()=>changeScore(b.dataset.id));if(window.AOS)AOS.refresh()});
- unsubQuizzes=db.collection("quizzes").onSnapshot(s=>$("#sQuizzes").textContent=s.size);
- unsubConfessions=db.collection("confessions").where("status","==","pending").onSnapshot(s=>{ $("#sConfessions").textContent=s.size;$("#confessions").innerHTML=s.docs.map(d=>{const x=d.data();return `<div class="item" data-aos="zoom-in" data-aos-mirror="true" data-aos-once="false"><strong>Ẩn danh</strong><p>${esc(x.content)}</p><span class="sub">${tsToDate(x.createdAt).toLocaleString("vi-VN")}</span><div class="row" style="margin-top:8px"><button class="btn approve" data-id="${d.id}">Duyệt</button><button class="btn danger del" data-id="${d.id}">Xóa</button></div></div>`}).join("")||'<div class="sub">Không có confession chờ duyệt.</div>';document.querySelectorAll(".approve").forEach(b=>b.onclick=()=>approveConfession(b.dataset.id));document.querySelectorAll(".del").forEach(b=>b.onclick=()=>deleteConfession(b.dataset.id));if(window.AOS)AOS.refresh()});
- unsubPolls=db.collection("polls").where("active","==",true).onSnapshot(s=>$("#sPolls").textContent=s.size);
-}
+async function createHomework(e){e.preventDefault();try{const f=new FormData(e.target);await api("/api/admin/content/homework",{method:"POST",body:JSON.stringify({subject:String(f.get("subject")).trim(),title:String(f.get("title")).trim(),description:String(f.get("description")).trim(),deadline:String(f.get("deadline"))})});e.target.reset();await ok("Đã đăng bài tập")}catch(e){fail(e.message)}}
+function renderHomework(items){$("homeworkList").innerHTML=items.map(x=>`<div class="item"><div class="item-title">${esc(x.subject||"Môn")} · ${esc(x.title||"Bài tập")}</div><div class="item-meta">Hạn: ${dateText(x.deadline)} · Đăng: ${dateText(x.createdAt)}</div><div class="item-meta">${esc(x.description||"")}</div><div class="item-actions"><button class="btn btn-danger delHw" data-id="${x.id}" data-label="Bài tập ${esc(x.title||"")}">🗑️ Xóa</button></div></div>`).join("")||`<div class="sub">Chưa có bài tập.</div>`;document.querySelectorAll(".delHw").forEach(b=>b.onclick=()=>deleteDocByCollection("homework",b.dataset.id,b.dataset.label))}
 
-async function loadRoleManagement(){try{if(profile?.role!==SUPER){$("#roleCard").classList.add("hidden");return;}const snap=await db.collection("users").orderBy("displayName").get();$("#roleList").innerHTML=snap.docs.map(d=>{const x=d.data();return `<div class="item"><strong>${esc(x.displayName||"Chưa đặt tên")}</strong><span class="sub">${esc(x.email||"")} · ${esc(x.role||"student")}</span><div class="row" style="margin-top:8px"><select class="roleSelect" data-id="${d.id}">${["student","admin","super_admin"].map(r=>`<option ${x.role===r?"selected":""}>${r}</option>`).join("")}</select><button class="btn saveRole" data-id="${d.id}">Lưu quyền</button></div></div>`}).join("")||'<div class="sub">Chưa có tài khoản để quản lý.</div>';document.querySelectorAll(".saveRole").forEach(btn=>btn.onclick=async()=>{try{const id=btn.dataset.id,role=document.querySelector(`.roleSelect[data-id="${id}"]`)?.value;requireBackend();await api(`/api/super-admin/users/${encodeURIComponent(id)}/role`,{method:"PATCH",body:JSON.stringify({role})});await swalOk("Đã cập nhật quyền");}catch(error){console.error("[Admin Role]",error);swalError(error.message);}});}catch(error){console.error("[Admin Role]",error);$("#roleList").innerHTML='<div class="notice err">Không thể tải danh sách quyền. Admin vẫn có thể tiếp tục.</div>';}}
+async function createAttendance(e){e.preventDefault();try{const f=new FormData(e.target);await api("/api/admin/content/attendance",{method:"POST",body:JSON.stringify({date:String(f.get("date")),present:Number(f.get("present")),total:40,note:String(f.get("note")||"").trim()})});e.target.reset();$("attendanceForm [name=date]").value=new Date().toISOString().slice(0,10);await ok("Đã lưu điểm danh")}catch(e){fail(e.message)}}
+function renderAttendance(items){$("attendanceList").innerHTML=items.map(x=>`<div class="item"><div class="item-title">📅 ${esc(x.date||"—")}</div><div class="item-meta">Có mặt: ${Number(x.present||0)}/${Number(x.total||40)} · ${esc(x.note||"")}</div><div class="item-actions"><button class="btn btn-danger delAttendance" data-id="${x.id}" data-label="Điểm danh ${esc(x.date||"")}">🗑️ Xóa</button></div></div>`).join("")||`<div class="sub">Chưa có bản ghi điểm danh.</div>`;document.querySelectorAll(".delAttendance").forEach(b=>b.onclick=()=>deleteDocByCollection("attendance",b.dataset.id,b.dataset.label))}
 
-async function enter(p){try{if(!currentUser)throw new Error("Phiên Firebase chưa sẵn sàng.");const safe={uid:currentUser.uid,email:currentUser.email||"",displayName:p?.displayName||currentUser.displayName||currentUser.email||"Quản trị viên",role:ADMINS.has(p?.role)?p.role:"admin",classRole:p?.classRole||"",team:p?.team||"",fallback:Boolean(p?.fallback)};profile=safe;saveAdminSession(safe);$("#gate").classList.remove("show");$("#app").classList.remove("hidden");$("#who").textContent=`Đang quản trị dưới tên: ${safe.displayName} (${safe.role})`;subscribe();await loadRoleManagement();if(window.AOS)AOS.refresh();}catch(error){console.error("[Admin] startup",error);$("#gateText").className="notice err";$("#gateText").textContent="Admin vẫn được giữ giao diện để kiểm tra lỗi. Xem console để biết chi tiết.";$("#gateActions").classList.remove("hidden");}}
-async function verifyAdminAuth(u){try{$("#gateText").className="notice";$("#gateText").textContent="Đang kiểm tra quyền hạn tài khoản...";$("#gateActions").classList.add("hidden");if(!u){$("#gateText").className="notice err";$("#gateText").innerHTML="<b>Chưa đăng nhập.</b> Hãy đăng nhập tại Portal 8A8 rồi mở lại trang Admin.";$("#gateActions").classList.remove("hidden");return;}const cached=getAdminSession(u);let fp=null;try{const snap=await db.collection("users").doc(u.uid).get();if(snap.exists)fp={uid:u.uid,...snap.data()};}catch(error){console.error("[Admin] users profile",error);}const resolved=fp||{...cached,uid:u.uid,email:u.email||cached.email||"",displayName:u.displayName||cached.displayName||"Quản trị viên",role:ADMINS.has(cached.role)?cached.role:"admin",fallback:true};if(!ADMINS.has(resolved.role)){$("#gateText").className="notice err";$("#gateText").innerHTML=`<b>Từ chối truy cập:</b> tài khoản <code>${esc(u.email||"")}</code> có role <i>${esc(resolved.role||"student")}</i>.`;$("#gateActions").classList.remove("hidden");return;}await enter(resolved);}catch(error){console.error("[Admin Auth]",error);$("#gateText").className="notice err";$("#gateText").textContent="Đã xảy ra lỗi khi kiểm tra Admin. Không tự động chuyển hướng; hãy xem console để kiểm tra.";$("#gateActions").classList.remove("hidden");}}
-if(auth){
- auth.onAuthStateChanged(async u=>{try{currentUser=u;await verifyAdminAuth(u);}catch(error){console.error("[Admin Auth State]",error);$("#gateText").className="notice err";$("#gateText").textContent="Không thể khởi tạo trạng thái Admin. Kiểm tra console để biết chi tiết.";$("#gateActions").classList.remove("hidden");}});
-} else {
- console.error("[Admin Auth State] Auth Firebase chưa sẵn sàng.");
-}
+function renderConfessions(items){$("confessionList").innerHTML=items.map(x=>`<div class="item"><div class="item-title">💬 Ẩn danh · <span class="tag">${esc(x.status||"pending")}</span></div><div style="margin-top:8px;white-space:pre-wrap;line-height:1.6">${esc(x.content||"")}</div><div class="item-meta">${dateText(x.createdAt)}</div><div class="item-actions">${x.status!=="approved"?`<button class="btn btn-primary approveConf" data-id="${x.id}">✅ Duyệt</button>`:""}<button class="btn btn-danger delConf" data-id="${x.id}" data-label="Confession">🗑️ Xóa</button></div></div>`).join("")||`<div class="sub">Chưa có confession.</div>`;document.querySelectorAll(".approveConf").forEach(b=>b.onclick=()=>approveConfession(b.dataset.id));document.querySelectorAll(".delConf").forEach(b=>b.onclick=()=>deleteDocByCollection("confessions",b.dataset.id,"Confession"))}
+async function approveConfession(id){try{await api(`/api/admin/content/confessions/${encodeURIComponent(id)}`,{method:"PATCH",body:JSON.stringify({status:"approved",approvedBy:currentUser.uid,approvedAt:new Date().toISOString()})});await ok("Đã duyệt confession")}catch(e){fail(e.message)}}
 
-$("#btnRetry").onclick = () => { verifyAdminAuth(currentUser); };
-$("#btnGoHome").onclick = () => { location.href = "index.html"; };
-$("#logout").onclick = () => { if(auth) auth.signOut().catch(error=>console.error("[Admin Logout]",error)); };
-$("#studentForm").onsubmit = createStudent;
-$("#popupForm").onsubmit = createPopup;
-$("#resetPopup").onclick = resetPopup;
-$("#quizForm").onsubmit = createQuiz;
-$("#pollForm").onsubmit = async e => {
- e.preventDefault();
- try {
-  const f = new FormData(e.target), opts = String(f.get("options")).split(/\r?\n/).map((x,i)=>({id:String(i+1),text:x.trim(),votes:0})).filter(x=>x.text);
-  if (opts.length < 2) throw new Error("Cần ít nhất 2 lựa chọn.");
-  await db.collection("polls").add({question:String(f.get("question")).trim(),options:opts,active:true,createdBy:currentUser.uid,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
-  await swalOk("Đã tạo poll");
-  e.target.reset();
- } catch(err) { swalError(err.message); }
-};
-$("#addQuestion").onclick = () => addQuestion();
-$("#closeScore").onclick = () => $("#scoreModal").classList.remove("show");
-$("#scoreForm").onsubmit = saveScore;
-$("#refreshStudents").onclick = () => { if(window.AOS) AOS.refresh(); };
-addQuestion();
+function renderFeedback(items){$("feedbackList").innerHTML=items.map(x=>`<div class="item"><div class="item-title">📮 ${esc(x.recipient||"Người nhận")} · <span class="tag">${esc(x.status||"unread")}</span></div><div style="margin-top:8px;white-space:pre-wrap;line-height:1.6">${esc(x.content||"")}</div><div class="item-meta">${esc(x.displayName||"Ẩn danh")} · ${dateText(x.createdAt)}</div><div class="item-actions">${x.status!=="read"?`<button class="btn btn-soft markFeedback" data-id="${x.id}">✓ Đã đọc</button>`:""}<button class="btn btn-danger delFeedback" data-id="${x.id}" data-label="Góp ý riêng tư">🗑️ Xóa</button></div></div>`).join("")||`<div class="sub">Chưa có góp ý riêng tư.</div>`;document.querySelectorAll(".markFeedback").forEach(b=>b.onclick=async()=>{try{await api(`/api/admin/content/privateFeedback/${encodeURIComponent(b.dataset.id)}`,{method:"PATCH",body:JSON.stringify({status:"read",readAt:new Date().toISOString(),readBy:currentUser.uid})})}catch(e){fail(e.message)}});document.querySelectorAll(".delFeedback").forEach(b=>b.onclick=()=>deleteDocByCollection("privateFeedback",b.dataset.id,"Góp ý riêng tư"))}
 
-document.addEventListener("DOMContentLoaded", () => {
-  if (window.AOS) {
-    AOS.init({duration:800,easing:"ease-in-out-sine",once:false,mirror:true,offset:120});
-    window.addEventListener("scroll",()=>AOS.refreshHard(),{passive:true});
-  }
-});
+function renderResults(items){$("resultList").innerHTML=items.map(x=>`<div class="item"><div class="item-title">🧪 ${esc(x.displayName||"Thành viên")}</div><div class="item-meta">${esc(x.quizTitle||"Quiz")} · ${Number(x.score||0)}đ · ${Number(x.correct||0)}/${Number(x.total||0)} · ${dateText(x.createdAt)}</div><div class="item-actions"><button class="btn btn-danger delResult" data-id="${x.id}" data-label="Kết quả Quiz">🗑️ Xóa</button></div></div>`).join("")||`<div class="sub">Chưa có kết quả.</div>`;document.querySelectorAll(".delResult").forEach(b=>b.onclick=()=>deleteDocByCollection("quizResults",b.dataset.id,"Kết quả Quiz"))}
+
+function renderRoles(items){if(profile?.role!=="super_admin"){$("roleCard").classList.add("hidden");return}$("roleCard").classList.remove("hidden");$("roleList").innerHTML=items.map(x=>{const protectedAccount=(x.email||"").toLowerCase()===SUPER_EMAIL.toLowerCase();return `<div class="item"><div class="item-title">${esc(x.displayName||x.email||x.id)} ${protectedAccount?"🔒":""}</div><div class="item-meta">${esc(x.email||"")} · ${esc(x.role||"student")}</div><div class="row" style="margin-top:8px">${protectedAccount?"":`<select class="roleSelect" data-id="${x.id}">${["student","admin"].map(r=>`<option ${x.role===r?"selected":""}>${r}</option>`).join("")}</select><button class="btn btn-primary saveRole" data-id="${x.id}">Lưu quyền</button>`}</div></div>`}).join("")||`<div class="sub">Chưa có users.</div>`;document.querySelectorAll(".saveRole").forEach(b=>b.onclick=()=>saveRole(b.dataset.id))}
+async function saveRole(id){try{const role=document.querySelector(`.roleSelect[data-id="${CSS.escape(id)}"]`)?.value;if(!role)throw Error("Không tìm thấy role.");await api(`/api/super-admin/users/${encodeURIComponent(id)}/role`,{method:"PATCH",body:JSON.stringify({role})});await ok("Đã cập nhật quyền")}catch(e){fail(e.message)}}
+
+async function createStudent(e){e.preventDefault();try{if(!BACKEND)throw Error("Chưa cấu hình A8A8_BACKEND_URL. Vào Console trình duyệt và đặt URL backend trước khi tạo tài khoản.");const data=await api("/api/admin/students/create",{method:"POST",body:JSON.stringify(Object.fromEntries(new FormData(e.target)))});await Swal.fire({icon:"success",title:"Đã tạo tài khoản học sinh",html:`<div style="text-align:left"><b>${esc(data.student.name)}</b><br>Email đăng nhập: <code>${esc(data.student.email)}</code><br>Mật khẩu tạm: <code>${esc(data.student.temporaryPassword)}</code><br><small>Hãy sao lưu thông tin này ngay.</small></div>`,confirmButtonText:"Đã lưu thông tin"});e.target.reset()}catch(e){fail(e.message)}}
+
+$("studentForm").onsubmit=createStudent;$("popupForm").onsubmit=createPopup;$("pollForm").onsubmit=createPoll;$("quizForm").onsubmit=createQuiz;$("homeworkForm").onsubmit=createHomework;$("attendanceForm").onsubmit=createAttendance;$("resetPopup").onclick=resetPopup;$("addQuestion").onclick=()=>addQuestion();$("closeScore").onclick=()=>$("scoreModal").classList.remove("show");$("scoreForm").onsubmit=saveScore;$("refreshAll").onclick=()=>start();$("btnRetry").onclick=()=>{if(currentUser)verifyAdmin(currentUser)};$("btnGoHome").onclick=()=>location.href="./index.html";$("logout").onclick=()=>auth.signOut();
+$("attendanceForm [name=date]").value=new Date().toISOString().slice(0,10);addQuestion();
+auth.onAuthStateChanged(async u=>{currentUser=u;if(!u){location.href="./index.html";return}await verifyAdmin(u)});
 </script>
 </body>
 </html>
