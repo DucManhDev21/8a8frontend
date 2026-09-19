@@ -65,7 +65,7 @@ const firebaseConfig={apiKey:"AIzaSyCWDybmAejsQX0f9lwd6c0lXyfQ4A-HqKs",authDomai
 firebase.initializeApp(firebaseConfig);const auth=firebase.auth(),db=firebase.firestore();
 const ADMINS=new Set(["admin","super_admin"]),SUPER_EMAIL="tranducmanh2109@gmail.com";
 let currentUser=null,profile=null,unsubs=[];let localStudents=[];
-const BACKEND=String(localStorage.getItem("A8A8_BACKEND_URL")||"").replace(/\/$/,"");
+const BACKEND=String(localStorage.getItem("A8A8_BACKEND_URL")||"https://8a8backend-production.up.railway.app").replace(/\/$/,"");
 const $=id=>document.getElementById(id);const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
 function millis(v){if(!v)return 0;if(typeof v.toMillis==="function")return v.toMillis();if(v.seconds!=null)return Number(v.seconds)*1000;const n=new Date(v).getTime();return Number.isFinite(n)?n:0}
 function dateText(v){const n=millis(v);return n?new Date(n).toLocaleString("vi-VN"):"—"}
