@@ -24,7 +24,7 @@ button,input,select,textarea{font:inherit;max-width:100%}button{border:0;cursor:
 @media(max-width:760px){.wrap{width:min(100% - 16px,1480px)}.topin{min-height:66px}.brand-text{display:none}.top-actions{gap:6px}.top-actions .btn{padding:.62rem .72rem;font-size:.8rem}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.formgrid,.optgrid{grid-template-columns:1fr}.card{padding:16px;border-radius:20px}.hero{padding-top:24px}.hero h1{font-size:2.35rem}.table-wrap table{min-width:680px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 .bulk-ok{padding:10px 12px;border-radius:14px;background:rgba(87,224,195,.08);border:1px solid rgba(87,224,195,.2)}
-.bulk-fail{padding:10px 12px;border-radius:14px;background:rgba(255,111,139,.08);border:1px solid rgba(255,111,139,.2)}
+.bulk-fail{padding:10px 12px;border-radius:14px;background:rgba(255,111,139,.08);border:1px solid rgba(255,111,139,.2);color:#ffdce4}
 </style>
 </head>
 <body>
@@ -43,9 +43,9 @@ Trần Thị B | tranthib@example.com | Matkhau123 | 2012-06-11 | Nữ | Tổ 2 
 
  <div class="card"><div class="card-head"><div><h2>📢 Popup toàn lớp</h2><div class="sub">Tạo, bật/tắt, reset trạng thái đọc và xóa Popup.</div></div></div><form id="popupForm" class="formgrid"><div class="field full"><label>Tiêu đề</label><input name="title" required maxlength="120" placeholder="THÔNG BÁO"></div><div class="field full"><label>Nội dung</label><textarea name="content" required maxlength="3000" placeholder="Nội dung thông báo..."></textarea></div><div class="field"><label>Hiển thị</label><select name="active"><option value="true">Có</option><option value="false">Không</option></select></div><div class="field"><label>Kích thước khung</label><select name="size"><option value="small">Nhỏ</option><option value="normal" selected>Vừa</option><option value="large">Lớn</option></select></div><div class="field"><label>Bo góc (px)</label><input name="radius" type="number" min="18" max="48" value="30"></div><div class="field"><label>Màu nhấn</label><input name="accentColor" type="color" value="#14b8a6" style="height:46px;width:100%;padding:4px"></div><div class="field full"><label>Ảnh URL (tùy chọn)</label><input name="imageUrl" type="url" placeholder="https://..."></div><div class="field full"><label>Nội dung nút</label><input name="buttonLabel" maxlength="60" value="Tôi đã đọc &amp; hiểu rõ"></div><div class="field full"><button class="btn btn-primary">📣 Đăng Popup</button></div></form><div class="row" style="margin-top:10px"><button id="resetPopup" class="btn btn-soft">🔄 Reset đã đọc</button></div><div id="popupList" class="list" style="margin-top:12px"></div></div>
 
- <div class="card"><div class="card-head"><div><h2>📊 Poll</h2><div class="sub">Tạo Poll và xóa từng Poll.</div></div></div><form id="pollForm" class="formgrid"><div class="field full"><label>Câu hỏi</label><input name="question" required maxlength="250"></div><div class="field full"><label>Lựa chọn, mỗi dòng một phương án</label><textarea name="options" required placeholder="Lựa chọn A\nLựa chọn B\nLựa chọn C"></textarea></div><div class="field"><label>Trạng thái</label><select name="active"><option value="true">Đang hoạt động</option><option value="false">Tạm dừng</option></select></div><div class="field"><label>&nbsp;</label><button class="btn btn-primary">＋ Tạo Poll</button></div></form><div id="pollList" class="list" style="margin-top:12px"></div></div>
+ <div class="card"><div class="card-head"><div><h2>📊 Poll</h2><div class="sub">Tạo Poll và xóa từng Poll.</div></div></div><form id="pollForm" class="formgrid"><div class="field full"><label>Câu hỏi</label><input name="question" required maxlength="250"></div><div class="field full"><label>Lựa chọn, mỗi dòng một phương án</label><textarea name="options" required placeholder="Lựa chọn A&#10;Lựa chọn B&#10;Lựa chọn C"></textarea></div><div class="field"><label>Trạng thái</label><select name="active"><option value="true">Đang hoạt động</option><option value="false">Tạm dừng</option></select></div><div class="field"><label>&nbsp;</label><button class="btn btn-primary">＋ Tạo Poll</button></div></form><div id="pollList" class="list" style="margin-top:12px"></div></div>
 
- <div class="card full"><div class="card-head"><div><h2>🧠 Quiz Builder</h2><div class="sub">Tạo Quiz A/B/C/D, chỉnh câu hỏi và có thể xóa Quiz sau khi tạo.</div></div><button id="addQuestion" class="btn btn-soft" type="button">＋ Thêm câu</button></div><form id="quizForm"><div class="formgrid"><div class="field"><label>Môn</label><select name="subject"><option>Toán</option><option>Ngữ văn</option><option>Tiếng Anh</option><option>Vật lý</option><option>Hóa học</option><option>Sinh học</option><option>Lịch sử</option><option>Địa lý</option><option>GDCD</option><option>Tin học</option></select></div><div class="field"><label>Thời lượng (phút)</label><input name="duration" type="number" min="1" max="300" value="15" required></div><div class="field full"><label>Tiêu đề Quiz</label><input name="title" required maxlength="200"></div></div><div id="questions"></div><button class="btn btn-primary" style="margin-top:14px">💾 Lưu Quiz</button></form><div id="quizList" class="list" style="margin-top:14px"></div></div>
+ <div class="card full"><div class="card-head"><div><h2>🧠 Quiz Builder</h2><div class="sub">Tạo Quiz A/B/C/D, chỉnh câu hỏi và có thể xóa Quiz sau khi tạo.</div></div><button id="addQuestion" class="btn btn-soft" type="button">＋ Thêm câu</button></div><form id="quizForm"><div class="formgrid"><div class="field"><label>Môn</label><select name="subject"><option>Toán</option><option>Ngữ văn</option><option>Tiếng Anh</option><option>Vật lý</option><option>Hóa học</option><option>Sinh học</option><option>Lịch sử</option><option>Địa lý</option><option>GDCD</option><option>Tin học</option></select></div><div class="field"><label>Thời lượng (phút)</label><input name="duration" type="number" min="1" max="300" value="15" required></div><div class="field full"><label>Tiêu đề Quiz</label><input name="title" required maxlength="200" placeholder="Tiêu đề bài trắc nghiệm"></div></div><div id="questions"></div><button class="btn btn-primary" style="margin-top:14px">💾 Lưu Quiz</button></form><div id="quizList" class="list" style="margin-top:14px"></div></div>
 
  <div class="card full"><div class="card-head"><div><h2>📚 Bài tập</h2><div class="sub">Đăng bài tập và xóa khi không còn cần.</div></div></div><form id="homeworkForm" class="formgrid"><div class="field"><label>Môn</label><input name="subject" required></div><div class="field"><label>Deadline</label><input name="deadline" type="datetime-local" required></div><div class="field full"><label>Tiêu đề</label><input name="title" required maxlength="200"></div><div class="field full"><label>Mô tả</label><textarea name="description" maxlength="2500"></textarea></div><div class="field full"><button class="btn btn-primary">＋ Đăng bài tập</button></div></form><div id="homeworkList" class="list" style="margin-top:12px"></div></div>
 
@@ -80,7 +80,36 @@ function fail(message){return Swal.fire({icon:"error",title:"Không thể thực
 async function api(path,options={}){if(!currentUser)throw Error("Chưa đăng nhập.");if(!BACKEND)throw Error("Chưa cấu hình Backend.");const token=await currentUser.getIdToken(true);const r=await fetch(`${BACKEND}${path}`,{...options,headers:{"Content-Type":"application/json",Authorization:`Bearer ${token}`,...(options.headers||{})}});const d=await r.json().catch(()=>({}));if(!r.ok)throw Error(d.message||d.error||`HTTP ${r.status}`);return d}
 async function checkBackend(){if(!BACKEND){$("backendDot").className="backend-dot bad";$("backendText").textContent="Backend mặc định: https://8a8backend-production.up.railway.app";return}try{const r=await fetch(`${BACKEND}/api/health`);const d=await r.json();$("backendDot").className="backend-dot ok";$("backendText").textContent=d.firebaseReady?`${BACKEND} · Firebase Admin sẵn sàng`:`${BACKEND} · Firebase Admin chưa sẵn sàng`;}catch(e){$("backendDot").className="backend-dot bad";$("backendText").textContent=`Không kết nối được ${BACKEND}`}}
 function clearSnapshots(){unsubs.forEach(fn=>{try{fn()}catch(e){}});unsubs=[]}
-async function verifyAdmin(u){$("gateText").textContent="Đang đọc users/{uid} để kiểm tra role...";try{const snap=await db.collection("users").doc(u.uid).get();const p=snap.exists?snap.data():{};if(!ADMINS.has(p.role)){throw Error(`Tài khoản ${u.email||"này"} chỉ có quyền ${p.role||"student"}.`)}profile={uid:u.uid,email:u.email,...p};$("who").textContent=`Đang quản trị: ${profile.displayName||u.email} (${profile.role})`;$("gate").classList.remove("show");$("app").classList.remove("hidden");await checkBackend();await start();}catch(e){console.error("[AdminAuth]",e);$("gateText").className="section-note";$("gateText").innerHTML=esc(e.message);$("btnRetry").classList.remove("hidden")}}
+
+async function verifyAdmin(u){
+  $("gateText").className="section-note";
+  $("gateText").textContent="Đang đọc users/{uid} để kiểm tra role...";
+  try{
+    const snap=await db.collection("users").doc(u.uid).get();
+    const p=snap.exists?snap.data():{};
+    
+    // Ưu tiên cấp quyền super_admin nếu là Email quản trị chính chủ
+    let userRole = p.role;
+    if (u.email && u.email.toLowerCase() === SUPER_EMAIL.toLowerCase()) {
+      userRole = userRole || "super_admin";
+    }
+
+    if(!ADMINS.has(userRole)){
+      throw Error(`Tài khoản ${u.email||"này"} chỉ có quyền ${userRole||"student"}.`);
+    }
+    profile={uid:u.uid,email:u.email,...p,role:userRole};
+    $("who").textContent=`Đang quản trị: ${profile.displayName||u.email} (${profile.role})`;
+    $("gate").classList.remove("show");
+    $("app").classList.remove("hidden");
+    await checkBackend();
+    await start();
+  }catch(e){
+    console.error("[AdminAuth]",e);
+    $("gateText").className="bulk-fail";
+    $("gateText").innerHTML=esc(e.message);
+    $("btnRetry").classList.remove("hidden");
+  }
+}
 function sortDesc(items,field="createdAt"){return [...items].sort((a,b)=>millis(b[field])-millis(a[field]))}
 
 async function start(){clearSnapshots();
@@ -108,7 +137,14 @@ async function saveScore(e){e.preventDefault();try{const f=new FormData(e.target
 async function deleteStudent(id){const s=localStudents.find(x=>x.id===id);if(!s||!(await confirmDelete(`hồ sơ ${s.name||id} và tài khoản liên kết`)))return;try{await api(`/api/admin/students/${encodeURIComponent(id)}`,{method:"DELETE"});await ok("Đã xóa học sinh","Đã xóa hồ sơ và tài khoản Firebase liên kết.")}catch(e){fail(e.message)}}
 async function resetStudentPassword(id){const s=localStudents.find(x=>x.id===id);if(!s)return;const result=await Swal.fire({title:`Cấp lại mật khẩu cho ${esc(s.name||"học sinh")}?`,input:"text",inputLabel:"Mật khẩu mới (để trống = tự sinh)",inputPlaceholder:"Ít nhất 6 ký tự",showCancelButton:true,confirmButtonText:"Cấp lại",cancelButtonText:"Hủy",inputValidator:value=>value&&value.trim().length<6?"Mật khẩu tối thiểu 6 ký tự.":undefined});if(!result.isConfirmed)return;try{const data=await api(`/api/admin/students/${encodeURIComponent(id)}/reset-password`,{method:"POST",body:JSON.stringify({password:result.value||""})});await Swal.fire({icon:"success",title:"Đã cấp lại mật khẩu",html:`<div style="text-align:left">Email: <code>${esc(data.email)}</code><br>Mật khẩu mới: <code>${esc(data.temporaryPassword)}</code></div>`,confirmButtonText:"Đã lưu"});}catch(e){fail(e.message)}}
 
-function addQuestion(data={}){const root=$("questions"),box=document.createElement("div");box.className="qbox";box.innerHTML=`<div class="qhead"><b>Câu hỏi <span class="qn"></span></b><button type="button" class="btn btn-danger removeQ">Xóa</button></div><div class="field" style="margin-top:10px"><label>Nội dung</label><textarea class="qq" required>${esc(data.question||"")}</textarea></div><div class="optgrid" style="margin-top:10px">${["A","B","C","D"].map((l,i)=>`<div class="field"><label>${l}</label><input class="qo" required value="${esc(data.options?.[i]||"")}"></div>`).join("")}</div><div class="formgrid" style="margin-top:10px"><div class="field"><label>Đáp án đúng</label><select class="qa">${["A","B","C","D"].map(l=>`<option ${data.answer===l?"selected":""}>${l}</option>`).join("")}</select></div><div class="field"><label>Lời giải</label><input class="qe" required value="${esc(data.explanation||"")}"></div></div>`;box.querySelector(".removeQ").onclick=()=>{box.remove();renumberQuestions()};root.appendChild(box);renumberQuestions()}
+function addQuestion(data={}){
+  const root=$("questions"),box=document.createElement("div");
+  box.className="qbox";
+  box.innerHTML=`<div class="qhead"><b>Câu hỏi <span class="qn"></span></b><button type="button" class="btn btn-danger removeQ">Xóa</button></div><div class="field" style="margin-top:10px"><label>Nội dung câu hỏi</label><textarea class="qq" required placeholder="Nhập câu hỏi...">${esc(data.question||"")}</textarea></div><div class="optgrid" style="margin-top:10px">${["A","B","C","D"].map((l,i)=>`<div class="field"><label>Đáp án ${l}</label><input class="qo" required value="${esc(data.options?.[i]\vert{}\vert{}"")}" placeholder="Lựa chọn ${l}"></div>`).join("")}</div><div class="formgrid" style="margin-top:10px"><div class="field"><label>Đáp án đúng</label><select class="qa">${["A","B","C","D"].map(l=>`<option ${data.answer===l?"selected":""}>${l}</option>`).join("")}</select></div><div class="field"><label>Lời giải (tùy chọn)</label><input class="qe" value="${esc(data.explanation||"")}" placeholder="Giải thích đáp án..."></div></div>`;
+  box.querySelector(".removeQ").onclick=()=>{box.remove();renumberQuestions()};
+  root.appendChild(box);
+  renumberQuestions();
+}
 function renumberQuestions(){document.querySelectorAll("#questions .qbox").forEach((q,i)=>q.querySelector(".qn").textContent=i+1)}
 function collectQuestions(){return [...document.querySelectorAll("#questions .qbox")].map(q=>({question:q.querySelector(".qq").value.trim(),options:[...q.querySelectorAll(".qo")].map(x=>x.value.trim()),answer:q.querySelector(".qa").value,explanation:q.querySelector(".qe").value.trim()}))}
 async function createQuiz(e){e.preventDefault();try{const f=new FormData(e.target),questions=collectQuestions();if(!questions.length)throw Error("Quiz cần ít nhất một câu hỏi.");if(questions.some(q=>q.options.length!==4||q.options.some(x=>!x)))throw Error("Mỗi câu phải có đủ 4 lựa chọn.");await api("/api/admin/content/quizzes",{method:"POST",body:JSON.stringify({subject:String(f.get("subject")),title:String(f.get("title")).trim(),duration:Number(f.get("duration")),questions})});e.target.reset();$("questions").innerHTML="";addQuestion();await ok("Đã tạo Quiz")}catch(e){fail(e.message)}}
@@ -122,7 +158,7 @@ async function togglePopup(id,isActive){try{await api(`/api/admin/content/popups
 async function resetPopup(){try{await api("/api/admin/popup/reset",{method:"POST",body:"{}"});await ok("Đã reset trạng thái đọc")}catch(e){fail(e.message)}}
 
 async function createPoll(e){e.preventDefault();try{const f=new FormData(e.target),opts=String(f.get("options")).split(/\r?\n/).map(x=>x.trim()).filter(Boolean).slice(0,8);if(opts.length<2)throw Error("Poll cần ít nhất 2 lựa chọn.");const options=opts.map((text,i)=>({id:String(i+1),text,votes:0}));await api("/api/admin/content/polls",{method:"POST",body:JSON.stringify({question:String(f.get("question")).trim(),options,active:f.get("active")==="true"})});e.target.reset();await ok("Đã tạo Poll")}catch(e){fail(e.message)}}
-function renderPolls(items){$("pollList").innerHTML=items.map(x=>`<div class="item"><div class="item-title">${esc(x.question||"Poll")}</div><div class="item-meta">${x.active!==false?"🟢 Đang hoạt động":"⚪ Tạm dừng"} · ${dateText(x.createdAt)}</div><div class="item-meta">${(x.options||[]).map(o=>`${esc(o.text)}: ${Number(o.votes||0)}`).join(" · ")}</div><div class="item-actions"><button class="btn btn-soft togglePoll" data-id="${x.id}" data-active="${x.active!==false}">${x.active!==false?"⏸ Tạm dừng":"▶ Bật lại"}</button><button class="btn btn-danger delPoll" data-id="${x.id}" data-label="Poll ${esc(x.question||"")}">🗑️ Xóa</button></div></div>`).join("")||`<div class="sub">Chưa có Poll.</div>`;document.querySelectorAll(".togglePoll").forEach(b=>b.onclick=async()=>{try{await api(`/api/admin/content/polls/${encodeURIComponent(b.dataset.id)}`,{method:"PATCH",body:JSON.stringify({active:!(b.dataset.active==="true")})})}catch(e){fail(e.message)}});document.querySelectorAll(".delPoll").forEach(b=>b.onclick=()=>deleteDocByCollection("polls",b.dataset.id,b.dataset.label))}
+function renderPolls(items){$("pollList").innerHTML=items.map(x=>`<div class="item"><div class="item-title">${esc(x.question||"Poll")}</div><div class="item-meta">${x.active!==false?"🟢 Đang hoạt động":"⚪ Tạm dừng"} · ${dateText(x.createdAt)}</div><div class="item-meta">${(x.options||[]).map(o=>`${esc(o.text)}:${Number(o.votes||0)}`).join(" · ")}</div><div class="item-actions"><button class="btn btn-soft togglePoll" data-id="${x.id}" data-active="${x.active!==false}">${x.active!==false?"⏸ Tạm dừng":"▶ Bật lại"}</button><button class="btn btn-danger delPoll" data-id="${x.id}" data-label="Poll ${esc(x.question||"")}">🗑️ Xóa</button></div></div>`).join("")||`<div class="sub">Chưa có Poll.</div>`;document.querySelectorAll(".togglePoll").forEach(b=>b.onclick=async()=>{try{await api(`/api/admin/content/polls/${encodeURIComponent(b.dataset.id)}`,{method:"PATCH",body:JSON.stringify({active:!(b.dataset.active==="true")})})}catch(e){fail(e.message)}});document.querySelectorAll(".delPoll").forEach(b=>b.onclick=()=>deleteDocByCollection("polls",b.dataset.id,b.dataset.label))}
 
 async function createHomework(e){e.preventDefault();try{const f=new FormData(e.target);await api("/api/admin/content/homework",{method:"POST",body:JSON.stringify({subject:String(f.get("subject")).trim(),title:String(f.get("title")).trim(),description:String(f.get("description")).trim(),deadline:String(f.get("deadline"))})});e.target.reset();await ok("Đã đăng bài tập")}catch(e){fail(e.message)}}
 function renderHomework(items){$("homeworkList").innerHTML=items.map(x=>`<div class="item"><div class="item-title">${esc(x.subject||"Môn")} · ${esc(x.title||"Bài tập")}</div><div class="item-meta">Hạn: ${dateText(x.deadline)} · Đăng: ${dateText(x.createdAt)}</div><div class="item-meta">${esc(x.description||"")}</div><div class="item-actions"><button class="btn btn-danger delHw" data-id="${x.id}" data-label="Bài tập ${esc(x.title||"")}">🗑️ Xóa</button></div></div>`).join("")||`<div class="sub">Chưa có bài tập.</div>`;document.querySelectorAll(".delHw").forEach(b=>b.onclick=()=>deleteDocByCollection("homework",b.dataset.id,b.dataset.label))}
@@ -137,8 +173,31 @@ function renderFeedback(items){$("feedbackList").innerHTML=items.map(x=>`<div cl
 
 function renderResults(items){$("resultList").innerHTML=items.map(x=>`<div class="item"><div class="item-title">🧪 ${esc(x.displayName||"Thành viên")}</div><div class="item-meta">${esc(x.quizTitle||"Quiz")} · ${Number(x.score||0)}đ · ${Number(x.correct||0)}/${Number(x.total||0)} · ${dateText(x.createdAt)}</div><div class="item-actions"><button class="btn btn-danger delResult" data-id="${x.id}" data-label="Kết quả Quiz">🗑️ Xóa</button></div></div>`).join("")||`<div class="sub">Chưa có kết quả.</div>`;document.querySelectorAll(".delResult").forEach(b=>b.onclick=()=>deleteDocByCollection("quizResults",b.dataset.id,"Kết quả Quiz"))}
 
-function renderRoles(items){if(profile?.role!=="super_admin"){$("roleCard").classList.add("hidden");return}$("roleCard").classList.remove("hidden");$("roleList").innerHTML=items.map(x=>{const protectedAccount=(x.email||"").toLowerCase()===SUPER_EMAIL.toLowerCase();return `<div class="item"><div class="item-title">${esc(x.displayName||x.email||x.id)} ${protectedAccount?"🔒":""}</div><div class="item-meta">${esc(x.email||"")} · ${esc(x.role||"student")}</div><div class="row" style="margin-top:8px">${protectedAccount?"":`<select class="roleSelect" data-id="${x.id}">${["student","admin"].map(r=>`<option ${x.role===r?"selected":""}>${r}</option>`).join("")}</select><button class="btn btn-primary saveRole" data-id="${x.id}">Lưu quyền</button>`}</div></div>`}).join("")||`<div class="sub">Chưa có users.</div>`;document.querySelectorAll(".saveRole").forEach(b=>b.onclick=()=>saveRole(b.dataset.id))}
-async function saveRole(id){try{const role=document.querySelector(`.roleSelect[data-id="${CSS.escape(id)}"]`)?.value;if(!role)throw Error("Không tìm thấy role.");await api(`/api/super-admin/users/${encodeURIComponent(id)}/role`,{method:"PATCH",body:JSON.stringify({role})});await ok("Đã cập nhật quyền")}catch(e){fail(e.message)}}
+function renderRoles(items){
+  if(profile?.role!=="super_admin"){$("roleCard").classList.add("hidden");return}
+  $("roleCard").classList.remove("hidden");
+  $("roleList").innerHTML=items.map(x=>{
+    const protectedAccount=(x.email||"").toLowerCase()===SUPER_EMAIL.toLowerCase();
+    return `<div class="item"><div class="item-title">${esc(x.displayName||x.email||x.id)} ${protectedAccount?"🔒":""}</div><div class="item-meta">${esc(x.email||"")} · ${esc(x.role||"student")}</div><div class="row" style="margin-top:8px">${protectedAccount?"":`<select class="roleSelect">${["student","admin"].map(r=>`<option value="${r}" ${x.role===r?"selected":""}>${r}</option>`).join("")}</select><button class="btn btn-primary saveRole" data-id="${esc(x.id)}">Lưu quyền</button>`}</div></div>`
+  }).join("")||`<div class="sub">Chưa có users.</div>`;
+  
+  document.querySelectorAll(".saveRole").forEach(b=>{
+    b.onclick=()=>saveRole(b.dataset.id, b);
+  });
+}
+
+async function saveRole(id, btnElement){
+  try{
+    const itemContainer = btnElement ? btnElement.closest('.item') : null;
+    const roleSelect = itemContainer ? itemContainer.querySelector('.roleSelect') : null;
+    const role = roleSelect ? roleSelect.value : null;
+    if(!role) throw Error("Không tìm thấy quyền đã chọn.");
+    await api(`/api/super-admin/users/${encodeURIComponent(id)}/role`,{method:"PATCH",body:JSON.stringify({role})});
+    await ok("Đã cập nhật quyền");
+  }catch(e){
+    fail(e.message);
+  }
+}
 
 async function createStudent(e){e.preventDefault();try{const data=await api("/api/admin/students/create",{method:"POST",body:JSON.stringify(Object.fromEntries(new FormData(e.target)))});await Swal.fire({icon:"success",title:"Đã tạo tài khoản học sinh",html:`<div style="text-align:left"><b>${esc(data.student.name)}</b><br>Email đăng nhập: <code>${esc(data.student.email)}</code><br>Mật khẩu: <code>${esc(data.student.temporaryPassword)}</code><br><small>Dùng chính xác hai thông tin này để đăng nhập Portal.</small></div>`,confirmButtonText:"Đã lưu thông tin"});e.target.reset()}catch(e){fail(e.message)}}
 function parseBulkStudents(){const raw=$("bulkStudentInput")?.value||"";return raw.split(/\r?\n/).map((line,index)=>({line,index})).filter(x=>x.line.trim()).map(x=>{const parts=x.line.split("|").map(v=>v.trim());return{name:parts[0]||"",email:parts[1]||"",password:parts[2]||"",dob:parts[3]||"",gender:parts[4]||"",team:parts[5]||"",classRole:parts[6]||"Học sinh",__row:x.index+1}})}
