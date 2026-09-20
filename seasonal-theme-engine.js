@@ -50,7 +50,7 @@
     if ((m === 1 && d >= 20) || (m === 2 && d <= 20)) return "tet";
 
     // Trung thu (15/8 Âm lịch) theo lịch xấp xỉ
-    const midAutumn = {2026:"2026-09-25",2027:"2027-09-15",2028:"2028-10-03",2029:"2029-09-22",2030:"2030-09-12"};
+    const midAutumn = {2026:"2026-09-20",2027:"2027-09-15",2028:"2028-10-03",2029:"2029-09-22",2030:"2030-09-12"};
     if (midAutumn[date.getFullYear()]) {
       const target = new Date(`${midAutumn[date.getFullYear()]}T00:00:00`);
       if (Math.abs(date - target) / 86400000 <= 2) return "mid-autumn";
