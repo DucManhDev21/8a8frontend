@@ -402,7 +402,9 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   updateProfile,
-  signOut
+  signOut,
+  setPersistence,
+  browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 import {
   getFirestore,
@@ -434,6 +436,13 @@ const firebaseConfig = {
 const appFirebase = initializeApp(firebaseConfig);
 const auth = getAuth(appFirebase);
 const db = getFirestore(appFirebase);
+
+// Đồng bộ persistence với admin.html để phiên đăng nhập không mất khi chuyển trang.
+try {
+  await setPersistence(auth, browserLocalPersistence);
+} catch (error) {
+  console.warn("[Auth] Không thể bật browserLocalPersistence:", error);
+}
 
 const SUPER_ADMIN_EMAIL = "tranducmanh2109@gmail.com";
 const CLASS_NAME = "Lớp 8A8 - Trường THCS Cẩm Lý 2";
