@@ -18,219 +18,1224 @@
 :root{--bg:#061425;--bg2:#0a2239;--panel:rgba(10,32,53,.78);--panel2:rgba(255,255,255,.06);--text:#eef7ff;--muted:#9bb2c7;--line:rgba(130,210,255,.16);--accent:#57e0c3;--accent2:#72a9ff;--danger:#ff6f8b;--warning:#ffc857;--shadow:0 24px 90px rgba(0,0,0,.34);--radius:24px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;font-family:"Be Vietnam Pro",system-ui,sans-serif;color:var(--text);background:radial-gradient(circle at 8% 5%,#123d62 0,transparent 28rem),radial-gradient(circle at 92% 85%,#153852 0,transparent 30rem),linear-gradient(135deg,var(--bg),var(--bg2));overflow-x:hidden}
 body:before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(148,163,184,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(148,163,184,.035) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,black,transparent 90%);z-index:-1}
-button,input,select,textarea{font:inherit;max-width:100%}button{border:0;cursor:pointer}.wrap{width:min(1480px,calc(100% - 30px));margin:auto}.top{position:sticky;top:0;z-index:80;border-bottom:1px solid var(--line);background:rgba(4,15,28,.76);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}.topin{display:flex;align-items:center;gap:12px;min-height:72px}.brand{display:flex;align-items:center;gap:10px;min-width:0}.logo{width:46px;height:46px;border-radius:15px;object-fit:cover;flex:0 0 auto}.brand-fallback{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;font-weight:900;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2))}.brand-text{min-width:0}.brand-title{font-family:"Space Grotesk";font-weight:900;letter-spacing:.02em}.brand-sub{font-size:.72rem;color:var(--muted);margin-top:2px}.top-actions{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;padding:.72rem .95rem;border-radius:14px;font-weight:800;transition:.2s;white-space:nowrap}.btn:hover{transform:translateY(-2px)}.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#04101d;box-shadow:0 10px 28px rgba(87,224,195,.16)}.btn-soft{background:var(--panel2);color:var(--text);border:1px solid var(--line)}.btn-danger{background:rgba(255,111,139,.13);color:#ffdce4;border:1px solid rgba(255,111,139,.3)}.btn-warning{background:rgba(255,200,87,.12);color:#ffe9ae;border:1px solid rgba(255,200,87,.25)}.hidden{display:none!important}.hero{padding:36px 0 24px}.hero-kicker{display:inline-flex;padding:6px 10px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);font-size:.76rem;font-weight:900}.hero h1{font-size:clamp(2.2rem,5vw,4.4rem);line-height:1.02;margin:.7rem 0}.hero p{max-width:920px;color:var(--muted);line-height:1.7}.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px;padding-bottom:70px}.card{grid-column:span 6;padding:22px;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);box-shadow:var(--shadow);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);min-width:0}.card.full{grid-column:1/-1}.card h2{margin:0;font-size:1.18rem}.card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}.sub{color:var(--muted);font-size:.9rem;line-height:1.6}.stats{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px}.stat{padding:14px;border-radius:17px;background:rgba(255,255,255,.04);border:1px solid var(--line);min-width:0}.stat b{display:block;font-size:1.55rem;margin-top:4px}.field{display:flex;flex-direction:column;gap:6px;min-width:0}.field label{font-size:.78rem;color:var(--muted);font-weight:700}.field input,.field select,.field textarea{width:100%;padding:.82rem .9rem;border-radius:14px;border:1px solid var(--line);outline:none;background:rgba(0,0,0,.18);color:var(--text)}.field textarea{min-height:110px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(87,224,195,.08)}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.field.full{grid-column:1/-1}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.list{display:grid;gap:10px;max-height:560px;overflow:auto;padding-right:2px}.item{padding:14px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.035)}.item-title{font-weight:900}.item-meta{font-size:.78rem;color:var(--muted);margin-top:3px;line-height:1.5}.item-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.tag{display:inline-flex;padding:4px 8px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);font-size:.72rem;font-weight:800}.table-wrap{width:100%;overflow:auto;border:1px solid var(--line);border-radius:18px}.table-wrap table{width:100%;min-width:760px;border-collapse:collapse}.table-wrap th,.table-wrap td{text-align:left;padding:12px;border-bottom:1px solid var(--line);vertical-align:top}.table-wrap th{font-size:.74rem;text-transform:uppercase;color:var(--muted);position:sticky;top:0;background:#0a2037}.score{font-weight:900;font-size:1.1rem}.qbox{padding:16px;border:1px solid var(--line);border-radius:20px;margin-top:12px;background:rgba(0,0,0,.12)}.qhead{display:flex;align-items:center;justify-content:space-between;gap:10px}.optgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.section-note{padding:11px 12px;border-radius:14px;background:rgba(87,224,195,.08);border:1px solid rgba(87,224,195,.18);color:#cffff6}.backend-bar{margin-top:12px;padding:12px 14px;border-radius:17px;border:1px solid var(--line);background:rgba(255,255,255,.035)}.backend-dot{width:9px;height:9px;border-radius:50%;display:inline-block;background:#64748b}.backend-dot.ok{background:#57e0c3;box-shadow:0 0 16px rgba(87,224,195,.55)}.backend-dot.bad{background:#ff6f8b;box-shadow:0 0 16px rgba(255,111,139,.45)}
+button,input,select,textarea{font:inherit;max-width:100%}button{border:0;cursor:pointer}.wrap{width:min(1480px,calc(100% - 30px));margin:auto}.top{position:sticky;top:0;z-index:80;border-bottom:1px solid var(--line);background:rgba(4,15,28,.76);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}.topin{display:flex;align-items:center;gap:12px;min-height:72px}.brand{display:flex;align-items:center;gap:10px;min-width:0}.logo{width:46px;height:46px;border-radius:15px;object-fit:cover;flex:0 0 auto}.brand-fallback{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;font-weight:900;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2))}.brand-text{min-width:0}.brand-title{font-family:"Space Grotesk";font-weight:900;letter-spacing:.02em}.brand-sub{font-size:.72rem;color:var(--muted);margin-top:2px}.top-actions{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;padding:.72rem .95rem;border-radius:14px;font-weight:800;transition:.2s;white-space:nowrap}.btn:hover{transform:translateY(-2px)}.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#04101d;box-shadow:0 10px 28px rgba(87,224,195,.16)}.btn-soft{background:var(--panel2);color:var(--text);border:1px solid var(--line)}.btn-danger{background:rgba(255,111,139,.13);color:#ffdce4;border:1px solid rgba(255,111,139,.3)}.btn-warning{background:rgba(255,200,87,.12);color:#ffe9ae;border:1px solid rgba(255,200,87,.25)}.hidden{display:none!important}.hero{padding:36px 0 24px}.hero-kicker{display:inline-flex;padding:6px 10px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);font-size:.76rem;font-weight:900}.hero h1{font-size:clamp(2.2rem,5vw,4.4rem);line-height:1.02;margin:.7rem 0}.hero p{max-width:920px;color:var(--muted);line-height:1.7}.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px;padding-bottom:70px}.card{grid-column:span 6;padding:22px;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);box-shadow:var(--shadow);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);min-width:0}.card.full{grid-column:1/-1}.card h2{margin:0;font-size:1.18rem}.card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}.sub{color:var(--muted);font-size:.9rem;line-height:1.6}.stats{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px}.stat{padding:14px;border-radius:17px;background:rgba(255,255,255,.04);border:1px solid var(--line);min-width:0}.stat b{display:block;font-size:1.55rem;margin-top:4px}.field{display:flex;flex-direction:column;gap:6px;min-width:0}.field label{font-size:.78rem;color:var(--muted);font-weight:700}.field input,.field select,.field textarea{width:100%;padding:.82rem .9rem;border-radius:14px;border:1px solid var(--line);outline:none;background:rgba(0,0,0,.18);color:var(--text)}.field textarea{min-height:110px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(87,224,195,.08)}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.field.full{grid-column:1/-1}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between}.toolbar-left,.toolbar-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.list{display:grid;gap:10px;max-height:560px;overflow:auto;padding-right:2px}.item{padding:14px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.035)}.item-title{font-weight:900}.item-meta{font-size:.78rem;color:var(--muted);margin-top:3px;line-height:1.5}.item-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.tag{display:inline-flex;padding:4px 8px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);font-size:.72rem;font-weight:800}.danger-text{color:#ff9db0}.ok-text{color:#8df3de}.table-wrap{width:100%;overflow:auto;border:1px solid var(--line);border-radius:18px}.table-wrap table{width:100%;min-width:760px;border-collapse:collapse}.table-wrap th,.table-wrap td{text-align:left;padding:12px;border-bottom:1px solid var(--line);vertical-align:top}.table-wrap th{font-size:.74rem;text-transform:uppercase;color:var(--muted);position:sticky;top:0;background:#0a2037}.score{font-weight:900;font-size:1.1rem}.qbox{padding:16px;border:1px solid var(--line);border-radius:20px;margin-top:12px;background:rgba(0,0,0,.12)}.qhead{display:flex;align-items:center;justify-content:space-between;gap:10px}.optgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.section-note{padding:11px 12px;border-radius:14px;background:rgba(87,224,195,.08);border:1px solid rgba(87,224,195,.18);color:#cffff6}.backend-bar{margin-top:12px;padding:12px 14px;border-radius:17px;border:1px solid var(--line);background:rgba(255,255,255,.035)}.backend-dot{width:9px;height:9px;border-radius:50%;display:inline-block;background:#64748b}.backend-dot.ok{background:#57e0c3;box-shadow:0 0 16px rgba(87,224,195,.55)}.backend-dot.bad{background:#ff6f8b;box-shadow:0 0 16px rgba(255,111,139,.45)}
 .modal{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.62);backdrop-filter:blur(12px)}.modal.show{display:flex}.modalbox{width:min(600px,100%);max-height:92vh;overflow:auto;padding:22px;border:1px solid var(--line);border-radius:24px;background:#09213a;box-shadow:var(--shadow)}
+@media(max-width:1200px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}.card{grid-column:1/-1}}
+@media(max-width:760px){.wrap{width:min(100% - 16px,1480px)}.topin{min-height:66px}.brand-text{display:none}.top-actions{gap:6px}.top-actions .btn{padding:.62rem .72rem;font-size:.8rem}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.formgrid,.optgrid{grid-template-columns:1fr}.card{padding:16px;border-radius:20px}.hero{padding-top:24px}.hero h1{font-size:2.35rem}.table-wrap table{min-width:680px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 .bulk-ok{padding:10px 12px;border-radius:14px;background:rgba(87,224,195,.08);border:1px solid rgba(87,224,195,.2)}
-.bulk-fail{padding:10px 12px;border-radius:14px;background:rgba(255,111,139,.08);border:1px solid rgba(255,111,139,.2);color:#ffdce4}
+.bulk-fail{padding:10px 12px;border-radius:14px;background:rgba(255,111,139,.08);border:1px solid rgba(255,111,139,.2)}
+html[data-theme="light"]{color-scheme:light;--bg:#eef5fb;--bg2:#dbe8f4;--panel:rgba(255,255,255,.84);--panel2:rgba(15,23,42,.055);--text:#102033;--muted:#5f7488;--line:rgba(15,72,108,.14);--shadow:0 24px 90px rgba(15,23,42,.14)}
+html[data-theme="light"] body{background:radial-gradient(circle at 8% 5%,#dff3ff 0,transparent 28rem),radial-gradient(circle at 92% 85%,#e9ecff 0,transparent 30rem),linear-gradient(135deg,var(--bg),var(--bg2));}
+html[data-theme="light"] .top{background:rgba(255,255,255,.78)}
+html[data-theme="light"] .btn-danger{color:#a01836}
+html[data-theme="light"] .btn-warning{color:#8a5a00}
+html[data-theme="light"] .field input,html[data-theme="light"] .field select,html[data-theme="light"] .field textarea{background:rgba(255,255,255,.74);color:var(--text)}
+html[data-theme="light"] .table-wrap th{background:#eaf3fb;color:#40596c}
+html[data-theme="light"] .modalbox{background:rgba(255,255,255,.96)}
 </style>
 </head>
 <body>
-<div id="gate" class="modal show"><div class="modalbox"><div class="hero-kicker">🔐 8A8 CONTROL CENTER</div><h2 style="font-size:1.55rem;margin:.75rem 0">Đang xác thực quyền quản trị</h2><div id="gateText" class="section-note">Đang kết nối Firebase...</div><div class="row" style="margin-top:12px"><button id="btnRetry" class="btn btn-primary hidden">Thử lại</button><button id="btnGoHome" class="btn btn-soft">Về trang chủ</button></div></div></div>
-<header class="top"><div class="wrap topin"><div class="brand"><img src="./logo.png" class="logo" alt="Logo 8A8" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'brand-fallback',textContent:'8A8'}))"><div class="brand-text"><div class="brand-title">8A8 CONTROL CENTER</div><div class="brand-sub">Trường THCS Cẩm Lý 2</div></div></div><div class="top-actions"><span id="who" class="sub">Chưa xác thực</span><button id="refreshAll" class="btn btn-soft">↻ Làm mới</button><button id="logout" class="btn btn-danger">Đăng xuất</button></div></div></header>
+<div id="gate" class="modal show"><div class="modalbox"><div class="hero-kicker">🔐 8A8 CONTROL CENTER</div><h2 style="font-size:1.55rem;margin:.75rem 0">Đang xác thực quyền quản trị</h2><div id="gateText" class="section-note">Đang kết nối Firebase...</div><div class="row" style="margin-top:12px"><button id="btnRetry" class="btn btn-primary hidden">↻ Thử lại</button><button id="btnBypass" class="btn btn-warning hidden">⚡ Bypass Check (Dành cho Super Admin)</button><button id="btnGoHome" class="btn btn-soft">Về trang chủ</button></div></div></div>
+<header class="top"><div class="wrap topin"><div class="brand"><img src="./logo.png" class="logo" alt="Logo 8A8" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'brand-fallback',textContent:'8A8'}))"><div class="brand-text"><div class="brand-title">8A8 CONTROL CENTER</div><div class="brand-sub">Trường THCS Cẩm Lý 2</div></div></div><div class="top-actions"><span id="who" class="sub">Chưa xác thực</span><button id="themeToggle" class="btn btn-soft" type="button" title="Đổi giao diện">🌙</button><button id="refreshAll" class="btn btn-soft">↻ Làm mới</button><button id="logout" class="btn btn-danger">Đăng xuất</button></div></div></header>
 
 <main id="app" class="wrap hidden">
-<section class="hero"><span class="hero-kicker">SUPER ADMIN / ADMIN</span><h1>Trung tâm quản trị 8A8</h1><p>Quản lý tập trung thành viên, điểm thi đua, Popup, Poll, Quiz, bài tập, điểm danh, Confession, góp ý riêng tư và kết quả.</p><div class="backend-bar"><span id="backendDot" class="backend-dot"></span> <b>Backend:</b> <span id="backendText">Chưa kiểm tra</span></div></section>
+<section class="hero"><span class="hero-kicker">SUPER ADMIN / ADMIN</span><h1>Trung tâm quản trị 8A8</h1><p>Quản lý tập trung thành viên, điểm thi đua, Popup, Poll, Quiz, bài tập, điểm danh, Confession, góp ý riêng tư và kết quả. Nội dung đã tạo đều có khu vực quản lý và nút xóa tương ứng.</p><div class="backend-bar"><span id="backendDot" class="backend-dot"></span> <b>Backend:</b> <span id="backendText">Chưa kiểm tra</span></div></section>
 <section class="grid">
- <div class="card full"><div class="card-head"><div><h2>📊 Tổng quan</h2><div class="sub">Số liệu cập nhật từ Firestore.</div></div></div><div class="stats"><div class="stat"><span class="sub">Học sinh</span><b id="sStudents">0</b></div><div class="stat"><span class="sub">Quiz</span><b id="sQuizzes">0</b></div><div class="stat"><span class="sub">Confession</span><b id="sConfessions">0</b></div><div class="stat"><span class="sub">Poll hoạt động</span><b id="sPolls">0</b></div><div class="stat"><span class="sub">Popup hoạt động</span><b id="sPopups">0</b></div><div class="stat"><span class="sub">Bài tập</span><b id="sHomework">0</b></div><div class="stat"><span class="sub">Góp ý chưa đọc</span><b id="sFeedback">0</b></div></div></div>
+ <div class="card full"><div class="card-head"><div><h2>📊 Tổng quan</h2><div class="sub">Số liệu cập nhật từ Firestore.</div></div></div><div class="stats"><div class="stat"><span class="sub">Học sinh</span><b id="sStudents">0</b></div><div class="stat"><span class="sub">Admin</span><b id="sAdmins">0</b></div><div class="stat"><span class="sub">Quiz</span><b id="sQuizzes">0</b></div><div class="stat"><span class="sub">Confession</span><b id="sConfessions">0</b></div><div class="stat"><span class="sub">Poll hoạt động</span><b id="sPolls">0</b></div><div class="stat"><span class="sub">Popup hoạt động</span><b id="sPopups">0</b></div><div class="stat"><span class="sub">Bài tập</span><b id="sHomework">0</b></div><div class="stat"><span class="sub">Góp ý chưa đọc</span><b id="sFeedback">0</b></div></div></div>
 
- <div class="card"><div class="card-head"><div><h2>👤 Tạo tài khoản học sinh</h2></div></div><form id="studentForm" class="formgrid"><div class="field full"><label>Họ và tên</label><input name="name" required maxlength="80" placeholder="Nguyễn Văn A"></div><div class="field"><label>Email đăng nhập (tùy chọn)</label><input name="email" type="email" autocomplete="off"></div><div class="field"><label>Mật khẩu (tùy chọn)</label><input name="password" type="text" minlength="6" autocomplete="off"></div><div class="field"><label>Ngày sinh</label><input name="dob" type="date"></div><div class="field"><label>Giới tính</label><select name="gender"><option>Nam</option><option>Nữ</option></select></div><div class="field"><label>Tổ</label><select name="team"><option>Tổ 1</option><option>Tổ 2</option><option>Tổ 3</option><option>Tổ 4</option></select></div><div class="field"><label>Chức vụ</label><input name="classRole" value="Học sinh"></div><div class="field full"><button class="btn btn-primary">＋ Tạo tài khoản</button></div></form></div>
+ <div class="card"><div class="card-head"><div><h2>👤 Tạo tài khoản học sinh</h2><div class="sub">Nhập email + mật khẩu khi muốn chủ động cấp thông tin đăng nhập; để trống sẽ tự sinh.</div></div></div><form id="studentForm" class="formgrid"><div class="field full"><label>Họ và tên</label><input name="name" required maxlength="80" placeholder="Nguyễn Văn A"></div><div class="field"><label>Tên tài khoản (khuyến nghị)</label><input name="username" autocomplete="off" placeholder="nguyenvana"></div><div class="field"><label>Email đăng nhập (tùy chọn)</label><input name="email" type="email" autocomplete="off" placeholder="nguyenvana@example.com"></div><div class="field"><label>Mật khẩu (tùy chọn)</label><input name="password" type="text" minlength="6" autocomplete="off" placeholder="Để trống = tự sinh"></div><div class="field"><label>Ngày sinh</label><input name="dob" type="date"></div><div class="field"><label>Giới tính</label><select name="gender"><option>Nam</option><option>Nữ</option></select></div><div class="field"><label>Tổ</label><select name="team"><option>Tổ 1</option><option>Tổ 2</option><option>Tổ 3</option><option>Tổ 4</option></select></div><div class="field"><label>Chức vụ</label><input name="classRole" value="Học sinh"></div><div class="field full"><button class="btn btn-primary">＋ Tạo tài khoản</button></div></form></div>
 
- <div class="card"><div class="card-head"><div><h2>📋 Tạo hàng loạt thành viên</h2></div></div><textarea id="bulkStudentInput" style="width:100%;min-height:230px;padding:.9rem;border-radius:14px;border:1px solid var(--line);background:rgba(0,0,0,.18);color:var(--text)" placeholder="Nguyễn Văn A | nguyenvana@example.com | Matkhau123 | 2012-05-10 | Nam | Tổ 1 | Học sinh"></textarea><div class="row" style="margin-top:10px"><button id="bulkPreview" class="btn btn-soft" type="button">👀 Xem trước</button><button id="bulkCreate" class="btn btn-primary" type="button">🚀 Tạo tất cả</button></div><div id="bulkResult" class="list" style="margin-top:12px"></div></div>
+ <div class="card"><div class="card-head"><div><h2>📋 Tạo hàng loạt thành viên</h2><div class="sub">Mỗi dòng: Họ tên | Tên tài khoản | Email | Mật khẩu | Ngày sinh | Giới tính | Tổ | Chức vụ. Tên tài khoản, email và mật khẩu có thể bỏ trống.</div></div></div><textarea id="bulkStudentInput" style="width:100%;min-height:230px;padding:.9rem;border-radius:14px;border:1px solid var(--line);background:rgba(0,0,0,.18);color:var(--text);font:inherit" placeholder="Nguyễn Văn A | nguyenvana | nguyenvana@example.com | Matkhau123 | 2012-05-10 | Nam | Tổ 1 | Học sinh
+Trần Thị B | tranthib | tranthib@example.com | Matkhau123 | 2012-06-11 | Nữ | Tổ 2 | Học sinh"></textarea><div class="row" style="margin-top:10px"><button id="bulkPreview" class="btn btn-soft" type="button">👀 Xem trước</button><button id="bulkCreate" class="btn btn-primary" type="button">🚀 Tạo tất cả</button></div><div id="bulkResult" class="list" style="margin-top:12px"></div></div>
 
- <div class="card"><div class="card-head"><div><h2>📢 Popup toàn lớp</h2></div></div><form id="popupForm" class="formgrid"><div class="field full"><label>Tiêu đề</label><input name="title" required maxlength="120"></div><div class="field full"><label>Nội dung</label><textarea name="content" required maxlength="3000"></textarea></div><div class="field"><label>Hiển thị</label><select name="active"><option value="true">Có</option><option value="false">Không</option></select></div><div class="field"><label>Kích thước khung</label><select name="size"><option value="small">Nhỏ</option><option value="normal" selected>Vừa</option><option value="large">Lớn</option></select></div><div class="field"><label>Bo góc (px)</label><input name="radius" type="number" min="18" max="48" value="30"></div><div class="field"><label>Màu nhấn</label><input name="accentColor" type="color" value="#14b8a6" style="height:46px;width:100%;padding:4px"></div><div class="field full"><label>Ảnh URL (tùy chọn)</label><input name="imageUrl" type="url"></div><div class="field full"><label>Nội dung nút</label><input name="buttonLabel" maxlength="60" value="Tôi đã đọc &amp; hiểu rõ"></div><div class="field full"><button class="btn btn-primary">📣 Đăng Popup</button></div></form><div class="row" style="margin-top:10px"><button id="resetPopup" class="btn btn-soft">🔄 Reset đã đọc</button></div><div id="popupList" class="list" style="margin-top:12px"></div></div>
+ <div class="card"><div class="card-head"><div><h2>📢 Popup toàn lớp</h2><div class="sub">Tạo, bật/tắt, reset trạng thái đọc và xóa Popup.</div></div></div><form id="popupForm" class="formgrid"><div class="field full"><label>Tiêu đề</label><input name="title" required maxlength="120" placeholder="THÔNG BÁO"></div><div class="field full"><label>Nội dung</label><textarea name="content" required maxlength="3000" placeholder="Nội dung thông báo..."></textarea></div><div class="field"><label>Hiển thị</label><select name="active"><option value="true">Có</option><option value="false">Không</option></select></div><div class="field"><label>Kích thước khung</label><select name="size"><option value="small">Nhỏ</option><option value="normal" selected>Vừa</option><option value="large">Lớn</option></select></div><div class="field"><label>Bo góc (px)</label><input name="radius" type="number" min="18" max="48" value="30"></div><div class="field"><label>Màu nhấn</label><input name="accentColor" type="color" value="#14b8a6" style="height:46px;width:100%;padding:4px"></div><div class="field"><label>Màu nền khung</label><input name="backgroundColor" type="color" value="#ffffff" style="height:46px;width:100%;padding:4px"></div><div class="field"><label>Màu nút</label><input name="buttonColor" type="color" value="#14b8a6" style="height:46px;width:100%;padding:4px"></div><div class="field full"><label>Ảnh URL (tùy chọn)</label><input name="imageUrl" type="url" placeholder="https://..."></div><div class="field full"><label>Nội dung nút</label><input name="buttonLabel" maxlength="60" value="Tôi đã đọc &amp; hiểu rõ"></div><div class="field full"><button class="btn btn-primary">📣 Đăng Popup</button></div></form><div class="row" style="margin-top:10px"><button id="resetPopup" class="btn btn-soft">🔄 Reset đã đọc</button></div><div id="popupList" class="list" style="margin-top:12px"></div></div>
 
- <div class="card"><div class="card-head"><div><h2>📊 Poll</h2></div></div><form id="pollForm" class="formgrid"><div class="field full"><label>Câu hỏi</label><input name="question" required maxlength="250"></div><div class="field full"><label>Lựa chọn, mỗi dòng một phương án</label><textarea name="options" required></textarea></div><div class="field"><label>Trạng thái</label><select name="active"><option value="true">Đang hoạt động</option><option value="false">Tạm dừng</option></select></div><div class="field"><label>&nbsp;</label><button class="btn btn-primary">＋ Tạo Poll</button></div></form><div id="pollList" class="list" style="margin-top:12px"></div></div>
+ <div class="card"><div class="card-head"><div><h2>📊 Poll</h2><div class="sub">Tạo Poll và xóa từng Poll.</div></div></div><form id="pollForm" class="formgrid"><div class="field full"><label>Câu hỏi</label><input name="question" required maxlength="250"></div><div class="field full"><label>Lựa chọn, mỗi dòng một phương án</label><textarea name="options" required placeholder="Lựa chọn A\nLựa chọn B\nLựa chọn C"></textarea></div><div class="field"><label>Trạng thái</label><select name="active"><option value="true">Đang hoạt động</option><option value="false">Tạm dừng</option></select></div><div class="field"><label>&nbsp;</label><button class="btn btn-primary">＋ Tạo Poll</button></div></form><div id="pollList" class="list" style="margin-top:12px"></div></div>
 
- <div class="card full"><div class="card-head"><div><h2>🧠 Quiz Builder</h2></div><button id="addQuestion" class="btn btn-soft" type="button">＋ Thêm câu</button></div><form id="quizForm"><div class="formgrid"><div class="field"><label>Môn</label><select name="subject"><option>Toán</option><option>Ngữ văn</option><option>Tiếng Anh</option><option>Vật lý</option><option>Hóa học</option><option>Sinh học</option><option>Lịch sử</option><option>Địa lý</option><option>GDCD</option><option>Tin học</option></select></div><div class="field"><label>Thời lượng (phút)</label><input name="duration" type="number" min="1" max="300" value="15" required></div><div class="field full"><label>Tiêu đề Quiz</label><input name="title" required maxlength="200"></div></div><div id="questions"></div><button class="btn btn-primary" style="margin-top:14px">💾 Lưu Quiz</button></form><div id="quizList" class="list" style="margin-top:14px"></div></div>
+ <div class="card full"><div class="card-head"><div><h2>🧠 Quiz Builder</h2><div class="sub">Tạo Quiz A/B/C/D, chỉnh câu hỏi và có thể xóa Quiz sau khi tạo.</div></div><button id="addQuestion" class="btn btn-soft" type="button">＋ Thêm câu</button></div><form id="quizForm"><div class="formgrid"><div class="field"><label>Môn</label><select name="subject"><option>Toán</option><option>Ngữ văn</option><option>Tiếng Anh</option><option>Vật lý</option><option>Hóa học</option><option>Sinh học</option><option>Lịch sử</option><option>Địa lý</option><option>GDCD</option><option>Tin học</option></select></div><div class="field"><label>Thời lượng (phút)</label><input name="duration" type="number" min="1" max="300" value="15" required></div><div class="field full"><label>Tiêu đề Quiz</label><input name="title" required maxlength="200"></div></div><div id="questions"></div><button class="btn btn-primary" style="margin-top:14px">💾 Lưu Quiz</button></form><div id="quizList" class="list" style="margin-top:14px"></div></div>
 
- <div class="card full"><div class="card-head"><div><h2>📚 Bài tập</h2></div></div><form id="homeworkForm" class="formgrid"><div class="field"><label>Môn</label><input name="subject" required></div><div class="field"><label>Deadline</label><input name="deadline" type="datetime-local" required></div><div class="field full"><label>Tiêu đề</label><input name="title" required maxlength="200"></div><div class="field full"><label>Mô tả</label><textarea name="description" maxlength="2500"></textarea></div><div class="field full"><button class="btn btn-primary">＋ Đăng bài tập</button></div></form><div id="homeworkList" class="list" style="margin-top:12px"></div></div>
+ <div class="card full"><div class="card-head"><div><h2>📚 Bài tập</h2><div class="sub">Đăng bài tập và xóa khi không còn cần.</div></div></div><form id="homeworkForm" class="formgrid"><div class="field"><label>Môn</label><input name="subject" required></div><div class="field"><label>Deadline</label><input name="deadline" type="datetime-local" required></div><div class="field full"><label>Tiêu đề</label><input name="title" required maxlength="200"></div><div class="field full"><label>Mô tả</label><textarea name="description" maxlength="2500"></textarea></div><div class="field full"><button class="btn btn-primary">＋ Đăng bài tập</button></div></form><div id="homeworkList" class="list" style="margin-top:12px"></div></div>
 
- <div class="card"><div class="card-head"><div><h2>📝 Confession</h2></div></div><div id="confessionList" class="list"></div></div>
- <div class="card"><div class="card-head"><div><h2>📮 Góp ý riêng tư</h2></div></div><div id="feedbackList" class="list"></div></div>
+ <div class="card"><div class="card-head"><div><h2>📝 Confession</h2><div class="sub">Duyệt / từ chối / xóa confession.</div></div></div><div id="confessionList" class="list"></div></div>
+ <div class="card"><div class="card-head"><div><h2>📮 Góp ý riêng tư</h2><div class="sub">Đánh dấu đã đọc hoặc xóa.</div></div></div><div id="feedbackList" class="list"></div></div>
 
- <div class="card full"><div class="card-head"><div><h2>🏆 Quản lý thi đua</h2></div></div><div class="table-wrap"><table><thead><tr><th>Học sinh</th><th>Tổ</th><th>Giới tính</th><th>Điểm</th><th>Thao tác</th></tr></thead><tbody id="studentRows"></tbody></table></div></div>
+ <div class="card full"><div class="card-head"><div><h2>🏆 Quản lý thi đua</h2><div class="sub">Cộng / trừ điểm và xóa hồ sơ học sinh. Xóa hồ sơ sẽ xóa cả tài khoản Firebase liên kết thông qua Backend.</div></div></div><div class="table-wrap"><table><thead><tr><th>Học sinh</th><th>Tổ</th><th>Giới tính</th><th>Điểm</th><th>Thao tác</th></tr></thead><tbody id="studentRows"></tbody></table></div></div>
 
- <div class="card"><div class="card-head"><div><h2>📅 Điểm danh</h2></div></div><form id="attendanceForm" class="formgrid"><div class="field"><label>Ngày</label><input name="date" type="date" required></div><div class="field"><label>Số có mặt</label><input name="present" type="number" min="0" max="40" value="40" required></div><div class="field full"><label>Ghi chú</label><input name="note"></div><div class="field full"><button class="btn btn-primary">💾 Lưu điểm danh</button></div></form><div id="attendanceList" class="list" style="margin-top:12px"></div></div>
+ <div class="card"><div class="card-head"><div><h2>📅 Điểm danh</h2><div class="sub">Tạo bản ghi điểm danh và xóa bản ghi.</div></div></div><form id="attendanceForm" class="formgrid"><div class="field"><label>Ngày</label><input name="date" type="date" required></div><div class="field"><label>Số có mặt</label><input name="present" type="number" min="0" max="40" value="40" required></div><div class="field full"><label>Ghi chú</label><input name="note"></div><div class="field full"><button class="btn btn-primary">💾 Lưu điểm danh</button></div></form><div id="attendanceList" class="list" style="margin-top:12px"></div></div>
 
- <div class="card"><div class="card-head"><div><h2>🧪 Kết quả Quiz</h2></div></div><div id="resultList" class="list"></div></div>
+ <div class="card"><div class="card-head"><div><h2>🧪 Kết quả Quiz</h2><div class="sub">Theo dõi và xóa kết quả không hợp lệ.</div></div></div><div id="resultList" class="list"></div></div>
 
- <div id="roleCard" class="card full"><div class="card-head"><div><h2>🛡️ Phân quyền</h2></div></div><div id="roleList" class="list"></div></div>
+ <div class="card"><div class="card-head"><div><h2>🧾 Lịch sử điểm</h2><div class="sub">Nhật ký cộng/trừ điểm: học sinh, số điểm, lý do, người thực hiện và thời gian.</div></div></div><div id="pointLogList" class="list"></div></div>
+
+ <div class="card"><div class="card-head"><div><h2>📣 Vinh danh / Nhắc nhở toàn lớp</h2><div class="sub">Đăng bài công khai lên Bảng tin; có thể tag học sinh để gửi thông báo riêng.</div></div></div><form id="honorForm" class="formgrid"><div class="field full"><label>Tiêu đề</label><input name="title" required maxlength="180" placeholder="Tuyên dương tuần này"></div><div class="field"><label>Loại</label><select name="type"><option value="praise">🎉 Vinh danh</option><option value="reminder">⚠️ Nhắc nhở</option><option value="criticism">❌ Phê bình</option></select></div><div class="field"><label>Bật hiển thị</label><select name="active"><option value="true">Có</option><option value="false">Không</option></select></div><div class="field full"><label>Nội dung</label><textarea name="content" required maxlength="3000"></textarea></div><div class="field full"><label>Tag học sinh (nếu có)</label><select id="honorRecipients" name="recipientUids" multiple size="6"></select></div><div class="field full"><button class="btn btn-primary">📣 Đăng lên Bảng tin</button></div></form><div id="honorList" class="list" style="margin-top:12px"></div></div>
+
+ <div class="card"><div class="card-head"><div><h2>🔔 Lời nhắn riêng</h2><div class="sub">Khen / nhắc / phê bình đích danh; không bắt buộc đổi điểm.</div></div></div><form id="notificationForm" class="formgrid"><div class="field full"><label>Học sinh</label><select id="notificationRecipient" name="recipientUid" required></select></div><div class="field"><label>Loại</label><select name="type"><option value="praise">🎉 Khen thưởng</option><option value="reminder">⚠️ Nhắc nhở</option><option value="criticism">❌ Phê bình</option></select></div><div class="field"><label>Tiêu đề</label><input name="title" placeholder="Lời nhắn từ Admin"></div><div class="field full"><label>Lời nhắn</label><textarea name="message" required maxlength="2000"></textarea></div><div class="field full"><button class="btn btn-primary">🔔 Gửi riêng</button></div></form><div id="notificationList" class="list" style="margin-top:12px"></div></div>
+
+ <div class="card full"><div class="card-head"><div><h2>💬 Quản trị Chat</h2><div class="sub">Khóa/mở phòng, xóa nhóm và xóa tin nhắn vi phạm.</div></div></div><div id="adminChatRooms" class="list"></div><div id="adminChatMessages" class="list" style="margin-top:12px"></div></div>
+
+ <div id="roleCard" class="card full"><div class="card-head"><div><h2>🛡️ Phân quyền</h2><div class="sub">Chỉ Super Admin mới được đổi quyền. Không cho hạ quyền tài khoản Super Admin chính.</div></div></div><div id="roleList" class="list"></div></div>
 </section>
+<div style="padding:0 0 60px;text-align:center;color:var(--muted)">8A8 — Bứt phá giới hạn, Đoàn kết đập tan mọi thách thức!</div>
 </main>
 
-<div id="scoreModal" class="modal"><div class="modalbox"><h2 id="scoreTitle" style="margin-top:0">Cập nhật thi đua</h2><form id="scoreForm"><input type="hidden" name="uid"><div class="field"><label>Loại</label><select name="type"><option value="praise">Khen thưởng +1</option><option value="criticism">Nhắc nhở -1</option></select></div><div class="field" style="margin-top:10px"><label>Lý do</label><textarea name="reason" required maxlength="500"></textarea></div><div class="row" style="margin-top:12px"><button class="btn btn-primary">Lưu</button><button id="closeScore" class="btn btn-soft" type="button">Hủy</button></div></form></div></div>
+<div id="scoreModal" class="modal"><div class="modalbox"><h2 id="scoreTitle" style="margin-top:0">Cập nhật thi đua</h2><form id="scoreForm"><input type="hidden" name="uid"><div class="formgrid"><div class="field"><label>Số điểm (+/-)</label><input name="points" type="number" min="-100" max="100" step="1" value="1" required></div><div class="field"><label>Loại</label><select name="type"><option value="praise">🎉 Khen thưởng</option><option value="reminder">⚠️ Nhắc nhở</option><option value="criticism">❌ Phê bình</option></select></div></div><div class="field" style="margin-top:10px"><label>Lý do chi tiết</label><textarea name="reason" required maxlength="1000" placeholder="Ví dụ: Chủ động giúp đỡ bạn trong nhóm…"></textarea></div><div class="row" style="margin-top:12px"><button class="btn btn-primary">Lưu & gửi thông báo</button><button id="closeScore" class="btn btn-soft" type="button">Hủy</button></div></form></div></div>
 
 <script>
-const firebaseConfig={apiKey:"AIzaSyCWDybmAejsQX0f9lwd6c0lXyfQ4A-HqKs",authDomain:"a8thcscl2.firebaseapp.com",projectId:"a8thcscl2",storageBucket:"a8thcscl2.firebasestorage.app",messagingSenderId:"271886897885",appId:"1:271886897885:web:d8fc19828db5921d9bc134",measurementId:"G-KZP06LF2Z4"};
-firebase.initializeApp(firebaseConfig);const auth=firebase.auth(),db=firebase.firestore();
-const ADMINS=new Set(["admin","super_admin"]),SUPER_EMAIL="tranducmanh2109@gmail.com";
-let currentUser=null,profile=null,unsubs=[];let localStudents=[];
-const BACKEND=String(localStorage.getItem("A8A8_BACKEND_URL")||"https://8a8backend-production.up.railway.app").replace(/\/$/,"");
-const $=id=>document.getElementById(id);const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
-function millis(v){if(!v)return 0;if(typeof v.toMillis==="function")return v.toMillis();if(v.seconds!=null)return Number(v.seconds)*1000;const n=new Date(v).getTime();return Number.isFinite(n)?n:0}
-function dateText(v){const n=millis(v);return n?new Date(n).toLocaleString("vi-VN"):"—"}
-function confirmDelete(label){return Swal.fire({icon:"warning",title:"Xóa dữ liệu?",html:`Bạn sắp xóa <b>${esc(label)}</b>.`,showCancelButton:true,confirmButtonText:"Xóa luôn",cancelButtonText:"Hủy",confirmButtonColor:"#ef4444"}).then(x=>x.isConfirmed)}
-function ok(title,text=""){return Swal.fire({icon:"success",title,text,timer:1800,showConfirmButton:false})}
-function fail(message){return Swal.fire({icon:"error",title:"Thất bại",text:message})}
-async function api(path,options={}){if(!currentUser)throw Error("Chưa đăng nhập.");const token=await currentUser.getIdToken(true);const r=await fetch(`${BACKEND}${path}`,{...options,headers:{"Content-Type":"application/json",Authorization:`Bearer ${token}`,...(options.headers||{})}});const d=await r.json().catch(()=>({}));if(!r.ok)throw Error(d.message||d.error||`HTTP ${r.status}`);return d}
-async function checkBackend(){if(!BACKEND){if($("backendDot"))$("backendDot").className="backend-dot bad";if($("backendText"))$("backendText").textContent="Chưa cài đặt Backend";return}try{const r=await fetch(`${BACKEND}/api/health`);const d=await r.json();if($("backendDot"))$("backendDot").className="backend-dot ok";if($("backendText"))$("backendText").textContent=d.firebaseReady?`${BACKEND} · Kết nối thành công`:`${BACKEND} · Firebase Admin chưa sẵn sàng`;}catch(e){if($("backendDot"))$("backendDot").className="backend-dot bad";if($("backendText"))$("backendText").textContent=`Không kết nối được ${BACKEND}`}}
-function clearSnapshots(){unsubs.forEach(fn=>{try{fn()}catch(e){}});unsubs=[]}
+/*
+ * 8A8 ADMIN CONTROL CENTER
+ * --------------------------------------------------------------------------
+ * Mục tiêu của module này:
+ * 1. Không để gate xác thực Admin bị treo.
+ * 2. Luôn xác minh theo 3 tầng: Super Admin email -> Backend -> Firestore/Claims.
+ * 3. Mọi dữ liệu Admin tạo ra đều có SỬA và XÓA.
+ * 4. Các thao tác nhạy cảm (tạo tài khoản, reset mật khẩu, điểm, quyền) đi qua
+ *    Node.js Backend sử dụng Firebase Admin SDK.
+ */
 
-async function verifyAdmin(u){
-  if($("gateText")) {
-    $("gateText").className="section-note";
-    $("gateText").textContent="Đang đọc thông tin phân quyền...";
+const firebaseConfig = {
+  apiKey: "AIzaSyCWDybmAejsAQX0f9lwd6c0lXyfQ4A-HqKs",
+  authDomain: "a8thcscl2.firebaseapp.com",
+  projectId: "a8thcscl2",
+  storageBucket: "a8thcscl2.firebasestorage.app",
+  messagingSenderId: "271886897885",
+  appId: "1:271886897885:web:d8fc19828db5921d9bc134",
+  measurementId: "G-KZP06LF2Z4"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+const ADMINS = new Set(["admin", "super_admin"]);
+const SUPER_EMAIL = "tranducmanh2109@gmail.com";
+const BACKEND = String(
+  localStorage.getItem("A8A8_BACKEND_URL") ||
+  "https://8a8backend-production.up.railway.app"
+).replace(/\/$/, "");
+
+const VERIFY_TIMEOUT_MS = 6500;
+const REQUEST_TIMEOUT_MS = 10000;
+
+let currentUser = null;
+let profile = null;
+let localStudents = [];
+let unsubs = [];
+let adminChatSelectedRoomId = null;
+let adminChatMessageUnsub = null;
+let verificationRun = 0;
+
+const $ = (id) => document.getElementById(id);
+const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (character) => ({
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': "&quot;",
+  "'": "&#039;"
+}[character]));
+
+function millis(value) {
+  if (!value) return 0;
+  if (typeof value.toMillis === "function") return value.toMillis();
+  if (value.seconds != null) return Number(value.seconds) * 1000;
+  const number = new Date(value).getTime();
+  return Number.isFinite(number) ? number : 0;
+}
+
+function dateText(value) {
+  const time = millis(value);
+  return time ? new Date(time).toLocaleString("vi-VN") : "—";
+}
+
+function withTimeout(promise, ms, label) {
+  return Promise.race([
+    Promise.resolve(promise),
+    new Promise((_, reject) => {
+      setTimeout(() => reject(new Error(`${label} quá thời gian ${Math.round(ms / 1000)} giây.`)), ms);
+    })
+  ]);
+}
+
+function withDeadline(promise, deadline, label) {
+  const remaining = Math.max(250, deadline - Date.now());
+  return withTimeout(promise, remaining, label);
+}
+
+function confirmDelete(label) {
+  return Swal.fire({
+    icon: "warning",
+    title: "Xóa dữ liệu?",
+    html: `Bạn sắp xóa <b>${esc(label)}</b>.<br><small>Hành động này không thể hoàn tác.</small>`,
+    showCancelButton: true,
+    confirmButtonText: "Xóa vĩnh viễn",
+    cancelButtonText: "Hủy",
+    confirmButtonColor: "#ef4444",
+    focusCancel: true
+  }).then((result) => result.isConfirmed);
+}
+
+function ok(title, text = "") {
+  return Swal.fire({
+    icon: "success",
+    title,
+    text,
+    timer: 1700,
+    showConfirmButton: false
+  });
+}
+
+function fail(message) {
+  return Swal.fire({
+    icon: "error",
+    title: "Không thể thực hiện",
+    text: message || "Đã xảy ra lỗi không xác định."
+  });
+}
+
+function setGateMessage(message, type = "info") {
+  const node = $("gateText");
+  if (!node) return;
+  node.className = "section-note";
+  if (type === "error") node.classList.add("danger-text");
+  node.textContent = message;
+}
+
+function setGateBusy(busy) {
+  $("btnRetry")?.classList.toggle("hidden", busy);
+  $("btnRetry") && ($("btnRetry").disabled = busy);
+  $("btnBypass") && ($("btnBypass").disabled = busy);
+}
+
+function hideGateShowApp() {
+  $("gate")?.classList.remove("show");
+  $("app")?.classList.remove("hidden");
+}
+
+function showGate() {
+  $("gate")?.classList.add("show");
+  $("app")?.classList.add("hidden");
+}
+
+function explainVerificationError(error) {
+  const message = String(error?.message || error || "Lỗi xác thực.");
+  const code = String(error?.code || "");
+  if (code.includes("auth/user-token-expired")) {
+    return "Token Firebase đã hết hạn. Hãy đăng xuất, đăng nhập lại rồi thử lại.";
   }
-  try{
-    const snap=await db.collection("users").doc(u.uid).get();
-    const p=snap.exists?snap.data():{};
-    let userRole = p.role;
-    if (u.email && u.email.toLowerCase() === SUPER_EMAIL.toLowerCase()) userRole = userRole || "super_admin";
-    if(!ADMINS.has(userRole)) throw Error(`Tài khoản ${u.email||"này"} không có quyền truy cập admin.`);
-    profile={uid:u.uid,email:u.email,...p,role:userRole};
-    if($("who")) $("who").textContent=`Đang quản trị: ${profile.displayName||u.email} (${profile.role})`;
-    if($("gate")) $("gate").classList.remove("show");
-    if($("app")) $("app").classList.remove("hidden");
-    await checkBackend();
-    await start();
-  }catch(e){
-    console.error("[AdminAuth]",e);
-    if($("gateText")){
-      $("gateText").className="bulk-fail";
-      $("gateText").innerHTML=esc(e.message);
+  if (code.includes("permission-denied") || /permission|insufficient/i.test(message)) {
+    return "Firestore Rules đang từ chối truy cập users/{uid}. Hãy triển khai firestore.rules mới.";
+  }
+  if (/backend|http|fetch|network|failed to fetch|timeout/i.test(message)) {
+    return `Không kết nối được Backend ${BACKEND || "(chưa cấu hình)"}. Kiểm tra Railway/API URL.`;
+  }
+  return message;
+}
+
+async function api(path, options = {}) {
+  if (!currentUser) throw new Error("Chưa đăng nhập Firebase.");
+  if (!BACKEND) throw new Error("Chưa cấu hình Backend.");
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
+  try {
+    const token = await withTimeout(
+      currentUser.getIdToken(true),
+      VERIFY_TIMEOUT_MS,
+      "Lấy Firebase ID token"
+    );
+
+    const response = await fetch(`${BACKEND}${path}`, {
+      ...options,
+      signal: controller.signal,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+        ...(options.headers || {})
+      }
+    });
+
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      throw new Error(data.message || data.error || `HTTP ${response.status}`);
     }
-    if($("btnRetry")) $("btnRetry").classList.remove("hidden");
+    return data;
+  } catch (error) {
+    if (error?.name === "AbortError") {
+      throw new Error("Backend phản hồi quá thời gian. Hãy kiểm tra Railway.");
+    }
+    throw error;
+  } finally {
+    clearTimeout(timer);
   }
 }
-function sortDesc(items,field="createdAt"){return [...items].sort((a,b)=>millis(b[field])-millis(a[field]))}
 
-async function start(){
- clearSnapshots();
- subscribe("students",null,s=>{localStudents=sortDesc(s.map(d=>({id:d.id,...d.data()})),"updatedAt");renderStudents();renderOverview();});
- subscribe("quizzes",null,s=>{const items=sortDesc(s.map(d=>({id:d.id,...d.data()})));renderQuizList(items);if($("sQuizzes"))$("sQuizzes").textContent=items.length});
- subscribe("popups",null,s=>{const items=sortDesc(s.map(d=>({id:d.id,...d.data()})));renderPopups(items);if($("sPopups"))$("sPopups").textContent=items.filter(x=>x.active!==false).length});
- subscribe("polls",null,s=>{const items=sortDesc(s.map(d=>({id:d.id,...d.data()})));renderPolls(items);if($("sPolls"))$("sPolls").textContent=items.filter(x=>x.active!==false).length});
- subscribe("homework",null,s=>{const items=sortDesc(s.map(d=>({id:d.id,...d.data()})));renderHomework(items);if($("sHomework"))$("sHomework").textContent=items.length});
- subscribe("confessions",null,s=>{const items=sortDesc(s.map(d=>({id:d.id,...d.data()})));renderConfessions(items);if($("sConfessions"))$("sConfessions").textContent=items.filter(x=>x.status!=="approved").length});
- subscribe("privateFeedback",null,s=>{const items=sortDesc(s.map(d=>({id:d.id,...d.data()})));renderFeedback(items);if($("sFeedback"))$("sFeedback").textContent=items.filter(x=>x.status!=="read").length});
- subscribe("attendance",null,s=>renderAttendance(sortDesc(s.map(d=>({id:d.id,...d.data()})),"date")));
- subscribe("quizResults",null,s=>renderResults(sortDesc(s.map(d=>({id:d.id,...d.data()})))));
- subscribe("users",null,s=>{if(profile?.role==="super_admin")renderRoles(sortDesc(s.map(d=>({id:d.id,...d.data()})),"displayName"));});
- renderOverview();
+async function checkBackend() {
+  if (!BACKEND) {
+    $("backendDot").className = "backend-dot bad";
+    $("backendText").textContent = "Chưa cấu hình Backend.";
+    return false;
+  }
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 5000);
+  try {
+    const response = await fetch(`${BACKEND}/api/health`, { signal: controller.signal });
+    const data = await response.json();
+    const okState = response.ok && data.ok === true;
+    $("backendDot").className = `backend-dot ${okState && data.firebaseReady ? "ok" : "bad"}`;
+    $("backendText").textContent = okState
+      ? `${BACKEND} · Firebase Admin ${data.firebaseReady ? "sẵn sàng" : "chưa sẵn sàng"}`
+      : `${BACKEND} · API Health lỗi`;
+    return okState && data.firebaseReady;
+  } catch (error) {
+    $("backendDot").className = "backend-dot bad";
+    $("backendText").textContent = `Không kết nối được ${BACKEND}`;
+    return false;
+  } finally {
+    clearTimeout(timer);
+  }
 }
-function subscribe(collectionName,order,sink){const ref=db.collection(collectionName);const fn=ref.onSnapshot(sink,e=>{console.error(`[Firestore ${collectionName}]`,e);});unsubs.push(fn)}
-function renderOverview(){if($("sStudents"))$("sStudents").textContent=localStudents.length}
 
-function renderStudents(){
- if(!$("studentRows")) return;
- $("studentRows").innerHTML=localStudents.map(s=>`<tr><td><b>${esc(s.name||"Chưa đặt tên")}</b><br><span class="sub">${esc(s.classRole||"Học sinh")}</span></td><td>${esc(s.team||"—")}</td><td>${esc(s.gender||"—")}</td><td class="score">${Number(s.score??10)}</td><td><div class="row"><button class="btn btn-soft scoreBtn" data-id="${esc(s.id)}">＋/− Điểm</button><button class="btn btn-warning resetStudentPassword" data-id="${esc(s.id)}">🔑 Cấp lại mật khẩu</button><button class="btn btn-danger deleteStudent" data-id="${esc(s.id)}">🗑️ Xóa</button></div></td></tr>`).join("")||`<tr><td colspan="5" class="sub">Chưa có học sinh.</td></tr>`;
- document.querySelectorAll(".scoreBtn").forEach(b=>b.onclick=()=>openScore(b.dataset.id));
- document.querySelectorAll(".resetStudentPassword").forEach(b=>b.onclick=()=>resetStudentPassword(b.dataset.id));
- document.querySelectorAll(".deleteStudent").forEach(b=>b.onclick=()=>deleteStudent(b.dataset.id));
+function clearSnapshots() {
+  unsubs.forEach((unsubscribe) => {
+    try { unsubscribe(); } catch (_) {}
+  });
+  unsubs = [];
+  try { adminChatMessageUnsub?.(); } catch (_) {}
+  adminChatMessageUnsub = null;
 }
-async function openScore(id){const s=localStudents.find(x=>x.id===id);if(!s)return;$("scoreForm [name=uid]").value=id;$("scoreTitle").textContent=`Thi đua — ${s.name}`;$("scoreModal").classList.add("show")}
-async function saveScore(e){e.preventDefault();try{const f=new FormData(e.target);await api(`/api/admin/students/${encodeURIComponent(f.get("uid"))}/score`,{method:"PATCH",body:JSON.stringify({points:f.get("type")==="praise"?1:-1,reason:String(f.get("reason")).trim()})});$("scoreModal").classList.remove("show");e.target.reset();await ok("Đã cập nhật điểm")}catch(e){fail(e.message)}}
-async function deleteStudent(id){const s=localStudents.find(x=>x.id===id);if(!s||!(await confirmDelete(`hồ sơ ${s.name||id}`)))return;try{await api(`/api/admin/students/${encodeURIComponent(id)}`,{method:"DELETE"});await ok("Đã xóa học sinh")}catch(e){fail(e.message)}}
-async function resetStudentPassword(id){const s=localStudents.find(x=>x.id===id);if(!s)return;const result=await Swal.fire({title:`Cấp lại mật khẩu cho ${esc(s.name||"học sinh")}?`,input:"text",inputPlaceholder:"Ít nhất 6 ký tự",showCancelButton:true,confirmButtonText:"Cấp lại"});if(!result.isConfirmed)return;try{const data=await api(`/api/admin/students/${encodeURIComponent(id)}/reset-password`,{method:"POST",body:JSON.stringify({password:result.value||""})});await Swal.fire({icon:"success",title:"Đã cấp lại mật khẩu",html:`Email: <code>${esc(data.email)}</code><br>Mật khẩu mới: <code>${esc(data.temporaryPassword)}</code>`});}catch(e){fail(e.message)}}
 
-function addQuestion(data={}){
-  const root=$("questions");if(!root)return;
-  const box=document.createElement("div");
-  box.className="qbox";
-  box.innerHTML=`<div class="qhead"><b>Câu hỏi <span class="qn"></span></b><button type="button" class="btn btn-danger removeQ">Xóa</button></div><div class="field" style="margin-top:10px"><label>Nội dung câu hỏi</label><textarea class="qq" required>${esc(data.question||"")}</textarea></div><div class="optgrid" style="margin-top:10px">${["A","B","C","D"].map((l,i)=>`<div class="field"><label>Đáp án ${l}</label><input class="qo" required value="${esc(data.options?.[i]||"")}"></div>`).join("")}</div><div class="formgrid" style="margin-top:10px"><div class="field"><label>Đáp án đúng</label><select class="qa">${["A","B","C","D"].map(l=>`<option ${data.answer===l?"selected":""}>${l}</option>`).join("")}</select></div><div class="field"><label>Lời giải (tùy chọn)</label><input class="qe" value="${esc(data.explanation||"")}"></div></div>`;
-  box.querySelector(".removeQ").onclick=()=>{box.remove();renumberQuestions()};
+function subscribe(collectionName, sink, queryBuilder = null) {
+  let ref = db.collection(collectionName);
+  if (typeof queryBuilder === "function") ref = queryBuilder(ref);
+  const unsubscribe = ref.onSnapshot(
+    sink,
+    (error) => console.error(`[Firestore ${collectionName}]`, error)
+  );
+  unsubs.push(unsubscribe);
+}
+
+/* -------------------------------------------------------------------------
+ * CRITICAL ADMIN AUTH / GATE
+ * -------------------------------------------------------------------------
+ * verifyAdmin(u) không có promise treo vô hạn. Mỗi tầng đều có timeout và
+ * lỗi được chuyển thành thông báo có thể hiểu được.
+ */
+async function verifyAdmin(user) {
+  const runId = ++verificationRun;
+  const deadline = Date.now() + VERIFY_TIMEOUT_MS;
+  showGate();
+  setGateBusy(true);
+  $("btnBypass")?.classList.add("hidden");
+  setGateMessage("Đang kiểm tra Firebase Auth…");
+
+  if (!user) {
+    setGateBusy(false);
+    setGateMessage("Bạn chưa đăng nhập tài khoản quản trị.", "error");
+    return false;
+  }
+
+  const email = String(user.email || "").trim().toLowerCase();
+  const isSuperEmail = email === SUPER_EMAIL;
+  if (isSuperEmail) {
+    // Tầng 1: email Super Admin cố định.
+    profile = {
+      uid: user.uid,
+      email,
+      displayName: user.displayName || "Super Admin",
+      role: "super_admin",
+      classRole: "Super Admin"
+    };
+    $("btnBypass")?.classList.remove("hidden");
+    setGateMessage("✅ Email Super Admin đã được nhận diện. Đang đồng bộ profile và Backend…");
+
+    // Hiển thị app sớm để không bao giờ kẹt Gate; backend vẫn xác thực lại.
+    if (runId !== verificationRun) return false;
+    $("who").textContent = `Đang quản trị: ${profile.displayName} (super_admin)`;
+    hideGateShowApp();
+    setGateBusy(false);
+
+    // Đồng bộ profile/claims phía server nhưng không khóa giao diện chờ kết quả.
+    try {
+      await withDeadline(api("/api/admin/verify"), deadline, "Backend Admin Verify");
+    } catch (error) {
+      console.warn("[AdminAuth] Super Admin backend sync", error);
+    }
+
+    try {
+      await withTimeout(
+        db.collection("users").doc(user.uid).set({
+          uid: user.uid,
+          email,
+          displayName: profile.displayName,
+          role: "super_admin",
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true }),
+        deadline,
+        "Khôi phục profile Super Admin"
+      );
+    } catch (error) {
+      console.warn("[AdminAuth] Super profile", error);
+    }
+
+    await start();
+    return true;
+  }
+
+  try {
+    /* Tầng 2: token + Backend /api/admin/verify. */
+    setGateMessage("Đang lấy ID token và xác minh quyền bằng Backend…");
+    const backendResult = await withTimeout(
+      api("/api/admin/verify"),
+      deadline,
+      "Backend /api/admin/verify"
+    );
+
+    if (runId !== verificationRun) return false;
+
+    if (backendResult.allowed && ADMINS.has(backendResult.role)) {
+      profile = {
+        uid: user.uid,
+        email,
+        ...(backendResult.profile || {}),
+        role: backendResult.role
+      };
+      $("who").textContent = `Đang quản trị: ${profile.displayName || email} (${profile.role})`;
+      hideGateShowApp();
+      setGateBusy(false);
+      await start();
+      return true;
+    }
+
+    if (backendResult.allowed === false) {
+      throw new Error(`Backend xác định tài khoản chỉ có quyền ${backendResult.role || "student"}.`);
+    }
+
+    throw new Error("Backend không trả về quyền Admin hợp lệ.");
+  } catch (backendError) {
+    console.warn("[AdminAuth] Backend verification failed:", backendError);
+
+    /* Tầng 3: fallback Firestore users/{uid}. */
+    try {
+      setGateMessage("Backend chưa xác nhận được. Đang fallback sang Firestore users/{uid}…");
+      const snap = await withTimeout(
+        db.collection("users").doc(user.uid).get(),
+        deadline,
+        "Firestore users/{uid}"
+      );
+
+      if (!snap.exists) {
+        throw new Error("Document users/{uid} chưa tồn tại.");
+      }
+
+      const firestoreProfile = snap.data() || {};
+      if (!ADMINS.has(firestoreProfile.role)) {
+        throw new Error(`Tài khoản ${email} hiện có role ${firestoreProfile.role || "student"}.`);
+      }
+
+      profile = { uid: user.uid, email, ...firestoreProfile };
+      $("who").textContent = `Đang quản trị: ${profile.displayName || email} (${profile.role})`;
+      hideGateShowApp();
+      setGateBusy(false);
+      await start();
+      return true;
+    } catch (firestoreError) {
+      console.error("[AdminAuth] Firestore fallback failed:", firestoreError);
+      setGateBusy(false);
+      $("btnRetry")?.classList.remove("hidden");
+      $("btnBypass")?.classList.toggle("hidden", !isSuperEmail);
+      setGateMessage(
+        `Xác thực Admin chưa hoàn tất. Backend: ${explainVerificationError(backendError)} | Firestore: ${explainVerificationError(firestoreError)}`,
+        "error"
+      );
+      return false;
+    }
+  }
+}
+
+function sortDesc(items, field = "createdAt") {
+  return [...items].sort((a, b) => millis(b[field]) - millis(a[field]));
+}
+
+async function start() {
+  clearSnapshots();
+  subscribe("students", (snapshot) => {
+    localStudents = sortDesc(
+      snapshot.docs.map((document) => ({ id: document.id, ...document.data() })),
+      "updatedAt"
+    );
+    renderStudents();
+    $("sStudents").textContent = localStudents.length;
+  });
+
+  subscribe("quizzes", (snapshot) => {
+    const items = sortDesc(snapshot.docs.map((document) => ({ id: document.id, ...document.data() })));
+    renderQuizList(items);
+    $("sQuizzes").textContent = items.length;
+  });
+  subscribe("popups", (snapshot) => {
+    const items = sortDesc(snapshot.docs.map((document) => ({ id: document.id, ...document.data() })));
+    renderPopups(items);
+    $("sPopups").textContent = items.filter((item) => item.active !== false).length;
+  });
+  subscribe("polls", (snapshot) => {
+    const items = sortDesc(snapshot.docs.map((document) => ({ id: document.id, ...document.data() })));
+    renderPolls(items);
+    $("sPolls").textContent = items.filter((item) => item.active !== false).length;
+  });
+  subscribe("homework", (snapshot) => {
+    const items = sortDesc(snapshot.docs.map((document) => ({ id: document.id, ...document.data() })));
+    renderHomework(items);
+    $("sHomework").textContent = items.length;
+  });
+  subscribe("confessions", (snapshot) => {
+    const items = sortDesc(snapshot.docs.map((document) => ({ id: document.id, ...document.data() })));
+    renderConfessions(items);
+    $("sConfessions").textContent = items.filter((item) => item.status !== "approved").length;
+  });
+  subscribe("privateFeedback", (snapshot) => {
+    const items = sortDesc(snapshot.docs.map((document) => ({ id: document.id, ...document.data() })));
+    renderFeedback(items);
+    $("sFeedback").textContent = items.filter((item) => item.status !== "read").length;
+  });
+  subscribe("attendance", (snapshot) => renderAttendance(
+    sortDesc(snapshot.docs.map((document) => ({ id: document.id, ...document.data() })), "date")
+  ));
+  subscribe("quizResults", (snapshot) => renderResults(
+    sortDesc(snapshot.docs.map((document) => ({ id: document.id, ...document.data() })))
+  ));
+  subscribe("honors", (snapshot) => renderHonors(
+    sortDesc(snapshot.docs.map((document) => ({ id: document.id, ...document.data() })))
+  ));
+  subscribe("notifications", (snapshot) => renderNotifications(
+    sortDesc(snapshot.docs.map((document) => ({ id: document.id, ...document.data() })))
+  ));
+  subscribe("pointLogs", (snapshot) => renderPointLogs(
+    sortDesc(snapshot.docs.map((document) => ({ id: document.id, ...document.data() })))
+  ));
+  subscribe("chatRooms", (snapshot) => {
+    const rooms = sortDesc(snapshot.docs.map((document) => ({ id: document.id, ...document.data() })));
+    renderAdminChatRooms(rooms);
+    if (adminChatSelectedRoomId && rooms.some((room) => room.id === adminChatSelectedRoomId)) {
+      loadAdminChatMessages(adminChatSelectedRoomId);
+    }
+  });
+  subscribe("users", (snapshot) => {
+    const users = snapshot.docs.map((document) => ({ id: document.id, ...document.data() }));
+    renderRoleAndRecipients(users);
+  });
+
+  await checkBackend();
+}
+
+/* -------------------------------------------------------------------------
+ * STUDENTS / ACCOUNTS
+ * ------------------------------------------------------------------------- */
+function renderStudents() {
+  $("studentRows").innerHTML = localStudents.map((student) => `
+    <tr>
+      <td>
+        <b>${esc(student.name || "Chưa đặt tên")}</b><br>
+        <span class="sub">${esc(student.classRole || "Học sinh")}</span><br>
+        <span class="sub">Username: <b>${esc(student.username || student.loginName || "—")}</b></span><br>
+        <span class="sub">Email: ${esc(student.accountEmail || student.email || "")}</span>
+      </td>
+      <td>${esc(student.team || "—")}</td>
+      <td>${esc(student.gender || "—")}</td>
+      <td class="score">${Number(student.score ?? 10)}</td>
+      <td>
+        <div class="row">
+          <button class="btn btn-soft scoreBtn" data-id="${esc(student.id)}">＋/− Điểm</button>
+          <button class="btn btn-soft editStudent" data-id="${esc(student.id)}">✏️ Sửa</button>
+          <button class="btn btn-warning resetStudentPassword" data-id="${esc(student.id)}">🔑 Cấp lại mật khẩu</button>
+          <button class="btn btn-danger deleteStudent" data-id="${esc(student.id)}">🗑️ Xóa</button>
+        </div>
+      </td>
+    </tr>
+  `).join("") || `<tr><td colspan="5" class="sub">Chưa có học sinh.</td></tr>`;
+
+  document.querySelectorAll(".scoreBtn").forEach((button) => button.onclick = () => openScore(button.dataset.id));
+  document.querySelectorAll(".editStudent").forEach((button) => button.onclick = () => editStudent(button.dataset.id));
+  document.querySelectorAll(".resetStudentPassword").forEach((button) => button.onclick = () => resetStudentPassword(button.dataset.id));
+  document.querySelectorAll(".deleteStudent").forEach((button) => button.onclick = () => deleteStudent(button.dataset.id));
+}
+
+async function editStudent(id) {
+  const student = localStudents.find((item) => item.id === id);
+  if (!student) return;
+  const result = await Swal.fire({
+    title: `Sửa ${esc(student.name || "học sinh")}`,
+    html: `
+      <input id="edit-st-name" class="swal2-input" placeholder="Họ tên" value="${esc(student.name || "")}">
+      <input id="edit-st-username" class="swal2-input" placeholder="Tên tài khoản" value="${esc(student.username || student.loginName || "")}">
+      <input id="edit-st-email" class="swal2-input" placeholder="Email" value="${esc(student.accountEmail || student.email || "")}">
+      <input id="edit-st-dob" class="swal2-input" type="date" value="${esc(student.dob || "")}">
+      <input id="edit-st-team" class="swal2-input" placeholder="Tổ" value="${esc(student.team || "")}">
+      <input id="edit-st-role" class="swal2-input" placeholder="Chức vụ" value="${esc(student.classRole || "Học sinh")}">
+    `,
+    focusConfirm: false,
+    showCancelButton: true,
+    confirmButtonText: "Lưu thay đổi",
+    cancelButtonText: "Hủy",
+    preConfirm: () => ({
+      name: $("edit-st-name").value.trim(),
+      username: $("edit-st-username").value.trim(),
+      accountEmail: $("edit-st-email").value.trim(),
+      dob: $("edit-st-dob").value,
+      team: $("edit-st-team").value.trim(),
+      classRole: $("edit-st-role").value.trim()
+    })
+  });
+  if (!result.isConfirmed) return;
+  try {
+    await api(`/api/admin/students/${encodeURIComponent(id)}`, {
+      method: "PATCH",
+      body: JSON.stringify(result.value)
+    });
+    await ok("Đã cập nhật học sinh");
+  } catch (error) {
+    fail(error.message);
+  }
+}
+
+async function openScore(id) {
+  const student = localStudents.find((item) => item.id === id);
+  if (!student) return;
+  $("scoreForm [name=uid]").value = id;
+  $("scoreForm [name=points]").value = "1";
+  $("scoreForm [name=type]").value = "praise";
+  $("scoreForm [name=reason]").value = "";
+  $("scoreTitle").textContent = `Thi đua — ${student.name}`;
+  $("scoreModal").classList.add("show");
+}
+
+async function saveScore(event) {
+  event.preventDefault();
+  try {
+    const form = new FormData(event.target);
+    const points = Number(form.get("points"));
+    const type = String(form.get("type"));
+    if (!Number.isInteger(points) || points === 0 || Math.abs(points) > 100) {
+      throw new Error("Số điểm phải là số nguyên khác 0 và nằm trong khoảng -100 đến 100.");
+    }
+    if (type === "praise" && points < 0) throw new Error("Khen thưởng phải dùng điểm dương.");
+    if ((type === "reminder" || type === "criticism") && points > 0) throw new Error("Nhắc nhở/Phê bình nên dùng điểm âm.");
+
+    await api(`/api/admin/students/${encodeURIComponent(form.get("uid"))}/score`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        points,
+        type,
+        reason: String(form.get("reason") || "").trim()
+      })
+    });
+
+    $("scoreModal").classList.remove("show");
+    event.target.reset();
+    await ok("Đã cập nhật điểm", "Đã lưu lịch sử và gửi thông báo riêng cho học sinh.");
+  } catch (error) {
+    fail(error.message);
+  }
+}
+
+async function deleteStudent(id) {
+  const student = localStudents.find((item) => item.id === id);
+  if (!student) return;
+  if (!(await confirmDelete(`hồ sơ ${student.name || id} và tài khoản Firebase liên kết`))) return;
+  try {
+    await api(`/api/admin/students/${encodeURIComponent(id)}`, { method: "DELETE" });
+    await ok("Đã xóa học sinh", "Đã xóa Auth + users + students + login alias.");
+  } catch (error) {
+    fail(error.message);
+  }
+}
+
+async function resetStudentPassword(id) {
+  const student = localStudents.find((item) => item.id === id);
+  if (!student) return;
+  const result = await Swal.fire({
+    title: `Cấp lại mật khẩu cho ${esc(student.name || "học sinh")}?`,
+    input: "text",
+    inputLabel: "Mật khẩu mới; để trống = tự sinh",
+    inputPlaceholder: "Ít nhất 6 ký tự",
+    showCancelButton: true,
+    confirmButtonText: "Cấp lại",
+    cancelButtonText: "Hủy",
+    inputValidator: (value) => value && value.trim().length < 6 ? "Mật khẩu tối thiểu 6 ký tự." : undefined
+  });
+  if (!result.isConfirmed) return;
+
+  try {
+    const data = await api(`/api/admin/students/${encodeURIComponent(id)}/reset-password`, {
+      method: "POST",
+      body: JSON.stringify({ password: result.value || "" })
+    });
+    await Swal.fire({
+      icon: "success",
+      title: "Đã cấp lại mật khẩu",
+      html: `<div style="text-align:left"><b>Tên tài khoản:</b> <code>${esc(data.username || "")}</code><br><b>Email:</b> <code>${esc(data.email)}</code><br><b>Mật khẩu:</b> <code>${esc(data.temporaryPassword)}</code></div>`,
+      confirmButtonText: "Đã lưu"
+    });
+  } catch (error) {
+    fail(error.message);
+  }
+}
+
+function parseBulkStudents() {
+  const raw = $("bulkStudentInput")?.value || "";
+  return raw
+    .split(/\r?\n/)
+    .map((line, index) => ({ line, index }))
+    .filter((item) => item.line.trim())
+    .map((item) => {
+      const parts = item.line.split("|").map((value) => value.trim());
+      return {
+        name: parts[0] || "",
+        username: parts[1] || "",
+        email: parts[2] || "",
+        password: parts[3] || "",
+        dob: parts[4] || "",
+        gender: parts[5] || "",
+        team: parts[6] || "",
+        classRole: parts[7] || "Học sinh",
+        __row: item.index + 1
+      };
+    });
+}
+
+function renderBulkPreview(rows) {
+  if (!rows.length) {
+    $("bulkResult").innerHTML = `<div class="sub">Chưa có dữ liệu.</div>`;
+    return;
+  }
+  $("bulkResult").innerHTML = rows.map((row) => `
+    <div class="item"><b>Dòng ${row.__row}: ${esc(row.name || "(thiếu họ tên)")}</b><div class="item-meta">Username: ${esc(row.username || "sẽ tự sinh")} · Email: ${esc(row.email || "sẽ tự sinh")} · ${esc(row.team || "Chưa chọn tổ")}</div></div>
+  `).join("");
+}
+
+async function createStudent(event) {
+  event.preventDefault();
+  try {
+    const form = new FormData(event.target);
+    const data = await api("/api/admin/students/create", {
+      method: "POST",
+      body: JSON.stringify(Object.fromEntries(form))
+    });
+
+    await Swal.fire({
+      icon: "success",
+      title: "Đã tạo tài khoản học sinh",
+      html: `<div style="text-align:left"><b>${esc(data.student.name)}</b><br>Tên tài khoản: <code>${esc(data.student.username)}</code><br>Email: <code>${esc(data.student.email)}</code><br>Mật khẩu: <code>${esc(data.student.temporaryPassword)}</code><br><small>Học sinh có thể đăng nhập bằng username hoặc email.</small></div>`,
+      confirmButtonText: "Đã lưu thông tin"
+    });
+    event.target.reset();
+  } catch (error) {
+    fail(error.message);
+  }
+}
+
+async function createBulkStudents() {
+  const rows = parseBulkStudents();
+  if (!rows.length) return fail("Hãy nhập ít nhất một thành viên.");
+  if (rows.some((row) => !row.name)) return fail("Có dòng thiếu họ tên.");
+  if (rows.length > 100) return fail("Mỗi lần tối đa 100 tài khoản.");
+
+  renderBulkPreview(rows);
+  const confirmed = await Swal.fire({
+    icon: "question",
+    title: `Tạo ${rows.length} tài khoản?`,
+    text: "Backend sẽ tạo Firebase Authentication + users + students + login alias.",
+    showCancelButton: true,
+    confirmButtonText: "Tạo tất cả",
+    cancelButtonText: "Hủy"
+  });
+  if (!confirmed.isConfirmed) return;
+
+  try {
+    const payload = rows.map(({ __row, ...value }) => value);
+    const data = await api("/api/admin/students/create-bulk", {
+      method: "POST",
+      body: JSON.stringify({ students: payload })
+    });
+
+    $("bulkResult").innerHTML = `
+      <div class="bulk-ok"><b>Đã tạo thành công: ${data.created.length}/${data.total}</b></div>
+      ${data.failed.length ? `<div class="bulk-fail" style="margin-top:8px"><b>Dòng lỗi: ${data.failed.length}</b><ul style="margin:8px 0 0 18px">${data.failed.map((item) => `<li>Dòng ${item.row}: ${esc(item.name || item.email || item.username || "không rõ")} — ${esc(item.message)}</li>`).join("")}</ul></div>` : ""}
+      <div class="list" style="margin-top:10px">${data.created.map((item) => `<div class="item"><b>${esc(item.name)}</b><div class="item-meta">Username: <code>${esc(item.username)}</code> · Email: <code>${esc(item.email)}</code> · Password: <code>${esc(item.temporaryPassword)}</code></div></div>`).join("")}</div>`;
+    await ok("Đã xử lý tạo hàng loạt");
+  } catch (error) {
+    fail(error.message);
+  }
+}
+
+/* -------------------------------------------------------------------------
+ * GENERIC EDIT / DELETE CONTENT
+ * ------------------------------------------------------------------------- */
+async function deleteDocByCollection(collectionName, id, label) {
+  if (!(await confirmDelete(label))) return;
+  try {
+    await api(`/api/admin/content/${encodeURIComponent(collectionName)}/${encodeURIComponent(id)}`, {
+      method: "DELETE"
+    });
+    await ok("Đã xóa", label);
+  } catch (error) {
+    fail(error.message);
+  }
+}
+
+async function editContent(collectionName, id, item) {
+  let html = "";
+  let preConfirm;
+
+  if (collectionName === "popups") {
+    html = `
+      <input id="edit-title" class="swal2-input" placeholder="Tiêu đề" value="${esc(item.title || "")}">
+      <textarea id="edit-content" class="swal2-textarea" placeholder="Nội dung">${esc(item.content || "")}</textarea>
+      <select id="edit-active" class="swal2-select"><option value="true" ${item.active !== false ? "selected" : ""}>Bật</option><option value="false" ${item.active === false ? "selected" : ""}>Tắt</option></select>
+      <select id="edit-size" class="swal2-select"><option value="small">Nhỏ</option><option value="normal">Vừa</option><option value="large">Lớn</option><option value="wide">Rộng</option></select>
+      <input id="edit-radius" class="swal2-input" type="number" min="12" max="48" value="${Number(item.radius || 30)}">
+      <label style="display:block;text-align:left;margin:8px 12px;font-weight:700">Màu nhấn</label><input id="edit-accent" type="color" value="${/^#[0-9a-f]{6}$/i.test(item.accentColor || "") ? item.accentColor : "#14b8a6"}" style="width:90%;height:44px">
+      <label style="display:block;text-align:left;margin:8px 12px;font-weight:700">Màu nền</label><input id="edit-bg" type="color" value="${/^#[0-9a-f]{6}$/i.test(item.backgroundColor || "") ? item.backgroundColor : "#ffffff"}" style="width:90%;height:44px">
+      <label style="display:block;text-align:left;margin:8px 12px;font-weight:700">Màu nút</label><input id="edit-button-color" type="color" value="${/^#[0-9a-f]{6}$/i.test(item.buttonColor || "") ? item.buttonColor : "#14b8a6"}" style="width:90%;height:44px">
+      <input id="edit-image" class="swal2-input" placeholder="Image URL" value="${esc(item.imageUrl || "")}">
+      <input id="edit-button-label" class="swal2-input" maxlength="80" placeholder="Nhãn nút" value="${esc(item.buttonLabel || "Tôi đã đọc & hiểu rõ")}">
+    `;
+    preConfirm = () => ({
+      title: $("edit-title").value.trim(),
+      content: $("edit-content").value.trim(),
+      active: $("edit-active").value === "true",
+      size: $("edit-size").value,
+      radius: Number($("edit-radius").value),
+      accentColor: $("edit-accent").value,
+      backgroundColor: $("edit-bg").value,
+      buttonColor: $("edit-button-color").value,
+      imageUrl: $("edit-image").value.trim(),
+      buttonLabel: $("edit-button-label").value.trim()
+    });
+  } else if (collectionName === "polls") {
+    html = `
+      <input id="edit-question" class="swal2-input" placeholder="Câu hỏi" value="${esc(item.question || "")}">
+      <textarea id="edit-options" class="swal2-textarea" placeholder="Mỗi dòng một phương án">${esc((item.options || []).map((option) => option.text).join("\n"))}</textarea>
+      <select id="edit-active" class="swal2-select"><option value="true" ${item.active !== false ? "selected" : ""}>Đang hoạt động</option><option value="false" ${item.active === false ? "selected" : ""}>Tạm dừng</option></select>`;
+    preConfirm = () => {
+      const options = $("edit-options").value.split(/\r?\n/).map((text) => text.trim()).filter(Boolean).slice(0, 8);
+      if (options.length < 2) {
+        Swal.showValidationMessage("Poll cần ít nhất 2 lựa chọn.");
+        return false;
+      }
+      return {
+        question: $("edit-question").value.trim(),
+        active: $("edit-active").value === "true",
+        options: options.map((text, index) => ({ id: String(index + 1), text, votes: Number(item.options?.[index]?.votes || 0) }))
+      };
+    };
+  } else if (collectionName === "quizzes") {
+    html = `
+      <input id="edit-title" class="swal2-input" placeholder="Tiêu đề" value="${esc(item.title || "")}">
+      <input id="edit-subject" class="swal2-input" placeholder="Môn" value="${esc(item.subject || "")}">
+      <input id="edit-duration" class="swal2-input" type="number" min="1" max="300" value="${Number(item.duration || 15)}">
+      <textarea id="edit-questions" class="swal2-textarea" style="min-height:280px" placeholder="JSON questions">${esc(JSON.stringify(item.questions || [], null, 2))}</textarea>
+      <div style="font-size:12px;color:#64748b">Cấu trúc câu hỏi: question, options[4], answer, explanation.</div>`;
+    preConfirm = () => {
+      let questions;
+      try { questions = JSON.parse($("edit-questions").value); } catch (_) { Swal.showValidationMessage("JSON questions không hợp lệ."); return false; }
+      if (!Array.isArray(questions) || !questions.length) { Swal.showValidationMessage("Quiz cần ít nhất 1 câu."); return false; }
+      return { title: $("edit-title").value.trim(), subject: $("edit-subject").value.trim(), duration: Number($("edit-duration").value), questions };
+    };
+  } else if (collectionName === "homework") {
+    html = `<input id="edit-subject" class="swal2-input" value="${esc(item.subject || "")}" placeholder="Môn"><input id="edit-title" class="swal2-input" value="${esc(item.title || "")}" placeholder="Tiêu đề"><input id="edit-deadline" class="swal2-input" type="datetime-local" value="${esc(item.deadline || "")}"><textarea id="edit-description" class="swal2-textarea" placeholder="Mô tả">${esc(item.description || "")}</textarea>`;
+    preConfirm = () => ({ subject: $("edit-subject").value.trim(), title: $("edit-title").value.trim(), deadline: $("edit-deadline").value, description: $("edit-description").value.trim() });
+  } else if (collectionName === "attendance") {
+    html = `<input id="edit-date" class="swal2-input" type="date" value="${esc(item.date || "")}"><input id="edit-present" class="swal2-input" type="number" min="0" max="40" value="${Number(item.present || 0)}"><input id="edit-note" class="swal2-input" value="${esc(item.note || "")}" placeholder="Ghi chú">`;
+    preConfirm = () => ({ date: $("edit-date").value, present: Number($("edit-present").value), total: 40, note: $("edit-note").value.trim() });
+  } else if (collectionName === "confessions") {
+    html = `<textarea id="edit-content" class="swal2-textarea">${esc(item.content || "")}</textarea><select id="edit-status" class="swal2-select"><option value="pending">Chờ duyệt</option><option value="approved">Đã duyệt</option><option value="rejected">Từ chối</option></select>`;
+    preConfirm = () => ({ content: $("edit-content").value.trim(), status: $("edit-status").value });
+  } else if (collectionName === "privateFeedback") {
+    html = `<input id="edit-recipient" class="swal2-input" value="${esc(item.recipient || "")}" placeholder="Người nhận"><textarea id="edit-content" class="swal2-textarea">${esc(item.content || "")}</textarea><select id="edit-status" class="swal2-select"><option value="unread">Chưa đọc</option><option value="read">Đã đọc</option></select>`;
+    preConfirm = () => ({ recipient: $("edit-recipient").value.trim(), content: $("edit-content").value.trim(), status: $("edit-status").value });
+  } else if (collectionName === "quizResults") {
+    html = `<input id="edit-name" class="swal2-input" value="${esc(item.displayName || "")}" placeholder="Tên"><input id="edit-score" class="swal2-input" type="number" value="${Number(item.score || 0)}" placeholder="Điểm"><input id="edit-correct" class="swal2-input" type="number" value="${Number(item.correct || 0)}" placeholder="Số câu đúng">`;
+    preConfirm = () => ({ displayName: $("edit-name").value.trim(), score: Number($("edit-score").value), correct: Number($("edit-correct").value) });
+  } else if (collectionName === "honors") {
+    html = `<input id="edit-title" class="swal2-input" value="${esc(item.title || "")}" placeholder="Tiêu đề"><textarea id="edit-content" class="swal2-textarea">${esc(item.content || "")}</textarea><select id="edit-type" class="swal2-select"><option value="praise">Vinh danh</option><option value="reminder">Nhắc nhở</option><option value="criticism">Phê bình</option></select><select id="edit-active" class="swal2-select"><option value="true">Bật</option><option value="false">Tắt</option></select>`;
+    preConfirm = () => ({ title: $("edit-title").value.trim(), content: $("edit-content").value.trim(), type: $("edit-type").value, active: $("edit-active").value === "true" });
+  } else if (collectionName === "notifications") {
+    html = `<input id="edit-recipient" class="swal2-input" value="${esc(item.recipientUid || "")}" placeholder="UID học sinh"><input id="edit-title" class="swal2-input" value="${esc(item.title || "")}" placeholder="Tiêu đề"><textarea id="edit-message" class="swal2-textarea">${esc(item.message || "")}</textarea><select id="edit-type" class="swal2-select"><option value="praise">Khen thưởng</option><option value="reminder">Nhắc nhở</option><option value="criticism">Phê bình</option></select><select id="edit-read" class="swal2-select"><option value="false">Chưa đọc</option><option value="true">Đã đọc</option></select>`;
+    preConfirm = () => ({ recipientUid: $("edit-recipient").value.trim(), title: $("edit-title").value.trim(), message: $("edit-message").value.trim(), type: $("edit-type").value, read: $("edit-read").value === "true" });
+  } else {
+    return fail(`Chưa có trình sửa cho ${collectionName}.`);
+  }
+
+  const result = await Swal.fire({
+    title: `✏️ Sửa ${collectionName}`,
+    html,
+    width: 720,
+    focusConfirm: false,
+    showCancelButton: true,
+    confirmButtonText: "Lưu thay đổi",
+    cancelButtonText: "Hủy",
+    didOpen: () => {
+      const selectIds = ["edit-size", "edit-status", "edit-type", "edit-active", "edit-read"];
+      selectIds.forEach((idName) => {
+        const element = $(idName);
+        if (element && item[idName.replace("edit-", "") ] !== undefined) element.value = String(item[idName.replace("edit-", "")]);
+      });
+    },
+    preConfirm
+  });
+
+  if (!result.isConfirmed || result.value === false) return;
+  try {
+    await api(`/api/admin/content/${encodeURIComponent(collectionName)}/${encodeURIComponent(id)}`, {
+      method: "PATCH",
+      body: JSON.stringify(result.value)
+    });
+    await ok("Đã cập nhật dữ liệu");
+  } catch (error) {
+    fail(error.message);
+  }
+}
+
+/* -------------------------------------------------------------------------
+ * POPUP / POLL / QUIZ / HOMEWORK / ATTENDANCE
+ * ------------------------------------------------------------------------- */
+function addQuestion(data = {}) {
+  const root = $("questions");
+  const box = document.createElement("div");
+  box.className = "qbox";
+  box.innerHTML = `
+    <div class="qhead"><b>Câu hỏi <span class="qn"></span></b><button type="button" class="btn btn-danger removeQ">Xóa</button></div>
+    <div class="field" style="margin-top:10px"><label>Nội dung</label><textarea class="qq" required>${esc(data.question || "")}</textarea></div>
+    <div class="optgrid" style="margin-top:10px">${["A", "B", "C", "D"].map((letter, index) => `<div class="field"><label>${letter}</label><input class="qo" required value="${esc(data.options?.[index] || "")}"></div>`).join("")}</div>
+    <div class="formgrid" style="margin-top:10px"><div class="field"><label>Đáp án đúng</label><select class="qa">${["A", "B", "C", "D"].map((letter) => `<option ${data.answer === letter ? "selected" : ""}>${letter}</option>`).join("")}</select></div><div class="field"><label>Lời giải</label><input class="qe" required value="${esc(data.explanation || "")}"></div></div>
+  `;
+  box.querySelector(".removeQ").onclick = () => { box.remove(); renumberQuestions(); };
   root.appendChild(box);
   renumberQuestions();
 }
-function renumberQuestions(){document.querySelectorAll("#questions .qbox").forEach((q,i)=>q.querySelector(".qn").textContent=i+1)}
-function collectQuestions(){return [...document.querySelectorAll("#questions .qbox")].map(q=>({question:q.querySelector(".qq").value.trim(),options:[...q.querySelectorAll(".qo")].map(x=>x.value.trim()),answer:q.querySelector(".qa").value,explanation:q.querySelector(".qe").value.trim()}))}
-async function createQuiz(e){e.preventDefault();try{const f=new FormData(e.target),questions=collectQuestions();if(!questions.length)throw Error("Quiz cần ít nhất một câu hỏi.");await api("/api/admin/content/quizzes",{method:"POST",body:JSON.stringify({subject:String(f.get("subject")),title:String(f.get("title")).trim(),duration:Number(f.get("duration")),questions})});e.target.reset();$("questions").innerHTML="";addQuestion();await ok("Đã tạo Quiz")}catch(e){fail(e.message)}}
-async function deleteDocByCollection(collectionName,id,label){if(!(await confirmDelete(label)))return;try{await api(`/api/admin/content/${encodeURIComponent(collectionName)}/${encodeURIComponent(id)}`,{method:"DELETE"});await ok("Đã xóa",label)}catch(e){fail(e.message)}}
-function renderQuizList(items){if(!$("quizList"))return;$("quizList").innerHTML=items.map(x=>`<div class="item"><div class="item-title">${esc(x.title||"Quiz")}</div><div class="item-meta">${esc(x.subject||"")} · ${Number(x.duration||0)} phút · ${dateText(x.createdAt)}</div><div class="item-actions"><button class="btn btn-danger delQuiz" data-id="${x.id}" data-label="Quiz ${esc(x.title||"")}">🗑️ Xóa Quiz</button></div></div>`).join("")||`<div class="sub">Chưa có Quiz.</div>`;document.querySelectorAll(".delQuiz").forEach(b=>b.onclick=()=>deleteDocByCollection("quizzes",b.dataset.id,b.dataset.label))}
 
-async function createPopup(e){e.preventDefault();try{const f=new FormData(e.target);await api("/api/admin/popup",{method:"POST",body:JSON.stringify({title:String(f.get("title")).trim(),content:String(f.get("content")).trim(),active:f.get("active")==="true",size:String(f.get("size")||"normal"),radius:Number(f.get("radius")||30),accentColor:String(f.get("accentColor")||"#14b8a6"),imageUrl:String(f.get("imageUrl")||"").trim(),buttonLabel:String(f.get("buttonLabel")||"Tôi đã đọc & hiểu rõ").trim()})});e.target.reset();await ok("Đã đăng Popup")}catch(e){fail(e.message)}}
-function renderPopups(items){if(!$("popupList"))return;$("popupList").innerHTML=items.map(x=>`<div class="item"><div class="item-title">${esc(x.title||"THÔNG BÁO")}</div><div class="item-meta">${x.active!==false?"🟢 Đang hiển thị":"⚪ Tạm tắt"} · ${dateText(x.createdAt)}</div><div class="item-actions"><button class="btn btn-danger delPopup" data-id="${x.id}" data-label="Popup ${esc(x.title||"")}">🗑️ Xóa</button></div></div>`).join("")||`<div class="sub">Chưa có Popup.</div>`;document.querySelectorAll(".delPopup").forEach(b=>b.onclick=()=>deleteDocByCollection("popups",b.dataset.id,b.dataset.label))}
-async function resetPopup(){try{await api("/api/admin/popup/reset",{method:"POST",body:"{}"});await ok("Đã reset trạng thái đọc")}catch(e){fail(e.message)}}
-
-async function createPoll(e){e.preventDefault();try{const f=new FormData(e.target),opts=String(f.get("options")).split(/\r?\n/).map(x=>x.trim()).filter(Boolean).slice(0,8);if(opts.length<2)throw Error("Poll cần ít nhất 2 lựa chọn.");const options=opts.map((text,i)=>({id:String(i+1),text,votes:0}));await api("/api/admin/content/polls",{method:"POST",body:JSON.stringify({question:String(f.get("question")).trim(),options,active:f.get("active")==="true"})});e.target.reset();await ok("Đã tạo Poll")}catch(e){fail(e.message)}}
-function renderPolls(items){if(!$("pollList"))return;$("pollList").innerHTML=items.map(x=>`<div class="item"><div class="item-title">${esc(x.question||"Poll")}</div><div class="item-actions"><button class="btn btn-danger delPoll" data-id="${x.id}" data-label="Poll ${esc(x.question||"")}">🗑️ Xóa</button></div></div>`).join("")||`<div class="sub">Chưa có Poll.</div>`;document.querySelectorAll(".delPoll").forEach(b=>b.onclick=()=>deleteDocByCollection("polls",b.dataset.id,b.dataset.label))}
-
-async function createHomework(e){e.preventDefault();try{const f=new FormData(e.target);await api("/api/admin/content/homework",{method:"POST",body:JSON.stringify({subject:String(f.get("subject")).trim(),title:String(f.get("title")).trim(),description:String(f.get("description")).trim(),deadline:String(f.get("deadline"))})});e.target.reset();await ok("Đã đăng bài tập")}catch(e){fail(e.message)}}
-function renderHomework(items){if(!$("homeworkList"))return;$("homeworkList").innerHTML=items.map(x=>`<div class="item"><div class="item-title">${esc(x.subject||"Môn")} · ${esc(x.title||"Bài tập")}</div><div class="item-actions"><button class="btn btn-danger delHw" data-id="${x.id}" data-label="Bài tập ${esc(x.title||"")}">🗑️ Xóa</button></div></div>`).join("")||`<div class="sub">Chưa có bài tập.</div>`;document.querySelectorAll(".delHw").forEach(b=>b.onclick=()=>deleteDocByCollection("homework",b.dataset.id,b.dataset.label))}
-
-async function createAttendance(e){e.preventDefault();try{const f=new FormData(e.target);await api("/api/admin/content/attendance",{method:"POST",body:JSON.stringify({date:String(f.get("date")),present:Number(f.get("present")),total:40,note:String(f.get("note")||"").trim()})});e.target.reset();if($("attendanceForm [name=date]")) $("attendanceForm [name=date]").value=new Date().toISOString().slice(0,10);await ok("Đã lưu điểm danh")}catch(e){fail(e.message)}}
-function renderAttendance(items){if(!$("attendanceList"))return;$("attendanceList").innerHTML=items.map(x=>`<div class="item"><div class="item-title">📅 ${esc(x.date||"—")}</div><div class="item-actions"><button class="btn btn-danger delAttendance" data-id="${x.id}" data-label="Điểm danh ${esc(x.date||"")}">🗑️ Xóa</button></div></div>`).join("")||`<div class="sub">Chưa có bản ghi điểm danh.</div>`;document.querySelectorAll(".delAttendance").forEach(b=>b.onclick=()=>deleteDocByCollection("attendance",b.dataset.id,b.dataset.label))}
-
-function renderConfessions(items){if(!$("confessionList"))return;$("confessionList").innerHTML=items.map(x=>`<div class="item"><div class="item-title">💬 Ẩn danh</div><div class="item-actions">${x.status!=="approved"?`<button class="btn btn-primary approveConf" data-id="${x.id}">✅ Duyệt</button>`:""}<button class="btn btn-danger delConf" data-id="${x.id}" data-label="Confession">🗑️ Xóa</button></div></div>`).join("")||`<div class="sub">Chưa có confession.</div>`;document.querySelectorAll(".approveConf").forEach(b=>b.onclick=()=>approveConfession(b.dataset.id));document.querySelectorAll(".delConf").forEach(b=>b.onclick=()=>deleteDocByCollection("confessions",b.dataset.id,"Confession"))}
-async function approveConfession(id){try{await api(`/api/admin/content/confessions/${encodeURIComponent(id)}`,{method:"PATCH",body:JSON.stringify({status:"approved",approvedBy:currentUser.uid,approvedAt:new Date().toISOString()})});await ok("Đã duyệt confession")}catch(e){fail(e.message)}}
-
-function renderFeedback(items){if(!$("feedbackList"))return;$("feedbackList").innerHTML=items.map(x=>`<div class="item"><div class="item-title">📮 ${esc(x.recipient||"Người nhận")}</div><div class="item-actions"><button class="btn btn-danger delFeedback" data-id="${x.id}" data-label="Góp ý riêng tư">🗑️ Xóa</button></div></div>`).join("")||`<div class="sub">Chưa có góp ý riêng tư.</div>`;document.querySelectorAll(".delFeedback").forEach(b=>b.onclick=()=>deleteDocByCollection("privateFeedback",b.dataset.id,"Góp ý riêng tư"))}
-
-function renderResults(items){if(!$("resultList"))return;$("resultList").innerHTML=items.map(x=>`<div class="item"><div class="item-title">🧪 ${esc(x.displayName||"Thành viên")}</div><div class="item-actions"><button class="btn btn-danger delResult" data-id="${x.id}" data-label="Kết quả Quiz">🗑️ Xóa</button></div></div>`).join("")||`<div class="sub">Chưa có kết quả.</div>`;document.querySelectorAll(".delResult").forEach(b=>b.onclick=()=>deleteDocByCollection("quizResults",b.dataset.id,"Kết quả Quiz"))}
-
-function renderRoles(items){
-  if(profile?.role!=="super_admin"){$("roleCard")?.classList.add("hidden");return}
-  $("roleCard")?.classList.remove("hidden");
-  if(!$("roleList")) return;
-  $("roleList").innerHTML=items.map(x=>{
-    const protectedAccount=(x.email||"").toLowerCase()===SUPER_EMAIL.toLowerCase();
-    return `<div class="item"><div class="item-title">${esc(x.displayName||x.email||x.id)} ${protectedAccount?"🔒":""}</div><div class="row" style="margin-top:8px">${protectedAccount?"":`<select class="roleSelect">${["student","admin"].map(r=>`<option value="${r}" ${x.role===r?"selected":""}>${r}</option>`).join("")}</select><button class="btn btn-primary saveRole" data-id="${esc(x.id)}">Lưu quyền</button>`}</div></div>`
-  }).join("")||`<div class="sub">Chưa có users.</div>`;
-  document.querySelectorAll(".saveRole").forEach(b=>b.onclick=()=>saveRole(b.dataset.id, b));
+function renumberQuestions() {
+  document.querySelectorAll("#questions .qbox").forEach((box, index) => box.querySelector(".qn").textContent = index + 1);
 }
 
-async function saveRole(id, btnElement){
-  try{
-    const itemContainer = btnElement ? btnElement.closest('.item') : null;
-    const roleSelect = itemContainer ? itemContainer.querySelector('.roleSelect') : null;
-    const role = roleSelect ? roleSelect.value : null;
-    if(!role) throw Error("Không tìm thấy quyền đã chọn.");
-    await api(`/api/super-admin/users/${encodeURIComponent(id)}/role`,{method:"PATCH",body:JSON.stringify({role})});
-    await ok("Đã cập nhật quyền");
-  }catch(e){
-    fail(e.message);
+function collectQuestions() {
+  return [...document.querySelectorAll("#questions .qbox")].map((box) => ({
+    question: box.querySelector(".qq").value.trim(),
+    options: [...box.querySelectorAll(".qo")].map((input) => input.value.trim()),
+    answer: box.querySelector(".qa").value,
+    explanation: box.querySelector(".qe").value.trim()
+  }));
+}
+
+async function createPopup(event) {
+  event.preventDefault();
+  try {
+    const form = new FormData(event.target);
+    await api("/api/admin/popup", {
+      method: "POST",
+      body: JSON.stringify({
+        title: String(form.get("title")).trim(),
+        content: String(form.get("content")).trim(),
+        active: form.get("active") === "true",
+        size: String(form.get("size") || "normal"),
+        radius: Number(form.get("radius") || 30),
+        accentColor: String(form.get("accentColor") || "#14b8a6"),
+        backgroundColor: String(form.get("backgroundColor") || "#ffffff"),
+        buttonColor: String(form.get("buttonColor") || "#14b8a6"),
+        imageUrl: String(form.get("imageUrl") || "").trim(),
+        buttonLabel: String(form.get("buttonLabel") || "Tôi đã đọc & hiểu rõ").trim()
+      })
+    });
+    event.target.reset();
+    await ok("Đã đăng Popup");
+  } catch (error) { fail(error.message); }
+}
+
+function renderPopups(items) {
+  $("popupList").innerHTML = items.map((item) => `
+    <div class="item">
+      <div class="item-title">${esc(item.title || "THÔNG BÁO")}</div>
+      <div class="item-meta">${item.active !== false ? "🟢 Đang hiển thị" : "⚪ Tạm tắt"} · Khung: ${esc(item.size || "normal")} · Bo góc: ${Number(item.radius || 30)}px · ${dateText(item.createdAt)}</div>
+      <div style="margin-top:8px;white-space:pre-wrap;line-height:1.6">${esc(item.content || "")}</div>
+      <div class="item-actions"><button class="btn btn-soft edit-popup" data-id="${esc(item.id)}">✏️ Sửa</button><button class="btn btn-soft togglePopup" data-id="${esc(item.id)}" data-active="${item.active !== false}">${item.active !== false ? "⏸ Tắt" : "▶ Bật"}</button><button class="btn btn-danger delPopup" data-id="${esc(item.id)}" data-label="Popup ${esc(item.title || "")}">🗑️ Xóa</button></div>
+    </div>`).join("") || `<div class="sub">Chưa có Popup.</div>`;
+  document.querySelectorAll(".edit-popup").forEach((button) => button.onclick = () => editContent("popups", button.dataset.id, items.find((item) => item.id === button.dataset.id)));
+  document.querySelectorAll(".togglePopup").forEach((button) => button.onclick = () => api(`/api/admin/content/popups/${encodeURIComponent(button.dataset.id)}`, { method: "PATCH", body: JSON.stringify({ active: button.dataset.active !== "true" }) }).then(() => ok("Đã cập nhật Popup")).catch((error) => fail(error.message)));
+  document.querySelectorAll(".delPopup").forEach((button) => button.onclick = () => deleteDocByCollection("popups", button.dataset.id, button.dataset.label));
+}
+
+async function resetPopup() {
+  try { await api("/api/admin/popup/reset", { method: "POST", body: "{}" }); await ok("Đã reset trạng thái đọc"); }
+  catch (error) { fail(error.message); }
+}
+
+async function createPoll(event) {
+  event.preventDefault();
+  try {
+    const form = new FormData(event.target);
+    const optionsText = String(form.get("options") || "").split(/\r?\n/).map((text) => text.trim()).filter(Boolean).slice(0, 8);
+    if (optionsText.length < 2) throw new Error("Poll cần ít nhất 2 lựa chọn.");
+    await api("/api/admin/content/polls", { method: "POST", body: JSON.stringify({ question: String(form.get("question")).trim(), options: optionsText.map((text, index) => ({ id: String(index + 1), text, votes: 0 })), active: form.get("active") === "true" }) });
+    event.target.reset();
+    await ok("Đã tạo Poll");
+  } catch (error) { fail(error.message); }
+}
+
+function renderPolls(items) {
+  $("pollList").innerHTML = items.map((item) => `
+    <div class="item"><div class="item-title">${esc(item.question || "Poll")}</div><div class="item-meta">${item.active !== false ? "🟢 Đang hoạt động" : "⚪ Tạm dừng"} · ${dateText(item.createdAt)}</div><div class="item-meta">${(item.options || []).map((option) => `${esc(option.text)}: ${Number(option.votes || 0)}`).join(" · ")}</div><div class="item-actions"><button class="btn btn-soft edit-poll" data-id="${esc(item.id)}">✏️ Sửa</button><button class="btn btn-soft togglePoll" data-id="${esc(item.id)}" data-active="${item.active !== false}">${item.active !== false ? "⏸ Tạm dừng" : "▶ Bật lại"}</button><button class="btn btn-danger delPoll" data-id="${esc(item.id)}" data-label="Poll ${esc(item.question || "")}">🗑️ Xóa</button></div></div>`).join("") || `<div class="sub">Chưa có Poll.</div>`;
+  document.querySelectorAll(".edit-poll").forEach((button) => button.onclick = () => editContent("polls", button.dataset.id, items.find((item) => item.id === button.dataset.id)));
+  document.querySelectorAll(".togglePoll").forEach((button) => button.onclick = () => api(`/api/admin/content/polls/${encodeURIComponent(button.dataset.id)}`, { method: "PATCH", body: JSON.stringify({ active: button.dataset.active !== "true" }) }).then(() => ok("Đã cập nhật Poll")).catch((error) => fail(error.message)));
+  document.querySelectorAll(".delPoll").forEach((button) => button.onclick = () => deleteDocByCollection("polls", button.dataset.id, button.dataset.label));
+}
+
+async function createQuiz(event) {
+  event.preventDefault();
+  try {
+    const form = new FormData(event.target);
+    const questions = collectQuestions();
+    if (!questions.length) throw new Error("Quiz cần ít nhất một câu hỏi.");
+    if (questions.some((question) => question.options.length !== 4 || question.options.some((option) => !option))) throw new Error("Mỗi câu phải có đủ 4 lựa chọn.");
+    await api("/api/admin/content/quizzes", { method: "POST", body: JSON.stringify({ subject: String(form.get("subject")), title: String(form.get("title")).trim(), duration: Number(form.get("duration")), questions }) });
+    event.target.reset();
+    $("questions").innerHTML = "";
+    addQuestion();
+    await ok("Đã tạo Quiz");
+  } catch (error) { fail(error.message); }
+}
+
+function renderQuizList(items) {
+  $("quizList").innerHTML = items.map((item) => `<div class="item"><div class="item-title">${esc(item.title || "Quiz")}</div><div class="item-meta">${esc(item.subject || "")} · ${Number(item.duration || 0)} phút · ${(item.questions || []).length} câu · ${dateText(item.createdAt)}</div><div class="item-actions"><button class="btn btn-soft edit-quiz" data-id="${esc(item.id)}">✏️ Sửa</button><button class="btn btn-danger delQuiz" data-id="${esc(item.id)}" data-label="Quiz ${esc(item.title || "")}">🗑️ Xóa Quiz</button></div></div>`).join("") || `<div class="sub">Chưa có Quiz.</div>`;
+  document.querySelectorAll(".edit-quiz").forEach((button) => button.onclick = () => editContent("quizzes", button.dataset.id, items.find((item) => item.id === button.dataset.id)));
+  document.querySelectorAll(".delQuiz").forEach((button) => button.onclick = () => deleteDocByCollection("quizzes", button.dataset.id, button.dataset.label));
+}
+
+async function createHomework(event) {
+  event.preventDefault();
+  try {
+    const form = new FormData(event.target);
+    await api("/api/admin/content/homework", { method: "POST", body: JSON.stringify({ subject: String(form.get("subject")).trim(), title: String(form.get("title")).trim(), description: String(form.get("description")).trim(), deadline: String(form.get("deadline")) }) });
+    event.target.reset();
+    await ok("Đã đăng bài tập");
+  } catch (error) { fail(error.message); }
+}
+
+function renderHomework(items) {
+  $("homeworkList").innerHTML = items.map((item) => `<div class="item"><div class="item-title">${esc(item.subject || "Môn")} · ${esc(item.title || "Bài tập")}</div><div class="item-meta">Hạn: ${esc(item.deadline || "—")} · Đăng: ${dateText(item.createdAt)}</div><div class="item-meta">${esc(item.description || "")}</div><div class="item-actions"><button class="btn btn-soft edit-homework" data-id="${esc(item.id)}">✏️ Sửa</button><button class="btn btn-danger delHw" data-id="${esc(item.id)}" data-label="Bài tập ${esc(item.title || "")}">🗑️ Xóa</button></div></div>`).join("") || `<div class="sub">Chưa có bài tập.</div>`;
+  document.querySelectorAll(".edit-homework").forEach((button) => button.onclick = () => editContent("homework", button.dataset.id, items.find((item) => item.id === button.dataset.id)));
+  document.querySelectorAll(".delHw").forEach((button) => button.onclick = () => deleteDocByCollection("homework", button.dataset.id, button.dataset.label));
+}
+
+async function createAttendance(event) {
+  event.preventDefault();
+  try {
+    const form = new FormData(event.target);
+    await api("/api/admin/content/attendance", { method: "POST", body: JSON.stringify({ date: String(form.get("date")), present: Number(form.get("present")), total: 40, note: String(form.get("note") || "").trim() }) });
+    event.target.reset();
+    $("attendanceForm [name=date]").value = new Date().toISOString().slice(0, 10);
+    await ok("Đã lưu điểm danh");
+  } catch (error) { fail(error.message); }
+}
+
+function renderAttendance(items) {
+  $("attendanceList").innerHTML = items.map((item) => `<div class="item"><div class="item-title">📅 ${esc(item.date || "—")}</div><div class="item-meta">Có mặt: ${Number(item.present || 0)}/${Number(item.total || 40)} · ${esc(item.note || "")}</div><div class="item-actions"><button class="btn btn-soft edit-attendance" data-id="${esc(item.id)}">✏️ Sửa</button><button class="btn btn-danger delAttendance" data-id="${esc(item.id)}" data-label="Điểm danh ${esc(item.date || "")}">🗑️ Xóa</button></div></div>`).join("") || `<div class="sub">Chưa có bản ghi điểm danh.</div>`;
+  document.querySelectorAll(".edit-attendance").forEach((button) => button.onclick = () => editContent("attendance", button.dataset.id, items.find((item) => item.id === button.dataset.id)));
+  document.querySelectorAll(".delAttendance").forEach((button) => button.onclick = () => deleteDocByCollection("attendance", button.dataset.id, button.dataset.label));
+}
+
+/* -------------------------------------------------------------------------
+ * CONFESSION / FEEDBACK / RESULT / HONORS / NOTIFICATIONS
+ * ------------------------------------------------------------------------- */
+function renderConfessions(items) {
+  $("confessionList").innerHTML = items.map((item) => `<div class="item"><div class="item-title">💬 Ẩn danh · <span class="tag">${esc(item.status || "pending")}</span></div><div style="margin-top:8px;white-space:pre-wrap;line-height:1.6">${esc(item.content || "")}</div><div class="item-meta">${dateText(item.createdAt)}</div><div class="item-actions">${item.status !== "approved" ? `<button class="btn btn-primary approveConf" data-id="${esc(item.id)}">✅ Duyệt</button>` : ""}<button class="btn btn-soft edit-conf" data-id="${esc(item.id)}">✏️ Sửa</button><button class="btn btn-danger delConf" data-id="${esc(item.id)}" data-label="Confession">🗑️ Xóa</button></div></div>`).join("") || `<div class="sub">Chưa có confession.</div>`;
+  document.querySelectorAll(".approveConf").forEach((button) => button.onclick = () => approveConfession(button.dataset.id));
+  document.querySelectorAll(".edit-conf").forEach((button) => button.onclick = () => editContent("confessions", button.dataset.id, items.find((item) => item.id === button.dataset.id)));
+  document.querySelectorAll(".delConf").forEach((button) => button.onclick = () => deleteDocByCollection("confessions", button.dataset.id, "Confession"));
+}
+
+async function approveConfession(id) {
+  try { await api(`/api/admin/content/confessions/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify({ status: "approved", approvedBy: currentUser.uid, approvedAt: new Date().toISOString() }) }); await ok("Đã duyệt confession"); }
+  catch (error) { fail(error.message); }
+}
+
+function renderFeedback(items) {
+  $("feedbackList").innerHTML = items.map((item) => `<div class="item"><div class="item-title">📮 ${esc(item.recipient || "Người nhận")} · <span class="tag">${esc(item.status || "unread")}</span></div><div style="margin-top:8px;white-space:pre-wrap;line-height:1.6">${esc(item.content || "")}</div><div class="item-meta">${esc(item.displayName || "Ẩn danh")} · ${dateText(item.createdAt)}</div><div class="item-actions">${item.status !== "read" ? `<button class="btn btn-soft markFeedback" data-id="${esc(item.id)}">✓ Đã đọc</button>` : ""}<button class="btn btn-soft edit-feedback" data-id="${esc(item.id)}">✏️ Sửa</button><button class="btn btn-danger delFeedback" data-id="${esc(item.id)}" data-label="Góp ý riêng tư">🗑️ Xóa</button></div></div>`).join("") || `<div class="sub">Chưa có góp ý riêng tư.</div>`;
+  document.querySelectorAll(".markFeedback").forEach((button) => button.onclick = async () => { try { await api(`/api/admin/content/privateFeedback/${encodeURIComponent(button.dataset.id)}`, { method: "PATCH", body: JSON.stringify({ status: "read", readAt: new Date().toISOString(), readBy: currentUser.uid }) }); } catch (error) { fail(error.message); } });
+  document.querySelectorAll(".edit-feedback").forEach((button) => button.onclick = () => editContent("privateFeedback", button.dataset.id, items.find((item) => item.id === button.dataset.id)));
+  document.querySelectorAll(".delFeedback").forEach((button) => button.onclick = () => deleteDocByCollection("privateFeedback", button.dataset.id, button.dataset.label));
+}
+
+function renderResults(items) {
+  $("resultList").innerHTML = items.map((item) => `<div class="item"><div class="item-title">🧪 ${esc(item.displayName || "Thành viên")}</div><div class="item-meta">${esc(item.quizTitle || "Quiz")} · ${Number(item.score || 0)}đ · ${Number(item.correct || 0)}/${Number(item.total || 0)} · ${dateText(item.createdAt)}</div><div class="item-actions"><button class="btn btn-soft edit-result" data-id="${esc(item.id)}">✏️ Sửa</button><button class="btn btn-danger delResult" data-id="${esc(item.id)}" data-label="Kết quả Quiz">🗑️ Xóa</button></div></div>`).join("") || `<div class="sub">Chưa có kết quả.</div>`;
+  document.querySelectorAll(".edit-result").forEach((button) => button.onclick = () => editContent("quizResults", button.dataset.id, items.find((item) => item.id === button.dataset.id)));
+  document.querySelectorAll(".delResult").forEach((button) => button.onclick = () => deleteDocByCollection("quizResults", button.dataset.id, button.dataset.label));
+}
+
+function recipientOptions() {
+  return localStudents.map((student) => `<option value="${esc(student.accountUid || student.uid || student.id)}">${esc(student.name || "Thành viên")} — ${esc(student.team || "")}</option>`).join("");
+}
+
+function renderRoleAndRecipients(users) {
+  const admins = users.filter((item) => ADMINS.has(item.role));
+  $("sAdmins") && ($( "sAdmins").textContent = admins.length);
+  if ($( "notificationRecipient")) $( "notificationRecipient").innerHTML = `<option value="">Chọn học sinh…</option>${recipientOptions()}`;
+  if ($( "honorRecipients")) $( "honorRecipients").innerHTML = recipientOptions();
+
+  if (profile?.role !== "super_admin") {
+    $("roleCard")?.classList.add("hidden");
+    return;
   }
+  $("roleCard")?.classList.remove("hidden");
+  $("roleList").innerHTML = users.map((item) => {
+    const protectedAccount = String(item.email || "").toLowerCase() === SUPER_EMAIL;
+    return `<div class="item"><div class="item-title">${esc(item.displayName || item.email || item.id)} ${protectedAccount ? "🔒" : ""}</div><div class="item-meta">${esc(item.email || "")} · ${esc(item.role || "student")}</div><div class="row" style="margin-top:8px">${protectedAccount ? "" : `<select class="roleSelect" data-id="${esc(item.id)}"><option value="student" ${item.role === "student" ? "selected" : ""}>student</option><option value="admin" ${item.role === "admin" ? "selected" : ""}>admin</option></select><button class="btn btn-primary saveRole" data-id="${esc(item.id)}">Lưu quyền</button>`}</div></div>`;
+  }).join("") || `<div class="sub">Chưa có users.</div>`;
+  document.querySelectorAll(".saveRole").forEach((button) => button.onclick = () => saveRole(button.dataset.id));
 }
 
-async function createStudent(e){e.preventDefault();try{const data=await api("/api/admin/students/create",{method:"POST",body:JSON.stringify(Object.fromEntries(new FormData(e.target)))});await Swal.fire({icon:"success",title:"Đã tạo tài khoản học sinh"});e.target.reset()}catch(e){fail(e.message)}}
-function parseBulkStudents(){const raw=$("bulkStudentInput")?.value||"";return raw.split(/\r?\n/).map((line,index)=>({line,index})).filter(x=>x.line.trim()).map(x=>{const parts=x.line.split("|").map(v=>v.trim());return{name:parts[0]||"",email:parts[1]||"",password:parts[2]||"",dob:parts[3]||"",gender:parts[4]||"",team:parts[5]||"",classRole:parts[6]||"Học sinh",__row:x.index+1}})}
-function renderBulkPreview(rows){
- const target=$("bulkResult");if(!target)return;
- if(!rows.length){target.innerHTML='<div class="sub">Chưa có dữ liệu.</div>';return;}
- target.innerHTML=rows.map(x=>`<div class="item"><b>Dòng ${x.__row} · ${esc(x.name||"(thiếu họ tên)")}</b></div>`).join("");
+async function saveRole(id) {
+  try {
+    const role = document.querySelector(`.roleSelect[data-id="${CSS.escape(id)}"]`)?.value;
+    if (!role) throw new Error("Không tìm thấy role.");
+    await api(`/api/super-admin/users/${encodeURIComponent(id)}/role`, { method: "PATCH", body: JSON.stringify({ role }) });
+    await ok("Đã cập nhật quyền", "Nếu tài khoản đích đang đăng nhập, cần đăng nhập lại để nhận Custom Claims mới.");
+  } catch (error) { fail(error.message); }
 }
-async function createBulkStudents(){const rows=parseBulkStudents();if(!rows.length)return fail("Hãy nhập ít nhất một thành viên.");try{const payload=rows.map(({__row,...rest})=>rest);await api("/api/admin/students/create-bulk",{method:"POST",body:JSON.stringify({students:payload})});await ok("Đã tạo thành công");}catch(e){fail(e.message)}}
 
-if($("studentForm")) $("studentForm").onsubmit=createStudent;
-if($("bulkPreview")) $("bulkPreview").onclick=()=>renderBulkPreview(parseBulkStudents());
-if($("bulkCreate")) $("bulkCreate").onclick=createBulkStudents;
-if($("popupForm")) $("popupForm").onsubmit=createPopup;
-if($("pollForm")) $("pollForm").onsubmit=createPoll;
-if($("quizForm")) $("quizForm").onsubmit=createQuiz;
-if($("homeworkForm")) $("homeworkForm").onsubmit=createHomework;
-if($("attendanceForm")) $("attendanceForm").onsubmit=createAttendance;
-if($("resetPopup")) $("resetPopup").onclick=resetPopup;
-if($("addQuestion")) $("addQuestion").onclick=()=>addQuestion();
-if($("closeScore")) $("closeScore").onclick=()=>$("scoreModal").classList.remove("show");
-if($("scoreForm")) $("scoreForm").onsubmit=saveScore;
-if($("refreshAll")) $("refreshAll").onclick=()=>start();
-if($("btnRetry")) $("btnRetry").onclick=()=>{if(currentUser)verifyAdmin(currentUser)};
-if($("btnGoHome")) $("btnGoHome").onclick=()=>location.href="./index.html";
-if($("logout")) $("logout").onclick=()=>auth.signOut();
-
-// Kiểm tra phần tử tồn tại trước khi thao tác
-const attendanceDate = document.querySelector("#attendanceForm [name=date]");
-if(attendanceDate) attendanceDate.value = new Date().toISOString().slice(0,10);
-
-if(typeof addQuestion === "function") addQuestion();
-
-auth.onAuthStateChanged(async u=>{
-    currentUser=u;
-    if(!u){
-        location.href="./index.html";
-        return;
+async function createHonor(event) {
+  event.preventDefault();
+  try {
+    const form = new FormData(event.target);
+    const recipientUids = [...($("honorRecipients")?.selectedOptions || [])].map((option) => option.value).filter(Boolean);
+    const data = {
+      title: String(form.get("title") || "").trim(),
+      content: String(form.get("content") || "").trim(),
+      type: String(form.get("type") || "reminder"),
+      active: form.get("active") === "true",
+      recipientUids
+    };
+    const created = await api("/api/admin/content/honors", { method: "POST", body: JSON.stringify(data) });
+    for (const uid of recipientUids) {
+      await api("/api/admin/notification", { method: "POST", body: JSON.stringify({ recipientUid: uid, type: data.type, title: data.title, message: data.content }) });
     }
-    await verifyAdmin(u);
+    event.target.reset();
+    await ok("Đã đăng Vinh danh/Nhắc nhở", created?.id ? "Bài đã xuất hiện trên Bảng tin." : "");
+  } catch (error) { fail(error.message); }
+}
+
+function renderHonors(items) {
+  $("honorList").innerHTML = items.map((item) => `<div class="item"><div class="item-title">${item.type === "praise" ? "🎉" : item.type === "criticism" ? "❌" : "⚠️"} ${esc(item.title || "Bài vinh danh")}</div><div class="item-meta">${item.active === false ? "⚪ Tắt" : "🟢 Hiển thị"} · ${dateText(item.createdAt)}</div><div style="margin-top:8px;white-space:pre-wrap">${esc(item.content || "")}</div><div class="item-actions"><button class="btn btn-soft edit-honor" data-id="${esc(item.id)}">✏️ Sửa</button><button class="btn btn-danger del-honor" data-id="${esc(item.id)}" data-label="${esc(item.title || "Bài vinh danh")}">🗑️ Xóa</button></div></div>`).join("") || `<div class="sub">Chưa có bài vinh danh.</div>`;
+  document.querySelectorAll(".edit-honor").forEach((button) => button.onclick = () => editContent("honors", button.dataset.id, items.find((item) => item.id === button.dataset.id)));
+  document.querySelectorAll(".del-honor").forEach((button) => button.onclick = () => deleteDocByCollection("honors", button.dataset.id, button.dataset.label));
+}
+
+async function createPrivateNotification(event) {
+  event.preventDefault();
+  try {
+    const form = new FormData(event.target);
+    await api("/api/admin/notification", { method: "POST", body: JSON.stringify({ recipientUid: form.get("recipientUid"), type: form.get("type"), title: String(form.get("title") || "").trim(), message: String(form.get("message") || "").trim() }) });
+    event.target.reset();
+    await ok("Đã gửi thông báo riêng");
+  } catch (error) { fail(error.message); }
+}
+
+function renderNotifications(items) {
+  $("notificationList") && ($( "notificationList").innerHTML = items.slice(0, 100).map((item) => `<div class="item"><div class="item-title">${item.type === "praise" ? "🎉" : item.type === "criticism" ? "❌" : "⚠️"} ${esc(item.title || "Thông báo")}</div><div class="item-meta">UID: ${esc(item.recipientUid || "—")} · ${item.read ? "Đã đọc" : "Chưa đọc"} · ${dateText(item.createdAt)}</div><div style="margin-top:8px;white-space:pre-wrap">${esc(item.message || "")}</div><div class="item-actions"><button class="btn btn-soft edit-notification" data-id="${esc(item.id)}">✏️ Sửa</button><button class="btn btn-danger del-notification" data-id="${esc(item.id)}" data-label="Thông báo riêng">🗑️ Xóa</button></div></div>`).join("") || `<div class="sub">Chưa có thông báo riêng.</div>`);
+  document.querySelectorAll(".edit-notification").forEach((button) => button.onclick = () => editContent("notifications", button.dataset.id, items.find((item) => item.id === button.dataset.id)));
+  document.querySelectorAll(".del-notification").forEach((button) => button.onclick = () => deleteDocByCollection("notifications", button.dataset.id, button.dataset.label));
+}
+
+function renderPointLogs(items) {
+  if (!$("pointLogList")) return;
+  $("pointLogList").innerHTML = items.slice(0, 100).map((item) => {
+    const student = localStudents.find((candidate) => String(candidate.id || candidate.uid || candidate.accountUid) === String(item.studentUid));
+    const label = student?.name ? `${student.name} · ${item.studentUid || ""}` : (item.studentUid || "");
+    return `<div class="item"><div class="item-title">${Number(item.points || 0) > 0 ? "➕" : "➖"} ${esc(label)}</div><div class="item-meta">${Number(item.previousScore || 0)} → ${Number(item.newScore || 0)} · ${esc(item.type || "")} · ${dateText(item.createdAt)}</div><div style="margin-top:8px">${esc(item.reason || "")}</div></div>`;
+  }).join("") || `<div class="sub">Chưa có lịch sử điểm.</div>`;
+}
+
+/* -------------------------------------------------------------------------
+ * CHAT ADMIN
+ * ------------------------------------------------------------------------- */
+function renderAdminChatRooms(rooms) {
+  $("adminChatRooms").innerHTML = rooms.map((room) => `<div class="item"><div class="item-title">💬 ${esc(room.name || room.id)}</div><div class="item-meta">${room.type || "group"} · ${(room.memberUids || []).length} thành viên · ${room.locked ? "🔒 Đã khóa" : "🟢 Đang mở"}</div><div class="item-actions"><button class="btn btn-soft admin-chat-select" data-id="${esc(room.id)}">Xem tin nhắn</button><button class="btn btn-warning admin-chat-lock" data-id="${esc(room.id)}" data-locked="${room.locked === true}">${room.locked ? "🔓 Mở khóa" : "🔒 Khóa chat"}</button><button class="btn btn-danger admin-chat-delete-room" data-id="${esc(room.id)}" data-label="phòng ${esc(room.name || room.id)}">🗑️ Xóa nhóm</button></div></div>`).join("") || `<div class="sub">Chưa có phòng chat.</div>`;
+  document.querySelectorAll(".admin-chat-select").forEach((button) => button.onclick = () => { adminChatSelectedRoomId = button.dataset.id; loadAdminChatMessages(button.dataset.id); });
+  document.querySelectorAll(".admin-chat-lock").forEach((button) => button.onclick = async () => { try { await api(`/api/admin/chat/rooms/${encodeURIComponent(button.dataset.id)}/lock`, { method: "PATCH", body: JSON.stringify({ locked: button.dataset.locked !== "true" }) }); await ok(button.dataset.locked === "true" ? "Đã mở khóa chat" : "Đã khóa chat"); } catch (error) { fail(error.message); } });
+  document.querySelectorAll(".admin-chat-delete-room").forEach((button) => button.onclick = async () => { if (!(await confirmDelete(button.dataset.label))) return; try { await api(`/api/admin/chat/rooms/${encodeURIComponent(button.dataset.id)}`, { method: "DELETE" }); adminChatSelectedRoomId = null; $("adminChatMessages").innerHTML = ""; await ok("Đã xóa nhóm"); } catch (error) { fail(error.message); } });
+}
+
+function loadAdminChatMessages(roomId) {
+  try { adminChatMessageUnsub?.(); } catch (_) {}
+  adminChatMessageUnsub = db.collection("chatRooms").doc(roomId).collection("messages").orderBy("createdAt", "desc").limit(100).onSnapshot((snapshot) => {
+    const messages = snapshot.docs.map((document) => ({ id: document.id, ...document.data() })).reverse();
+    $("adminChatMessages").innerHTML = `<div class="item-title">Tin nhắn phòng ${esc(roomId)}</div>` + (messages.map((message) => `<div class="item"><div class="item-title">${esc(message.senderName || "Thành viên")}</div><div class="item-meta">${dateText(message.createdAt)} · ${esc(message.senderUid || "")}</div><div style="white-space:pre-wrap;margin-top:7px">${esc(message.text || "")}</div><div class="item-actions"><button class="btn btn-danger admin-chat-delete-message" data-room="${esc(roomId)}" data-message="${esc(message.id)}">🗑️ Xóa tin nhắn</button></div></div>`).join("") || `<div class="sub">Chưa có tin nhắn.</div>`);
+    document.querySelectorAll(".admin-chat-delete-message").forEach((button) => button.onclick = async () => { if (!(await confirmDelete("tin nhắn này"))) return; try { await api(`/api/admin/chat/rooms/${encodeURIComponent(button.dataset.room)}/messages/${encodeURIComponent(button.dataset.message)}`, { method: "DELETE" }); await ok("Đã xóa tin nhắn"); } catch (error) { fail(error.message); } });
+  }, (error) => { console.error("[Admin Chat]", error); $("adminChatMessages").innerHTML = `<div class="bulk-fail">Không tải được tin nhắn: ${esc(error.message)}</div>`; });
+}
+
+function applyAdminTheme(mode){
+  const resolved=mode === "light" ? "light" : "dark";
+  document.documentElement.dataset.theme=resolved;
+  localStorage.setItem("a8a8-admin-theme",resolved);
+  const button=$("themeToggle");
+  if(button)button.textContent=resolved === "dark" ? "🌙" : "☀️";
+}
+
+applyAdminTheme(localStorage.getItem("a8a8-admin-theme") || "dark");
+
+/* -------------------------------------------------------------------------
+ * EVENTS / BOOT
+ * ------------------------------------------------------------------------- */
+$("studentForm").onsubmit = createStudent;
+$("bulkPreview").onclick = () => renderBulkPreview(parseBulkStudents());
+$("bulkCreate").onclick = createBulkStudents;
+$("popupForm").onsubmit = createPopup;
+$("pollForm").onsubmit = createPoll;
+$("quizForm").onsubmit = createQuiz;
+$("homeworkForm").onsubmit = createHomework;
+$("attendanceForm").onsubmit = createAttendance;
+$("honorForm").onsubmit = createHonor;
+$("notificationForm").onsubmit = createPrivateNotification;
+$("resetPopup").onclick = resetPopup;
+$("addQuestion").onclick = () => addQuestion();
+$("closeScore").onclick = () => $("scoreModal").classList.remove("show");
+$("scoreForm").onsubmit = saveScore;
+$("refreshAll").onclick = () => start();
+$("themeToggle").onclick = () => applyAdminTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
+$("btnRetry").onclick = () => currentUser && verifyAdmin(currentUser);
+$("btnBypass").onclick = async () => {
+  if (!currentUser || String(currentUser.email || "").toLowerCase() !== SUPER_EMAIL) return;
+  verificationRun += 1;
+  profile = { uid: currentUser.uid, email: SUPER_EMAIL, displayName: currentUser.displayName || "Super Admin", role: "super_admin", classRole: "Super Admin" };
+  setGateMessage("⚡ Bypass hợp lệ vì Firebase Auth đang đăng nhập đúng email Super Admin.");
+  hideGateShowApp();
+  setGateBusy(false);
+  await start();
+};
+$("btnGoHome").onclick = () => { location.href = "./index.html"; };
+$("logout").onclick = () => auth.signOut();
+$("attendanceForm [name=date]").value = new Date().toISOString().slice(0, 10);
+addQuestion();
+
+/*
+ * Không tự chuyển hướng ngay khi Firebase chưa trả trạng thái.
+ * Chỉ khi onAuthStateChanged xác nhận null mới quay về Portal.
+ */
+auth.onAuthStateChanged(async (user) => {
+  currentUser = user;
+  if (!user) {
+    profile = null;
+    clearSnapshots();
+    location.href = "./index.html";
+    return;
+  }
+
+  const allowed = await verifyAdmin(user);
+  if (!allowed && String(user.email || "").toLowerCase() !== SUPER_EMAIL) {
+    setGateMessage("Tài khoản này không có quyền Admin. Bạn có thể quay lại Portal.", "error");
+  }
 });
 </script>
 </body>

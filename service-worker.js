@@ -53,8 +53,13 @@ self.addEventListener("fetch",event=>{
   if(url.pathname.includes("/api/")||url.hostname.includes("firebaseio.com")||url.hostname.includes("googleapis.com"))return;
 
   // Keep HTML/CSS/JS fresh so fixes are not hidden behind a stale PWA cache.
-  if(request.mode==="navigate"||/[.]html(?:$|[?])/i.test(url.pathname)||/[.](?:css|js|webmanifest)$/i.test(url.pathname)){
+  if(request.mode==="navigate"){
     event.respondWith(networkFirst(request).catch(()=>caches.match("./index.html")));
+    return;
+  }
+
+  if(/[.]html(?:$|[?])/i.test(url.pathname)||/[.](?:css|js|webmanifest)$/i.test(url.pathname)){
+    event.respondWith(networkFirst(request));
     return;
   }
 

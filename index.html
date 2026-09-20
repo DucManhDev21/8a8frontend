@@ -48,12 +48,14 @@ tailwind.config={
  --page:#f1f5f9;--surface:rgba(255,255,255,.68);
  --text:#0f172a;--muted:#64748b;--border:rgba(148,163,184,.28);
 }
-.dark{
+html[data-theme="dark"],.dark{
  --page:#07111f;--surface:rgba(15,23,42,.68);
  --text:#f8fafc;--muted:#94a3b8;--border:rgba(148,163,184,.18);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
+html[data-theme="light"]{color-scheme:light}
+html[data-theme="dark"]{color-scheme:dark}
 /* Chống vỡ giao diện dọc/ngang */
 body{
  margin:0;color:var(--text);
@@ -176,12 +178,18 @@ body.logged-in .btn:hover{transform:none}
 }
 .dark #app-loader{background:rgba(7,17,31,.94)}
 #app-loader.hidden-loader{opacity:0;visibility:hidden;pointer-events:none}
+#app-loader-retry{display:none}
+#app-loader.auth-timeout #app-loader-retry{display:inline-flex}
 .boot-spinner{width:56px;height:56px;border-radius:999px;border:5px solid rgba(20,184,166,.18);border-top-color:var(--primary);border-right-color:var(--secondary);animation:boot-spin .9s linear infinite;box-shadow:0 0 30px rgba(20,184,166,.16)}
 .boot-loader-text{font-weight:900;font-size:1rem;letter-spacing:.01em;color:var(--text);text-align:center}
 .boot-loader-sub{font-size:.78rem;color:var(--muted);text-align:center;max-width:320px;line-height:1.5}
 @keyframes boot-spin{to{transform:rotate(360deg)}}
 body.auth-pending .header-actions > *:not(#theme-toggle),body.auth-pending #hamburger-button{visibility:hidden}
 body.auth-pending #profile-frame{visibility:hidden}
+body.auth-pending #app{visibility:hidden}
+.popup-size-wide{width:min(1040px,100%)!important}
+body.auth-ready-data-pending .header-actions #login-button,body.auth-ready-data-pending .header-actions #register-button{display:none!important}
+body.auth-ready-data-pending #app{visibility:visible}
 .avatar img,.avatar-image{width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block}
 .profile-avatar-preview{width:108px;height:108px;border-radius:32px;overflow:hidden;background:linear-gradient(135deg,var(--primary),var(--secondary));display:grid;place-items:center;color:white;font-size:2rem;font-weight:900;border:1px solid var(--border);box-shadow:0 18px 45px rgba(20,184,166,.2)}
 .color-swatch{width:100%;height:44px;border-radius:14px;border:1px solid var(--border);padding:3px;background:var(--surface)}
@@ -201,6 +209,7 @@ body.auth-pending #profile-frame{visibility:hidden}
   <div class="boot-spinner" aria-hidden="true"></div>
   <div class="boot-loader-text">Chờ xíu, đang tải dữ liệu</div>
   <div class="boot-loader-sub">Hệ thống đang kiểm tra đăng nhập và đồng bộ dữ liệu lớp 8A8.</div>
+  <button id="app-loader-retry" class="btn btn-primary" type="button">↻ Thử lại</button>
 </div>
 <div id="seasonal-canvas-root"></div>
 <div id="seasonal-banner"></div>
@@ -223,6 +232,7 @@ body.auth-pending #profile-frame{visibility:hidden}
    <a class="nav-link" href="#trac-nghiem" data-route-link="trac-nghiem">Trắc nghiệm</a>
    <a class="nav-link" href="#giai-tri" data-route-link="giai-tri">Giải trí</a>
    <a class="nav-link" href="#confession" data-route-link="confession">Confession</a>
+   <a class="nav-link" href="#chat" data-route-link="chat">Chat</a>
   </nav>
 
   <button id="hamburger-button" class="hamburger" type="button" aria-label="Mở menu" aria-expanded="false" aria-controls="mobile-menu">☰</button>
@@ -246,6 +256,7 @@ body.auth-pending #profile-frame{visibility:hidden}
  <a href="#trac-nghiem" data-route-link="trac-nghiem">🧠 Trắc nghiệm</a>
  <a href="#giai-tri" data-route-link="giai-tri">🎮 Giải trí</a>
  <a href="#confession" data-route-link="confession">💬 Confession</a>
+ <a href="#chat" data-route-link="chat">💬 Chat lớp</a>
  <a id="mobile-admin-link" href="./admin.html" class="hidden">⚙️ Control Center</a>
  <button id="mobile-logout" type="button" class="btn btn-soft w-full justify-center hidden">🚪 Đăng xuất</button>
 </nav>
@@ -274,8 +285,8 @@ body.auth-pending #profile-frame{visibility:hidden}
 
   <form id="login-form" class="mt-6 space-y-4">
    <label class="block">
-    <span class="text-sm font-bold">Email</span>
-    <input id="login-email" class="input mt-2" type="email" autocomplete="email" required placeholder="tenban@example.com">
+    <span class="text-sm font-bold">Email hoặc tên tài khoản</span>
+    <input id="login-email" class="input mt-2" type="text" autocomplete="username" required placeholder="email hoặc tên tài khoản do Admin cấp">
    </label>
    <label class="block">
     <span class="text-sm font-bold">Mật khẩu</span>
@@ -360,6 +371,23 @@ body.auth-pending #profile-frame{visibility:hidden}
  </div>
 </div>
 
+<!-- PRIVATE NOTIFICATION MODAL -->
+<div id="private-notification-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="private-notification-title">
+ <div id="private-notification-panel" class="auth-panel p-7 popup-frame" style="max-width:560px">
+  <div class="flex justify-between gap-4">
+   <div>
+    <span id="private-notification-badge" class="badge">🔔 Thông báo riêng</span>
+    <h2 id="private-notification-title" class="text-3xl font-black mt-3">Thông báo</h2>
+   </div>
+   <button id="private-notification-close" class="btn btn-soft" type="button">×</button>
+  </div>
+  <div id="private-notification-points" class="mt-5 text-2xl font-black gradient-text"></div>
+  <div id="private-notification-message" class="mt-4 leading-8 whitespace-pre-wrap"></div>
+  <div class="text-xs text-slate-500 mt-4" id="private-notification-meta"></div>
+  <button id="private-notification-read" class="btn btn-primary w-full mt-6" type="button">Tôi đã đọc & hiểu rõ</button>
+ </div>
+</div>
+
 <div id="toast-stack" class="toast-stack"></div>
 
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
@@ -384,6 +412,7 @@ import {
   setDoc,
   addDoc,
   updateDoc,
+  deleteDoc,
   query,
   where,
   orderBy,
@@ -418,6 +447,11 @@ const state = {
   polls:[],
   approvedConfessions:[],
   notice:null,
+  notifications:[],
+  honors:[],
+  chatRooms:[],
+  selectedChatRoomId:null,
+  chatMessageUnsubscribe:null,
   selectedTeam:null,
   currentQuiz:null,
   quizIndex:0,
@@ -512,6 +546,9 @@ const DEFAULT_THEMES={
  dark:{primary:"#2dd4bf",secondary:"#60a5fa",accent:"#fbbf24",page:"#07111f",surface:"#0f172a",text:"#f8fafc",muted:"#94a3b8",border:"#64748b"}
 };
 const THEME_KEYS=["primary","secondary","accent","page","surface","text","muted","border"];
+const AUTH_TIMEOUT_MS=7000;
+const DATA_TIMEOUT_MS=7000;
+let authWatchdog=null;
 function hexToRgba(hex,alpha){
  const value=String(hex||"").replace("#","");
  if(!/^[0-9a-fA-F]{6}$/.test(value))return `rgba(148,163,184,${alpha})`;
@@ -548,6 +585,7 @@ function applyThemeMode(mode,{persist=true,profile=state.userProfile}={}){
  const resolved=mode==="dark"?"dark":"light";
  document.documentElement.classList.toggle("dark",resolved==="dark");
  document.documentElement.dataset.theme=resolved;
+ document.documentElement.setAttribute("data-color-mode",resolved);
  document.documentElement.style.colorScheme=resolved;
  const store=readThemeStore(profile);
  applyPalette(store[resolved]);
@@ -560,7 +598,13 @@ function applyThemeMode(mode,{persist=true,profile=state.userProfile}={}){
  return resolved;
 }
 function applyUserTheme(profile){applyThemeMode(localStorage.getItem("a8a8-theme")==="dark"?"dark":"light",{persist:false,profile});}
-function bootLoaderDone(){document.body.classList.remove("auth-pending");$("app-loader")?.classList.add("hidden-loader");}
+function bootLoaderDone(){
+ if(authWatchdog)clearTimeout(authWatchdog);
+ authWatchdog=null;
+ document.body.classList.remove("auth-pending");
+ $("app-loader")?.classList.remove("auth-timeout");
+ $("app-loader")?.classList.add("hidden-loader");
+}
 function bootLoaderMessage(text){const node=document.querySelector(".boot-loader-text");if(node)node.textContent=text||"Chờ xíu, đang tải dữ liệu";}
 
 // Hàm hỗ trợ render AOS chỉ ở trang giới thiệu để tránh rối mắt khi đã đăng nhập
@@ -612,7 +656,7 @@ document.querySelectorAll(".modal-close").forEach(button=>{
   button.addEventListener("click",()=>closeModal(button.dataset.modal));
 });
 
-["login-modal","register-modal","student-modal","notice-modal"].forEach(id=>{
+["login-modal","register-modal","student-modal","notice-modal","private-notification-modal"].forEach(id=>{
   $(id).addEventListener("click",event=>{
     if(event.target.id===id) closeModal(id);
   });
@@ -632,21 +676,65 @@ $("switch-to-login").addEventListener("click",()=>{
 applyThemeMode(localStorage.getItem("a8a8-theme")==="dark"?"dark":"light",{persist:false});
 $("theme-toggle").addEventListener("click",()=>applyThemeMode(currentMode()==="dark"?"light":"dark"));
 
-$("login-form").addEventListener("submit",async event=>{
-  event.preventDefault();
-  const email=$("login-email").value.trim();
-  const password=$("login-password").value;
+async function backendRequest(path,options={}){
+ if(!state.user)throw new Error("Bạn cần đăng nhập trước.");
+ const backend=String(localStorage.getItem("A8A8_BACKEND_URL")||"https://8a8backend-production.up.railway.app").replace(/\/$/,"");
+ if(!backend)throw new Error("Chưa cấu hình Backend.");
+ const controller=new AbortController();
+ const timer=setTimeout(()=>controller.abort(),DATA_TIMEOUT_MS);
+ try{
+  const token=await withTimeout(state.user.getIdToken(true),AUTH_TIMEOUT_MS,"Lấy Firebase ID token");
+  const response=await fetch(`${backend}${path}`,{...options,signal:controller.signal,headers:{"Content-Type":"application/json","Authorization":`Bearer ${token}`,...(options.headers||{})}});
+  const data=await response.json().catch(()=>({}));
+  if(!response.ok)throw Object.assign(new Error(data.message||data.error||`HTTP ${response.status}`),{status:response.status});
+  return data;
+ }catch(error){
+  if(error?.name==="AbortError")throw new Error(`Backend phản hồi quá thời gian ${Math.round(DATA_TIMEOUT_MS/1000)} giây.`);
+  throw error;
+ }finally{clearTimeout(timer);}
+}
 
-  try{
-    const credential=await signInWithEmailAndPassword(auth,email,password);
-    if(!credential?.user)throw new Error("Không nhận được phiên đăng nhập.");
-    closeModal("login-modal");
-    $("login-form").reset();
-  }catch(error){
-    const code=error?.code||"";
-    const text=code.includes("network")?"Không kết nối được Firebase. Kiểm tra Internet rồi thử lại.":"Email hoặc mật khẩu không đúng. Hãy dùng đúng email/mật khẩu Admin đã cấp.";
-    Swal.fire({icon:"error",title:"Đăng nhập thất bại",text,confirmButtonColor:"#ef4444"});
-  }
+async function resolveLoginIdentifier(identifier){
+ const value=String(identifier||"").trim();
+ if(value.includes("@"))return value.toLowerCase();
+ const backend=String(localStorage.getItem("A8A8_BACKEND_URL")||"https://8a8backend-production.up.railway.app").replace(/\/$/,"");
+ if(!backend)throw new Error("Chưa cấu hình Backend để tra cứu tên tài khoản.");
+ const controller=new AbortController();
+ const timer=setTimeout(()=>controller.abort(),4500);
+ try{
+  const response=await fetch(`${backend}/api/public/resolve-login?username=${encodeURIComponent(value)}`,{signal:controller.signal});
+  const data=await response.json().catch(()=>({}));
+  if(!response.ok)throw new Error(data.message||"Không tìm thấy tên tài khoản.");
+  return String(data.email||"").trim().toLowerCase();
+ }catch(error){
+  if(error?.name==="AbortError")throw new Error("Tra cứu tên tài khoản quá thời gian.");
+  throw error;
+ }finally{clearTimeout(timer);}
+}
+
+$("login-form").addEventListener("submit",async event=>{
+ event.preventDefault();
+ const identifier=$("login-email").value.trim();
+ const password=$("login-password").value;
+ if(!identifier||!password)return;
+ const submitButton=event.submitter;
+ if(submitButton)submitButton.disabled=true;
+ try{
+  const email=await resolveLoginIdentifier(identifier);
+  const credential=await signInWithEmailAndPassword(auth,email,password);
+  if(!credential?.user)throw new Error("Không nhận được phiên đăng nhập.");
+  closeModal("login-modal");
+  $("login-form").reset();
+ }catch(error){
+  const code=error?.code||"";
+  let text="Email/tên tài khoản hoặc mật khẩu không đúng. Hãy nhập chính xác thông tin Admin đã cấp.";
+  if(code.includes("network")||code.includes("unavailable"))text="Không kết nối được Firebase. Kiểm tra Internet rồi thử lại.";
+  else if(error?.message?.includes("không tìm thấy")||error?.message?.includes("Không tìm thấy"))text="Không tìm thấy tên tài khoản. Bạn có thể dùng email Firebase được Admin cấp.";
+  else if(error?.message)text=error.message;
+  Swal.fire({icon:"error",title:"Đăng nhập thất bại",text,confirmButtonColor:"#ef4444"});
+ }finally{
+  if(submitButton)submitButton.disabled=false;
+ }
 });
 
 $("register-form").addEventListener("submit",async event=>{
@@ -674,48 +762,140 @@ $("register-form").addEventListener("submit",async event=>{
   }
 });
 
-onAuthStateChanged(auth,async user=>{
+function withTimeout(promise, ms, label="Tác vụ"){
+ return Promise.race([
+  Promise.resolve(promise),
+  new Promise((_,reject)=>setTimeout(()=>reject(new Error(`${label} quá thời gian ${Math.round(ms/1000)} giây.`)),ms))
+ ]);
+}
+
+async function ensureUserProfile(user){
+ const fallback={
+  uid:user.uid,
+  email:user.email||"",
+  displayName:user.displayName||"Thành viên",
+  role:user.email?.toLowerCase()===SUPER_ADMIN_EMAIL?"super_admin":"student",
+  classRole:user.email?.toLowerCase()===SUPER_ADMIN_EMAIL?"Super Admin":"",
+  team:"",
+  bio:"",
+  photoURL:"",
+  themeColors:{light:{...DEFAULT_THEMES.light},dark:{...DEFAULT_THEMES.dark}}
+ };
+
+ const key=`user-profile-${user.uid}`;
+ const cached=getCollection(key,{});
+
  try{
-  state.user=user;
-  bootLoaderMessage(user?"Chờ xíu, đang tải dữ liệu tài khoản…":"Chờ xíu, đang tải dữ liệu");
-  if(user){
-   const key=`user-profile-${user.uid}`,cached=getCollection(key,{});
+  const snap=await withTimeout(getDoc(doc(db,"users",user.uid)),DATA_TIMEOUT_MS,"Firestore users/{uid}");
+  if(snap.exists()){
+   const profile={...fallback,uid:user.uid,email:user.email||snap.data()?.email||"",...snap.data()};
+   setCollection(key,profile);
+   return profile;
+  }
+
+  // Super Admin được khôi phục profile tự động ngay cả khi users/{uid} chưa có.
+  if((user.email||"").toLowerCase()===SUPER_ADMIN_EMAIL){
+   const profile={...fallback,role:"super_admin",classRole:"Super Admin"};
+   await withTimeout(setDoc(doc(db,"users",user.uid),{
+    ...profile,
+    createdAt:serverTimestamp(),
+    updatedAt:serverTimestamp()
+   },{merge:true}),DATA_TIMEOUT_MS,"Tạo profile Super Admin");
+   setCollection(key,profile);
+   return profile;
+  }
+
+  const profile={...fallback};
+  setCollection(key,profile);
+  return profile;
+ }catch(error){
+  console.error("[Auth] profile",error);
+  if(cached&&typeof cached==="object"&&Object.keys(cached).length)return {...fallback,...cached};
+  return fallback;
+ }
+}
+
+function showAuthDataPendingState(message="Chờ xíu, đang tải dữ liệu"){ 
+ document.body.classList.add("auth-ready-data-pending");
+ bootLoaderMessage(message);
+ renderProfileFrame();
+}
+
+authWatchdog=setTimeout(()=>{
+ if(state.authReady)return;
+ const loader=$("app-loader");
+ loader?.classList.add("auth-timeout");
+ bootLoaderMessage("Firebase đang phản hồi chậm — hãy thử lại");
+ const retry=$("app-loader-retry");
+ if(retry&&!retry.dataset.bound){
+  retry.dataset.bound="true";
+  retry.addEventListener("click",()=>location.reload());
+ }
+},AUTH_TIMEOUT_MS);
+
+onAuthStateChanged(auth,async user=>{
+ state.user=user;
+ state.authReady=true;
+
+ // Tuyệt đối không chờ Firestore mới cập nhật nút Đăng nhập.
+ // Ngay khi Firebase Auth xác nhận có user, giao diện chuyển sang trạng thái đã đăng nhập.
+ if(user){
+  document.body.classList.add("auth-ready-data-pending");
+  bootLoaderMessage("Chờ xíu, đang tải dữ liệu tài khoản…");
+
+  try{
+   state.userProfile=await ensureUserProfile(user);
+   applyUserTheme(state.userProfile);
+   renderProfileFrame();
+   router();
+
+   // Giao diện đã biết người dùng đăng nhập; dữ liệu lớp có thể tiếp tục tải nền.
+   bootLoaderMessage("Chờ xíu, đang tải dữ liệu lớp…");
+   const loadPromise=loadRealtimeData({waitForFirstLoad:true});
    try{
-    const snap=await getDoc(doc(db,"users",user.uid));
-    state.userProfile=snap.exists()?{uid:user.uid,email:user.email,...snap.data()}:{uid:user.uid,email:user.email,displayName:user.displayName||"Thành viên",role:"student",classRole:"",team:"",bio:"",photoURL:"",themeColors:{light:{...DEFAULT_THEMES.light},dark:{...DEFAULT_THEMES.dark}}};
-    setCollection(key,state.userProfile);
-   }catch(error){
-    console.error("[Auth] profile",error);
-    state.userProfile=cached&&Object.keys(cached).length?cached:{uid:user.uid,email:user.email,displayName:user.displayName||"Thành viên",role:"student",classRole:"",team:"",bio:"",photoURL:"",themeColors:null};
+    await withTimeout(loadPromise,DATA_TIMEOUT_MS,"Đồng bộ dữ liệu lớp");
+   }catch(dataError){
+    console.warn("[Auth] realtime timeout/fallback",dataError);
+   }
+
+   try{await checkBirthday();}catch(error){console.warn("[Birthday]",error);}
+   state.dataReady=true;
+   router();
+   bootLoaderDone();
+   toast(`🎉 Chào mừng ${state.userProfile.displayName||user.displayName||"bạn"} quay trở lại Portal 8A8!`);
+  }catch(error){
+   console.error("[Auth] logged-in boot",error);
+   state.userProfile=state.userProfile||getCollection(`user-profile-${user.uid}`,{});
+   if(!state.userProfile||!Object.keys(state.userProfile).length){
+    state.userProfile={uid:user.uid,email:user.email||"",displayName:user.displayName||"Thành viên",role:(user.email||"").toLowerCase()===SUPER_ADMIN_EMAIL?"super_admin":"student"};
    }
    applyUserTheme(state.userProfile);
-   renderProfileFrame();
-   await loadRealtimeData({waitForFirstLoad:true});
-   await checkBirthday();
+   showAuthDataPendingState("Không tải hết dữ liệu — đang dùng dữ liệu tạm. Bạn vẫn có thể sử dụng tài khoản.");
+   try{await loadRealtimeData({waitForFirstLoad:false});}catch(loadError){console.warn("[Auth] realtime fallback",loadError);}
+   state.dataReady=true;
    router();
-   toast(`🎉 Chào mừng ${state.userProfile.displayName||user.displayName||"bạn"} quay trở lại Portal 8A8!`);
-  }else{
-   state.userProfile=null;
-   clearPalette();
-   state.unsubscribe.forEach(fn=>{try{fn()}catch(error){console.error("[Auth] unsubscribe",error)}});
-   state.unsubscribe=[];
-   state.students=[...MOCK_STUDENTS];state.quizzes=[];state.homework=[];state.polls=[];state.approvedConfessions=[];state.notice=null;
-   renderProfileFrame();
-   router();
+   bootLoaderDone();
   }
- }catch(error){
-  console.error("[Auth] state",error);
-  if(state.user){
-   state.userProfile=state.userProfile||getCollection(`user-profile-${state.user.uid}`,{});
-   applyUserTheme(state.userProfile);
-   renderProfileFrame();
-   try{await loadRealtimeData({waitForFirstLoad:true});}catch(loadError){console.warn("[Auth] realtime fallback",loadError);}
-  }else{
-   state.userProfile=null;clearPalette();router();
-  }
- }finally{
-  bootLoaderDone();
+  return;
  }
+
+ // Firebase đã xác nhận khách chưa đăng nhập. Chỉ từ đây mới hiện nút Đăng nhập/Tạo tài khoản.
+ document.body.classList.remove("auth-ready-data-pending");
+ state.userProfile=null;
+ state.dataReady=true;
+ clearPalette();
+ clearSnapshotsForState();
+ state.students=[...MOCK_STUDENTS];
+ state.quizzes=[];
+ state.homework=[];
+ state.polls=[];
+ state.approvedConfessions=[];
+ state.honors=[];
+ state.notifications=[];
+ state.notice=null;
+ renderProfileFrame();
+ router();
+ bootLoaderDone();
 });
 
 function roleName(role){
@@ -800,6 +980,25 @@ async function loadRealtimeData({waitForFirstLoad=false}={}){
     maybeShowNotice();
     mark("popups");
   },e=>{console.error("[Firestore popups]",e);mark("popups");}));
+
+  state.unsubscribe.push(onSnapshot(query(collection(db,"honors"),where("active","==",true),limit(50)),snap=>{
+    state.honors=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>toMillis(b.createdAt)-toMillis(a.createdAt));
+    setCollection("honors",state.honors);
+    router();
+  },e=>{console.error("[Firestore honors]",e);state.honors=getCollection("honors",[]);router();}));
+
+  state.unsubscribe.push(onSnapshot(query(collection(db,"notifications"),where("recipientUid","==",state.user.uid),limit(30)),snap=>{
+    state.notifications=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>toMillis(b.createdAt)-toMillis(a.createdAt));
+    setCollection(`notifications-${state.user.uid}`,state.notifications);
+    showNextPrivateNotification();
+    router();
+  },e=>{console.error("[Firestore notifications]",e);state.notifications=getCollection(`notifications-${state.user.uid}`,[]);showNextPrivateNotification();}));
+
+  state.unsubscribe.push(onSnapshot(query(collection(db,"chatRooms"),limit(100)),snap=>{
+    state.chatRooms=snap.docs.map(d=>({id:d.id,...d.data()})).filter(currentUserCanAccessChatRoom).sort((a,b)=>toMillis(b.updatedAt||b.createdAt)-toMillis(a.updatedAt||a.createdAt));
+    if(state.chatRooms.length&&!state.selectedChatRoomId)state.selectedChatRoomId=state.chatRooms[0].id;
+    router();
+  },e=>console.error("[Firestore chatRooms]",e)));
  }catch(error){
   console.error("[Realtime] init",error);
   router();
@@ -807,7 +1006,223 @@ async function loadRealtimeData({waitForFirstLoad=false}={}){
  }
  if(waitForFirstLoad){try{await firstLoadPromise;}finally{if(timeout)clearTimeout(timeout);}}
 }
-function clearSnapshotsForState(){state.unsubscribe.forEach(fn=>{try{fn();}catch(error){console.error("[Realtime] unsubscribe",error);}});state.unsubscribe=[];}
+function clearSnapshotsForState(){state.unsubscribe.forEach(fn=>{try{fn();}catch(error){console.error("[Realtime] unsubscribe",error);}});state.unsubscribe=[];stopChatMessages();}
+
+function notificationTypeLabel(type){
+ if(type==="praise")return {icon:"🎉",label:"Khen thưởng",tone:"positive"};
+ if(type==="criticism")return {icon:"❌",label:"Phê bình",tone:"negative"};
+ return {icon:"⚠️",label:"Nhắc nhở",tone:"warning"};
+}
+
+async function showNextPrivateNotification(){
+ if(!state.user||!Array.isArray(state.notifications))return;
+ const next=state.notifications.find(item=>item.read!==true);
+ if(!next)return;
+
+ const type=notificationTypeLabel(next.type);
+ $("private-notification-badge").textContent=`${type.icon} ${type.label}`;
+ $("private-notification-title").textContent=next.title||type.label;
+ $("private-notification-message").textContent=next.message||"";
+ $("private-notification-points").textContent=Number.isFinite(Number(next.points))&&Number(next.points)!==0
+   ? `${Number(next.points)>0?"+":""}${Number(next.points)} điểm`
+   : "";
+ $("private-notification-meta").textContent=next.createdAt?`Gửi lúc ${new Date(toMillis(next.createdAt)).toLocaleString("vi-VN")}`:"Thông báo riêng tư";
+
+ const readButton=$("private-notification-read");
+ const closeButton=$("private-notification-close");
+ const markRead=async()=>{
+  try{
+   await updateDoc(doc(db,"notifications",next.id),{read:true,readAt:serverTimestamp()});
+   closeModal("private-notification-modal");
+  }catch(error){
+   console.error("[Notification] mark read",error);
+   Swal.fire({icon:"error",title:"Không thể đánh dấu đã đọc",text:"Vui lòng kiểm tra kết nối rồi thử lại."});
+  }
+ };
+ readButton.onclick=markRead;
+ closeButton.onclick=markRead;
+ openModal("private-notification-modal");
+}
+
+function safeChatName(){return state.userProfile?.displayName||state.user?.displayName||state.user?.email||"Thành viên";}
+
+function stopChatMessages(){
+ try{state.chatMessageUnsubscribe?.();}catch(error){console.warn("[Chat] unsubscribe",error);}
+ state.chatMessageUnsubscribe=null;
+}
+
+function chatRoomMemberIds(room){return Array.isArray(room?.memberUids)?room.memberUids:[];}
+function currentUserCanAccessChatRoom(room){
+  if(!state.user)return false;
+  const isAdmin=["admin","super_admin"].includes(state.userProfile?.role);
+  return isAdmin || room?.isGeneral===true || (room?.memberUids||[]).includes(state.user.uid);
+}
+
+async function ensureGeneralChatRoom(){
+  if(!state.user)return;
+  try{
+    const ref=doc(db,"chatRooms","class_general");
+    const snap=await withTimeout(getDoc(ref),DATA_TIMEOUT_MS,"Phòng chat chung");
+    if(!snap.exists()){
+      await withTimeout(setDoc(ref,{
+        name:"💬 Phòng chung 8A8",
+        description:"Phòng chat chung cho toàn bộ thành viên lớp 8A8.",
+        type:"group",
+        isGeneral:true,
+        creatorUid:state.user.uid,
+        memberUids:[state.user.uid],
+        locked:false,
+        createdAt:serverTimestamp(),
+        updatedAt:serverTimestamp()
+      }),DATA_TIMEOUT_MS,"Tạo phòng chat chung");
+    }
+  }catch(error){
+    console.warn("[Chat] Không thể khởi tạo phòng chung:",error);
+  }
+}
+
+function roomLabel(room){
+ if(room.type==="direct"){
+  const otherId=(room.memberUids||[]).find(uid=>uid!==state.user?.uid);
+  const other=state.students.find(x=>(x.accountUid||x.uid||x.id)===otherId);
+  return other?.name||room.name||"Tin nhắn riêng";
+ }
+ return room.name||"Nhóm chat";
+}
+
+async function openChatRoom(roomId){
+ const room=state.chatRooms.find(item=>item.id===roomId);
+ if(!room||!currentUserCanAccessChatRoom(room))return;
+ state.selectedChatRoomId=roomId;
+ stopChatMessages();
+
+ const messageQuery=query(
+  collection(db,"chatRooms",roomId,"messages"),
+  orderBy("createdAt","asc"),
+  limit(200)
+ );
+ state.chatMessageUnsubscribe=onSnapshot(messageQuery,snap=>{
+  const messages=snap.docs.map(d=>({id:d.id,...d.data()}));
+  renderChatMessages(messages,room);
+ },error=>{
+  console.error("[Chat messages]",error);
+  const box=$("chat-messages");
+  if(box)box.innerHTML=`<div class="p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-sm">Không tải được tin nhắn: ${escapeHtml(error.message||"lỗi quyền/kết nối")}</div>`;
+ });
+ router();
+}
+
+function renderChatMessages(messages,room){
+ const box=$("chat-messages");
+ if(!box)return;
+ box.innerHTML=messages.map(message=>{
+  const mine=message.senderUid===state.user?.uid;
+  const photo=safeImageUrl(message.senderPhotoURL);
+  return `<div class="flex ${mine?"justify-end":"justify-start"}">
+    <div class="max-w-[82%] ${mine?"bg-teal-500/12":"bg-slate-500/8"} border border-slate-300/15 rounded-2xl px-4 py-3">
+      <div class="flex items-center gap-2 text-xs text-slate-500">${photo?`<img src="${escapeHtml(photo)}" class="w-7 h-7 rounded-full object-cover">`:""}<b>${escapeHtml(message.senderName||"Thành viên")}</b><span>${message.createdAt?new Date(toMillis(message.createdAt)).toLocaleString("vi-VN"):""}</span></div>
+      <div class="mt-2 whitespace-pre-wrap leading-6">${escapeHtml(message.text||"")}</div>
+      ${(mine||state.userProfile?.role==="admin"||state.userProfile?.role==="super_admin")?`<div class="flex gap-3 mt-2"><button class="text-xs text-teal-600 chat-edit-message" data-room="${escapeHtml(room.id)}" data-message="${escapeHtml(message.id)}" data-text="${escapeHtml(message.text||"")}">Sửa</button><button class="text-xs text-red-500 chat-delete-message" data-room="${escapeHtml(room.id)}" data-message="${escapeHtml(message.id)}">Xóa</button></div>`:""}
+    </div>
+  </div>`;
+ }).join("")||`<div class="text-sm text-slate-500 text-center py-10">Chưa có tin nhắn. Hãy bắt đầu cuộc trò chuyện 👋</div>`;
+ box.scrollTop=box.scrollHeight;
+ box.querySelectorAll(".chat-edit-message").forEach(button=>button.onclick=async()=>{
+  const currentText=button.dataset.text||"";
+  const result=await Swal.fire({title:"Sửa tin nhắn",input:"textarea",inputValue:currentText,inputAttributes:{maxlength:1500},showCancelButton:true,confirmButtonText:"Lưu",cancelButtonText:"Hủy",inputValidator:value=>!String(value||"").trim()?"Tin nhắn không được để trống.":undefined});
+  if(!result.isConfirmed)return;
+  try{await updateDoc(doc(db,"chatRooms",button.dataset.room,"messages",button.dataset.message),{text:String(result.value||"").trim(),editedAt:serverTimestamp()});}
+  catch(error){Swal.fire({icon:"error",title:"Không thể sửa",text:error.message||"Lỗi quyền/kết nối."});}
+ });
+ box.querySelectorAll(".chat-delete-message").forEach(button=>button.onclick=async()=>{
+  const confirmed=await Swal.fire({icon:"warning",title:"Xóa tin nhắn?",text:"Tin nhắn sẽ bị xóa vĩnh viễn.",showCancelButton:true,confirmButtonText:"Xóa",cancelButtonText:"Hủy",confirmButtonColor:"#ef4444"});
+  if(!confirmed.isConfirmed)return;
+  try{await deleteDoc(doc(db,"chatRooms",button.dataset.room,"messages",button.dataset.message));}
+  catch(error){Swal.fire({icon:"error",title:"Không thể xóa",text:error.message||"Lỗi quyền/kết nối."});}
+ });
+}
+
+function chatPage(){
+ const rooms=state.chatRooms.filter(currentUserCanAccessChatRoom);
+ const selected=rooms.find(x=>x.id===state.selectedChatRoomId)||rooms[0]||null;
+ if(selected&&selected.id!==state.selectedChatRoomId)state.selectedChatRoomId=selected.id;
+ return `<section class="page-section">
+   ${sectionTitle("💬 CHAT 8A8","Khu trò chuyện","Chat chung, nhóm riêng và tin nhắn 1-1 trong lớp. Mỗi tài khoản chỉ được đọc những phòng mà mình là thành viên.")}
+   <div class="grid lg:grid-cols-[320px,1fr] gap-5">
+    <div class="glass rounded-3xl p-5">
+      <div class="flex justify-between items-center"><h2 class="text-lg font-black">Phòng chat</h2><button id="chat-refresh" class="btn btn-soft">↻</button></div>
+      <div id="chat-room-list" class="space-y-2 mt-4">${rooms.map(room=>`<button class="chat-room-button w-full text-left p-3 rounded-2xl border ${room.id===selected?.id?"border-teal-400 bg-teal-500/10":"border-slate-300/15 bg-white/5"}" data-room-id="${escapeHtml(room.id)}"><div class="font-black">${escapeHtml(roomLabel(room))}</div><div class="text-xs text-slate-500 mt-1">${room.locked?"🔒 Đã khóa":"💬 Đang mở"} · ${room.type==="direct"?"Tin nhắn riêng":`${(room.memberUids||[]).length} thành viên`}</div></button>`).join("")||`<div class="text-sm text-slate-500">Chưa có phòng. Hãy tạo nhóm mới.</div>`}</div>
+      <button id="chat-create-group" class="btn btn-primary w-full mt-4">＋ Tạo nhóm</button>
+      <div class="mt-5 border-t border-slate-300/15 pt-5"><div class="font-black">Nhắn tin với thành viên</div><div class="space-y-2 mt-3">${state.students.slice(0,40).filter(s=>(s.accountUid||s.uid||s.id)!==state.user?.uid).map(s=>`<button class="chat-dm-button w-full text-left p-3 rounded-2xl bg-slate-500/5 hover:bg-slate-500/10" data-uid="${escapeHtml(s.accountUid||s.uid||s.id)}"><b>${escapeHtml(s.name||"Thành viên")}</b><div class="text-xs text-slate-500">${escapeHtml(s.team||"")}</div></button>`).join("")}</div></div>
+    </div>
+    <div class="glass rounded-3xl p-5 min-h-[620px] flex flex-col">
+      <div id="chat-room-header" class="border-b border-slate-300/15 pb-4">${selected?`<div class="text-xl font-black">${escapeHtml(roomLabel(selected))}</div><div class="text-sm text-slate-500 mt-1">${selected.locked?"🔒 Phòng đang khóa quyền gửi":"Bạn có thể trò chuyện tại đây."}</div>`:`<div class="text-xl font-black">Chọn một phòng chat</div>`}</div>
+      <div id="chat-messages" class="flex-1 overflow-auto space-y-3 py-5 min-h-[360px]"></div>
+      <form id="chat-send-form" class="flex gap-2 border-t border-slate-300/15 pt-4 ${selected?"":"hidden"}">
+        <input id="chat-message-input" class="input" maxlength="1500" placeholder="Viết tin nhắn…" autocomplete="off">
+        <button class="btn btn-primary" type="submit" ${selected?.locked?"disabled":""}>Gửi</button>
+      </form>
+    </div>
+   </div>
+ </section>`;
+}
+
+async function createChatGroup(){
+ const students=state.students.filter(s=>(s.accountUid||s.uid||s.id)!==state.user?.uid);
+ const options=students.map(s=>`<option value="${escapeHtml(s.accountUid||s.uid||s.id)}">${escapeHtml(s.name||"Thành viên")} — ${escapeHtml(s.team||"")}</option>`).join("");
+ const result=await Swal.fire({title:"Tạo nhóm chat",html:`<input id="swal-group-name" class="swal2-input" placeholder="Tên nhóm"> <textarea id="swal-group-description" class="swal2-textarea" placeholder="Mô tả nhóm"></textarea><select id="swal-group-members" class="swal2-select" multiple size="8" style="width:80%">${options}</select><div style="font-size:12px;color:#64748b;margin-top:8px">Giữ Ctrl/Shift để chọn nhiều thành viên.</div>`,focusConfirm:false,showCancelButton:true,confirmButtonText:"Tạo nhóm",cancelButtonText:"Hủy",preConfirm:()=>{const name=$("swal-group-name")?.value?.trim();const description=$("swal-group-description")?.value?.trim()||"";const members=[...($("swal-group-members")?.selectedOptions||[])].map(o=>o.value);if(!name)return Swal.showValidationMessage("Hãy nhập tên nhóm.");return {name,description,members};}});
+ if(!result.isConfirmed)return;
+ try{
+  const memberUids=[state.user.uid,...result.value.members.filter(uid=>uid!==state.user.uid)];
+  const ref=await addDoc(collection(db,"chatRooms"),{name:result.value.name,description:result.value.description,type:"group",creatorUid:state.user.uid,memberUids:[...new Set(memberUids)],locked:false,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});
+  state.selectedChatRoomId=ref.id;
+  await openChatRoom(ref.id);
+  toast("✅ Đã tạo nhóm chat.","success");
+ }catch(error){Swal.fire({icon:"error",title:"Không thể tạo nhóm",text:error.message||"Lỗi quyền/kết nối."});}
+}
+
+async function openDirectMessage(uid){
+ if(!state.user||!uid)return;
+ const ids=[state.user.uid,uid].sort();
+ const roomId=`dm_${ids.join("__")}`;
+ const roomRef=doc(db,"chatRooms",roomId);
+ const other=state.students.find(s=>(s.accountUid||s.uid||s.id)===uid);
+ try{
+  await setDoc(roomRef,{name:other?.name||"Tin nhắn riêng",type:"direct",creatorUid:state.user.uid,memberUids:ids,locked:false,updatedAt:serverTimestamp(),createdAt:serverTimestamp()},{merge:true});
+  if(!state.chatRooms.some(x=>x.id===roomId))state.chatRooms.push({id:roomId,name:other?.name||"Tin nhắn riêng",type:"direct",creatorUid:state.user.uid,memberUids:ids,locked:false});
+  await openChatRoom(roomId);
+ }catch(error){Swal.fire({icon:"error",title:"Không thể mở tin nhắn",text:error.message||"Lỗi quyền/kết nối."});}
+}
+
+async function sendChatMessage(event){
+ event.preventDefault();
+ const input=$("chat-message-input");
+ const text=input?.value?.trim();
+ const room=state.chatRooms.find(x=>x.id===state.selectedChatRoomId);
+ if(!text||!room||room.locked)return;
+ try{
+  await addDoc(collection(db,"chatRooms",room.id,"messages"),{
+   senderUid:state.user.uid,
+   senderName:safeChatName(),
+   senderPhotoURL:state.userProfile?.photoURL||state.user?.photoURL||"",
+   text,
+   createdAt:serverTimestamp()
+  });
+  input.value="";
+ }catch(error){Swal.fire({icon:"error",title:"Không thể gửi",text:error.message||"Phòng chat có thể đã bị khóa."});}
+}
+
+async function bindChatEvents(){
+ if(currentRoute()!=="chat")return;
+ await ensureGeneralChatRoom();
+ document.querySelectorAll(".chat-room-button").forEach(button=>button.onclick=()=>openChatRoom(button.dataset.roomId));
+ document.querySelectorAll(".chat-dm-button").forEach(button=>button.onclick=()=>openDirectMessage(button.dataset.uid));
+ $("chat-create-group")?.addEventListener("click",createChatGroup);
+ $("chat-refresh")?.addEventListener("click",()=>router());
+ $("chat-send-form")?.addEventListener("submit",sendChatMessage);
+ const room=state.chatRooms.find(x=>x.id===state.selectedChatRoomId);
+ if(room)openChatRoom(room.id);
+}
 
 function currentRoute(){
   const raw=location.hash.replace(/^#/,"");
@@ -846,6 +1261,7 @@ function router(){
         case "trac-nghiem":html=quizPage();break;
         case "giai-tri":html=entertainmentPage();break;
         case "confession":html=confessionPage();break;
+        case "chat":html=chatPage();break;
         case "profile":html=profilePage();break;
         default: location.hash="#trang-chu"; return;
       }
@@ -1002,6 +1418,16 @@ function loggedInDashboard(){
             <div class="font-black mt-2">Trắc nghiệm</div>
             <div class="text-xs text-slate-500 mt-1">Làm bài lấy điểm</div>
         </a>
+    </div>
+
+    <div class="glass rounded-3xl p-6 mb-10">
+      <div class="flex items-center justify-between gap-4 flex-wrap">
+        <div><span class="badge">📣 BẢNG TIN LỚP</span><h2 class="text-2xl font-black mt-3">Vinh danh & nhắc nhở</h2><p class="text-sm text-slate-500 mt-1">Thông tin mới nhất từ Admin/GVCN dành cho tập thể 8A8.</p></div>
+        <a href="#chat" class="btn btn-soft">💬 Vào Chat lớp</a>
+      </div>
+      <div class="space-y-3 mt-5">
+        ${state.honors.slice(0,6).map(item=>`<article class="p-4 rounded-2xl border border-slate-300/15 bg-slate-500/5"><div class="flex items-center gap-2"><span class="badge">${item.type==="praise"?"🎉 Vinh danh":item.type==="criticism"?"❌ Phê bình":"⚠️ Nhắc nhở"}</span><span class="text-xs text-slate-500">${item.createdAt?new Date(toMillis(item.createdAt)).toLocaleString("vi-VN"):""}</span></div><h3 class="font-black mt-3">${escapeHtml(item.title||"Thông báo lớp")}</h3><p class="mt-2 text-sm leading-7 whitespace-pre-wrap">${escapeHtml(item.content||"")}</p></article>`).join("")||`<div class="text-sm text-slate-500">Chưa có bài vinh danh hoặc nhắc nhở mới.</div>`}
+      </div>
     </div>
 
     ${sectionTitle("⏱️ COUNTDOWN","Các cột mốc đáng nhớ","")}
@@ -1743,11 +2169,16 @@ async function votePoll(pollId,optionId){
  if(index<0)return;
 
  try{
-  const options=(poll.options||[]).map((option,i)=> i===index ? {...option,votes:Number(option.votes||0)+1} : option );
-  await updateDoc(doc(db,"polls",pollId),{options});
+  const result=await backendRequest(`/api/polls/${encodeURIComponent(pollId)}/vote`,{method:"POST",body:JSON.stringify({optionId})});
+  const latestOptions=(poll.options||[]).map(option=>String(option.id)===String(optionId)?{...option,votes:Number(result.votes||option.votes||0)}:option);
+  poll.options=latestOptions;
+  setCollection("polls",polls);
   localStorage.setItem(voteKey,"1");
-  toast("✅ Đã ghi nhận bình chọn của bạn.");
- }catch(error){ Swal.fire({icon:"error",title:"Lỗi",text:"Không thể bình chọn."}); }
+  toast("✅ Đã ghi nhận bình chọn của bạn.","success");
+ }catch(error){
+  const text=error?.status===409?"Bạn đã bình chọn Poll này rồi.":(error?.message||"Không thể bình chọn.");
+  Swal.fire({icon:"error",title:"Không thể bình chọn",text});
+ }
 }
 
 function pollVote(pollId,optionId){return votePoll(pollId,optionId);}
@@ -1847,12 +2278,16 @@ function maybeShowNotice(){
   if(readData?.key===noticeKey&&readData?.date===todayKey())return;
 
   const panel=$("notice-panel"),image=$("notice-image"),button=$("notice-read-button");
-  const sizeMap={small:"popup-size-small",normal:"popup-size-normal",large:"popup-size-large"};
+  const sizeMap={small:"popup-size-small",normal:"popup-size-normal",large:"popup-size-large",wide:"popup-size-wide"};
   Object.values(sizeMap).forEach(c=>panel?.classList.remove(c));
   panel?.classList.add(sizeMap[notice.size]||sizeMap.normal);
-  panel?.style.setProperty("border-color",notice.accentColor||"var(--border)");
+  panel?.style.setProperty("border-color",/^#[0-9a-fA-F]{6}$/.test(String(notice.accentColor||""))?notice.accentColor:"var(--border)");
   panel?.style.setProperty("border-radius",`${Math.min(48,Math.max(18,Number(notice.radius||30)))}px`);
-  panel?.style.setProperty("box-shadow",`0 35px 100px rgba(0,0,0,.4),0 0 55px ${notice.accentColor||"rgba(20,184,166,.14)"}`);
+  panel?.style.setProperty("box-shadow",`0 35px 100px rgba(0,0,0,.4),0 0 55px ${/^#[0-9a-fA-F]{6}$/.test(String(notice.accentColor||""))?notice.accentColor:"rgba(20,184,166,.14)"}`);
+  if(panel){
+    if(/^#[0-9a-fA-F]{6}$/.test(String(notice.backgroundColor||""))) panel.style.background=notice.backgroundColor;
+    else panel.style.removeProperty("background");
+  }
 
   $("notice-title").textContent=notice.title||"Thông báo";
   $("notice-content").textContent=notice.content||"";
@@ -1860,7 +2295,8 @@ function maybeShowNotice(){
   if(img){image.src=img;image.style.display="block";}else{image.removeAttribute("src");image.style.display="none";}
   if(button){
    const accent=/^#[0-9a-fA-F]{6}$/.test(String(notice.accentColor||""))?notice.accentColor:"#14b8a6";
-   button.style.background=`linear-gradient(135deg,${accent},var(--secondary))`;
+   const buttonColor=/^#[0-9a-fA-F]{6}$/.test(String(notice.buttonColor||""))?notice.buttonColor:accent;
+   button.style.background=buttonColor;
    button.textContent=notice.buttonLabel||"Tôi đã đọc & hiểu rõ";
   }
   let seconds=3;button.disabled=true;button.textContent=`${notice.buttonLabel||"Tôi đã đọc"} (${seconds})`;
