@@ -49,6 +49,10 @@ self.addEventListener("fetch",event=>{
   if(request.method!=="GET")return;
   const url=new URL(request.url);
 
+  // Service Worker chỉ xử lý HTTP(S). Không đụng vào chrome-extension://,
+  // moz-extension:// hoặc các scheme đặc biệt do DevTools/extension tạo ra.
+  if(url.protocol!=="http:" && url.protocol!=="https:")return;
+
   // Never cache Firebase, Firestore, Google APIs or the Railway backend.
   if(url.pathname.includes("/api/")||url.hostname.includes("firebaseio.com")||url.hostname.includes("googleapis.com"))return;
 
