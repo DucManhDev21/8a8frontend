@@ -602,10 +602,10 @@ async function editStudent(id) {
 async function openScore(id) {
   const student = localStudents.find((item) => item.id === id);
   if (!student) return;
-  $("scoreForm [name=uid]").value = id;
-  $("scoreForm [name=points]").value = "1";
-  $("scoreForm [name=type]").value = "praise";
-  $("scoreForm [name=reason]").value = "";
+  document.querySelector("#scoreForm [name=uid]").value = id;
+  document.querySelector("#scoreForm [name=points]").value = "1";
+  document.querySelector("#scoreForm [name=type]").value = "praise";
+  document.querySelector("#scoreForm [name=reason]").value = "";
   $("scoreTitle").textContent = `Thi đua — ${student.name}`;
   $("scoreModal").classList.add("show");
 }
@@ -1034,7 +1034,7 @@ async function createAttendance(event) {
     const form = new FormData(event.target);
     await api("/api/admin/content/attendance", { method: "POST", body: JSON.stringify({ date: String(form.get("date")), present: Number(form.get("present")), total: 40, note: String(form.get("note") || "").trim() }) });
     event.target.reset();
-    $("attendanceForm [name=date]").value = new Date().toISOString().slice(0, 10);
+    document.querySelector("#attendanceForm [name=date]").value = new Date().toISOString().slice(0, 10);
     await ok("Đã lưu điểm danh");
   } catch (error) { fail(error.message); }
 }
@@ -1216,7 +1216,7 @@ $("btnBypass").onclick = async () => {
 };
 $("btnGoHome").onclick = () => { location.href = "./index.html"; };
 $("logout").onclick = () => auth.signOut();
-$("attendanceForm [name=date]").value = new Date().toISOString().slice(0, 10);
+document.querySelector("#attendanceForm [name=date]").value = new Date().toISOString().slice(0, 10);
 addQuestion();
 
 /*
