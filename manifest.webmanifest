@@ -1,27 +1,15 @@
 {
-  "short_name": "8A8 Portal",
-  "name": "8A8 Portal — THCS Cẩm Lý 2",
-  "description": "Cổng thông tin Lớp 8A8 - Trường THCS Cẩm Lý 2: học tập, thi đua, trắc nghiệm, kho kỷ niệm và quản lý lớp.",
-  "icons": [
-    {
-      "src": "icon-192.png",
-      "type": "image/png",
-      "sizes": "192x192",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icon-512.png",
-      "type": "image/png",
-      "sizes": "512x512",
-      "purpose": "any maskable"
-    }
-  ],
-  "start_url": "./index.html",
-  "background_color": "#07111f",
-  "theme_color": "#0f172a",
+  "name": "Portal 8A8 - Trường THCS Cẩm Lý 2",
+  "short_name": "Portal 8A8",
+  "lang": "vi-VN",
+  "start_url": "./index.html#trang-chu",
+  "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "scope": "./",
-  "lang": "vi-VN",
-  "categories": ["education", "productivity"]
+  "background_color": "#f1f5f9",
+  "theme_color": "#14b8a6",
+  "description": "Cổng thông tin lớp 8A8 - Trường THCS Cẩm Lý 2.",
+  "icons": [
+    {"src":"./logo.png","sizes":"500x500","type":"image/png","purpose":"any maskable"}
+  ]
 }

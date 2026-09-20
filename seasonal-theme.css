@@ -17,15 +17,15 @@
 }
 
 html[data-season="normal"]{
-  --season-bg:#071a2f;
-  --season-surface:rgba(13,44,67,.68);
-  --season-line:rgba(117,229,214,.18);
-  --season-text:#effcff;
-  --season-muted:#a9c4d7;
-  --season-primary:#65e6cf;
-  --season-secondary:#7bb7ff;
-  --season-glow:rgba(101,230,207,.24);
-  --season-accent:#9de8ff;
+  --season-bg:var(--page);
+  --season-surface:var(--surface);
+  --season-line:var(--border);
+  --season-text:var(--text);
+  --season-muted:var(--muted);
+  --season-primary:var(--primary);
+  --season-secondary:var(--secondary);
+  --season-glow:rgba(20,184,166,.18);
+  --season-accent:var(--accent);
 }
 
 html[data-season="national"]{
@@ -116,18 +116,19 @@ html[data-season="christmas"]{
 body.seasonal-active{
   background:
     radial-gradient(circle at 12% 12%,var(--season-glow),transparent 34%),
-    radial-gradient(circle at 88% 78%,rgba(124,184,255,.10),transparent 34%),
-    var(--season-bg);
-  color:var(--season-text);
+    radial-gradient(circle at 88% 78%,color-mix(in srgb,var(--season-secondary) 14%,transparent),transparent 34%),
+    var(--page);
+  color:var(--text);
   transition:background 900ms ease,color 500ms ease;
 }
 body.seasonal-active .glass,
 body.seasonal-active .card,
 body.seasonal-active .modal-content,
 body.seasonal-active .panel{
-  background:var(--season-surface);
-  border-color:var(--season-line);
-  box-shadow:0 24px 80px rgba(0,0,0,.22),0 0 36px var(--season-glow);
+  background:var(--surface);
+  border-color:color-mix(in srgb,var(--season-line) 65%,var(--border));
+  color:var(--text);
+  box-shadow:0 24px 80px rgba(0,0,0,.16),0 0 36px var(--season-glow);
 }
 body.seasonal-active .neon-border{
   border-color:var(--season-primary);
@@ -141,7 +142,7 @@ body.seasonal-active .seasonal-accent{
 #seasonalScene{
   position:fixed;
   inset:0;
-  z-index:-1;
+  z-index:0;
   pointer-events:none;
   overflow:hidden;
   opacity:1;
@@ -183,7 +184,8 @@ body.seasonal-active .seasonal-accent{
 .seasonal-title.show{opacity:1}
 
 /* National Day: flags + star + fireworks */
-.season-national .national-flag{
+.season-national .national-flag,
+html[data-season="national"] .national-flag{
   display:block;
 }
 .national-flag{
@@ -288,3 +290,8 @@ html[data-season="christmas"] .xmas-tree{display:block}
   .couplet{width:42px;min-height:180px;font-size:.78rem}
   .xmas-tree{transform:scale(.7);transform-origin:bottom right}
 }
+
+
+/* Main interface stays above the holiday artwork. */
+body > header, body > main, body > footer, body > #mobile-menu, body > #mobile-menu-backdrop{position:relative;z-index:1;}
+body > .modal-backdrop, body > .toast-stack, body > #app-loader{z-index:1000;}

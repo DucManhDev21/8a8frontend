@@ -58,6 +58,8 @@
   }
 
   function detectSeason(date = new Date()) {
+    const forced = new URLSearchParams(location.search).get("season") || (()=>{try{return localStorage.getItem("a8a8-force-season")||""}catch(error){return ""}})();
+    if (forced && CONFIG.titleMap[forced]) return forced;
     const m = date.getMonth() + 1;
     const d = date.getDate();
 
@@ -368,6 +370,8 @@
 
     document.documentElement.dataset.season=season;
     document.body.classList.add("seasonal-active");
+    [...document.body.classList].filter(name=>name.startsWith("season-")).forEach(name=>document.body.classList.remove(name));
+    document.body.classList.add(`season-${season}`);
     document.body.dataset.season=season;
     setTitle(season);
     createParticles(season);
@@ -397,6 +401,15 @@
       refresh,
       detectSeason,
       setSeason,
+      preview(season){
+        if(!CONFIG.titleMap[season]) throw new Error("Theme không tồn tại: "+season);
+        try{localStorage.setItem("a8a8-force-season",season)}catch(error){}
+        setSeason(season,new Date());
+      },
+      clearPreview(){
+        try{localStorage.removeItem("a8a8-force-season")}catch(error){}
+        refresh();
+      },
       get season(){return state.season}
     };
   }

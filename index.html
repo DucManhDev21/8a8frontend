@@ -15,6 +15,17 @@
 <link rel="apple-touch-icon" href="./logo.png">
 <title>8A8 Portal | Trường THCS Cẩm Lý 2</title>
 
+<script>
+(()=>{
+  try{
+    const saved=localStorage.getItem("a8a8-theme");
+    const mode=saved==="dark"?"dark":"light";
+    document.documentElement.classList.toggle("dark",mode==="dark");
+    document.documentElement.dataset.theme=mode;
+    document.documentElement.style.colorScheme=mode;
+  }catch(error){document.documentElement.classList.remove("dark");document.documentElement.dataset.theme="light";}
+})();
+</script>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
 tailwind.config={
@@ -156,12 +167,41 @@ body.logged-in .btn:hover{transform:none}
   .toast-stack{left:.6rem;right:.6rem;bottom:calc(.6rem + env(safe-area-inset-bottom))}.toast{max-width:none}
   .auth-panel{border-radius:24px;padding:1.1rem!important}.modal-backdrop{padding:.6rem}
 }
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+/* ===== INITIAL BOOT LOADER ===== */
+#app-loader{
+ position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;
+ flex-direction:column;gap:14px;padding:24px;background:rgba(241,245,249,.92);
+ backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+ opacity:1;visibility:visible;transition:opacity .35s ease,visibility .35s ease;
+}
+.dark #app-loader{background:rgba(7,17,31,.94)}
+#app-loader.hidden-loader{opacity:0;visibility:hidden;pointer-events:none}
+.boot-spinner{width:56px;height:56px;border-radius:999px;border:5px solid rgba(20,184,166,.18);border-top-color:var(--primary);border-right-color:var(--secondary);animation:boot-spin .9s linear infinite;box-shadow:0 0 30px rgba(20,184,166,.16)}
+.boot-loader-text{font-weight:900;font-size:1rem;letter-spacing:.01em;color:var(--text);text-align:center}
+.boot-loader-sub{font-size:.78rem;color:var(--muted);text-align:center;max-width:320px;line-height:1.5}
+@keyframes boot-spin{to{transform:rotate(360deg)}}
+body.auth-pending .header-actions > *:not(#theme-toggle),body.auth-pending #hamburger-button{visibility:hidden}
+body.auth-pending #profile-frame{visibility:hidden}
+.avatar img,.avatar-image{width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block}
+.profile-avatar-preview{width:108px;height:108px;border-radius:32px;overflow:hidden;background:linear-gradient(135deg,var(--primary),var(--secondary));display:grid;place-items:center;color:white;font-size:2rem;font-weight:900;border:1px solid var(--border);box-shadow:0 18px 45px rgba(20,184,166,.2)}
+.color-swatch{width:100%;height:44px;border-radius:14px;border:1px solid var(--border);padding:3px;background:var(--surface)}
+.color-swatch input{width:100%;height:100%;border:0;border-radius:10px;background:transparent;padding:0;cursor:pointer}
+.popup-size-small{width:min(380px,100%)!important}
+.popup-size-normal{width:min(540px,100%)!important}
+.popup-size-large{width:min(820px,100%)!important}
+.notice-image{width:100%;max-height:300px;object-fit:cover;border-radius:22px;margin-top:18px;display:none}
+.popup-frame{transition:border-color .3s,box-shadow .3s,border-radius .3s,transform .3s}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
 </style>
 </head>
 
-<body>
+<body class="auth-pending">
+<div id="app-loader" role="status" aria-live="polite" aria-label="Đang tải dữ liệu">
+  <div class="boot-spinner" aria-hidden="true"></div>
+  <div class="boot-loader-text">Chờ xíu, đang tải dữ liệu</div>
+  <div class="boot-loader-sub">Hệ thống đang kiểm tra đăng nhập và đồng bộ dữ liệu lớp 8A8.</div>
+</div>
 <div id="seasonal-canvas-root"></div>
 <div id="seasonal-banner"></div>
 
@@ -301,7 +341,7 @@ body.logged-in .btn:hover{transform:none}
 
 <!-- POPUP THÔNG BÁO -->
 <div id="notice-modal" class="modal-backdrop">
- <div class="auth-panel p-7">
+ <div id="notice-panel" class="auth-panel p-7 popup-frame">
   <div class="flex justify-between gap-4">
    <div>
     <span class="badge">📢 Thông báo lớp</span>
@@ -309,6 +349,7 @@ body.logged-in .btn:hover{transform:none}
    </div>
    <button id="notice-close-temporary" class="btn btn-soft">×</button>
   </div>
+  <img id="notice-image" class="notice-image" alt="Hình ảnh thông báo">
   <div id="notice-content" class="mt-5 leading-7 whitespace-pre-wrap text-slate-600 dark:text-slate-300"></div>
   <div class="mt-6 p-4 rounded-2xl bg-slate-500/10 text-center">
    <button id="notice-read-button" class="btn btn-primary w-full" disabled>
@@ -466,6 +507,62 @@ function getCollection(key,defaultValue=[]){
 function setCollection(key,value){try{localStorage.setItem(`${COLLECTION_PREFIX}${String(key)}`,JSON.stringify(value));}catch(error){console.error(`[Collection] write ${key}:`,error);}return value;}
 Object.entries(COLLECTION_DEFAULTS).forEach(([key,value])=>getCollection(key,value));
 
+const DEFAULT_THEMES={
+ light:{primary:"#14b8a6",secondary:"#2563eb",accent:"#f59e0b",page:"#f1f5f9",surface:"#ffffff",text:"#0f172a",muted:"#64748b",border:"#94a3b8"},
+ dark:{primary:"#2dd4bf",secondary:"#60a5fa",accent:"#fbbf24",page:"#07111f",surface:"#0f172a",text:"#f8fafc",muted:"#94a3b8",border:"#64748b"}
+};
+const THEME_KEYS=["primary","secondary","accent","page","surface","text","muted","border"];
+function hexToRgba(hex,alpha){
+ const value=String(hex||"").replace("#","");
+ if(!/^[0-9a-fA-F]{6}$/.test(value))return `rgba(148,163,184,${alpha})`;
+ const n=parseInt(value,16);
+ return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${alpha})`;
+}
+function normalizePalette(value,mode){
+ const base={...DEFAULT_THEMES[mode]};
+ if(value&&typeof value==="object")THEME_KEYS.forEach(k=>{if(/^#[0-9a-fA-F]{6}$/.test(String(value[k]||"")))base[k]=String(value[k]);});
+ return base;
+}
+function readThemeStore(profile=state.userProfile){
+ const fromProfile=profile?.themeColors;
+ if(fromProfile&&typeof fromProfile==="object")return {light:normalizePalette(fromProfile.light,"light"),dark:normalizePalette(fromProfile.dark,"dark")};
+ try{const local=JSON.parse(localStorage.getItem(`a8a8-theme-colors-${profile?.uid||"guest"}`)||"null");if(local&&typeof local==="object")return {light:normalizePalette(local.light,"light"),dark:normalizePalette(local.dark,"dark")};}catch(error){}
+ return {light:{...DEFAULT_THEMES.light},dark:{...DEFAULT_THEMES.dark}};
+}
+function saveLocalThemeStore(store){try{if(state.user?.uid)localStorage.setItem(`a8a8-theme-colors-${state.user.uid}`,JSON.stringify(store));}catch(error){console.warn("[Theme] local save",error);}}
+function applyPalette(palette){
+ const root=document.documentElement;
+ root.style.setProperty("--primary",palette.primary);
+ root.style.setProperty("--secondary",palette.secondary);
+ root.style.setProperty("--accent",palette.accent);
+ root.style.setProperty("--page",palette.page);
+ root.style.setProperty("--surface",hexToRgba(palette.surface,.68));
+ root.style.setProperty("--text",palette.text);
+ root.style.setProperty("--muted",palette.muted);
+ root.style.setProperty("--border",hexToRgba(palette.border,.28));
+ root.style.setProperty("--a8a8-surface-solid",palette.surface);
+}
+function clearPalette(){const root=document.documentElement;["--primary","--secondary","--accent","--page","--surface","--text","--muted","--border","--a8a8-surface-solid"].forEach(k=>root.style.removeProperty(k));}
+function currentMode(){return document.documentElement.classList.contains("dark")?"dark":"light";}
+function applyThemeMode(mode,{persist=true,profile=state.userProfile}={}){
+ const resolved=mode==="dark"?"dark":"light";
+ document.documentElement.classList.toggle("dark",resolved==="dark");
+ document.documentElement.dataset.theme=resolved;
+ document.documentElement.style.colorScheme=resolved;
+ const store=readThemeStore(profile);
+ applyPalette(store[resolved]);
+ if(state.user?.uid)saveLocalThemeStore(store);
+ if(persist)localStorage.setItem("a8a8-theme",resolved);
+ const btn=$("theme-toggle");
+ if(btn)btn.textContent=resolved==="dark"?"☀️":"🌙";
+ const meta=$("theme-color-meta");
+ if(meta)meta.content=resolved==="dark"?store.dark.page:store.light.page;
+ return resolved;
+}
+function applyUserTheme(profile){applyThemeMode(localStorage.getItem("a8a8-theme")==="dark"?"dark":"light",{persist:false,profile});}
+function bootLoaderDone(){document.body.classList.remove("auth-pending");$("app-loader")?.classList.add("hidden-loader");}
+function bootLoaderMessage(text){const node=document.querySelector(".boot-loader-text");if(node)node.textContent=text||"Chờ xíu, đang tải dữ liệu";}
+
 // Hàm hỗ trợ render AOS chỉ ở trang giới thiệu để tránh rối mắt khi đã đăng nhập
 function getAos(anim = "fade-up") {
   return !state.user ? `data-aos="${anim}" data-aos-mirror="true" data-aos-once="false"` : '';
@@ -532,18 +629,8 @@ $("switch-to-login").addEventListener("click",()=>{
   openModal("login-modal");
 });
 
-$("theme-toggle").addEventListener("click",()=>{
-  document.documentElement.classList.toggle("dark");
-  const dark=document.documentElement.classList.contains("dark");
-  localStorage.setItem("a8a8-theme",dark?"dark":"light");
-  $("theme-toggle").textContent=dark?"☀️":"🌙";
-  $("theme-color-meta").content=dark?"#07111f":"#f1f5f9";
-});
-
-if(localStorage.getItem("a8a8-theme")==="dark"){
-  document.documentElement.classList.add("dark");
-  $("theme-toggle").textContent="☀️";
-}
+applyThemeMode(localStorage.getItem("a8a8-theme")==="dark"?"dark":"light",{persist:false});
+$("theme-toggle").addEventListener("click",()=>applyThemeMode(currentMode()==="dark"?"light":"dark"));
 
 $("login-form").addEventListener("submit",async event=>{
   event.preventDefault();
@@ -551,11 +638,14 @@ $("login-form").addEventListener("submit",async event=>{
   const password=$("login-password").value;
 
   try{
-    await signInWithEmailAndPassword(auth,email,password);
+    const credential=await signInWithEmailAndPassword(auth,email,password);
+    if(!credential?.user)throw new Error("Không nhận được phiên đăng nhập.");
     closeModal("login-modal");
     $("login-form").reset();
   }catch(error){
-    Swal.fire({icon:"error",title:"Đăng nhập thất bại",text:"Email hoặc mật khẩu không đúng.",confirmButtonColor:"#ef4444"});
+    const code=error?.code||"";
+    const text=code.includes("network")?"Không kết nối được Firebase. Kiểm tra Internet rồi thử lại.":"Email hoặc mật khẩu không đúng. Hãy dùng đúng email/mật khẩu Admin đã cấp.";
+    Swal.fire({icon:"error",title:"Đăng nhập thất bại",text,confirmButtonColor:"#ef4444"});
   }
 });
 
@@ -574,7 +664,7 @@ $("register-form").addEventListener("submit",async event=>{
     const credential=await createUserWithEmailAndPassword(auth,email,password);
     await updateProfile(credential.user,{displayName:name});
     await setDoc(doc(db,"users",credential.user.uid),{
-      uid:credential.user.uid, email, displayName:name, role:"student", classRole:"", team:"", createdAt:serverTimestamp()
+      uid:credential.user.uid, email, displayName:name, role:"student", classRole:"", team:"", bio:"", photoURL:"", themeColors:{light:{...DEFAULT_THEMES.light},dark:{...DEFAULT_THEMES.dark}}, createdAt:serverTimestamp()
     });
     closeModal("register-modal");
     $("register-form").reset();
@@ -587,23 +677,45 @@ $("register-form").addEventListener("submit",async event=>{
 onAuthStateChanged(auth,async user=>{
  try{
   state.user=user;
+  bootLoaderMessage(user?"Chờ xíu, đang tải dữ liệu tài khoản…":"Chờ xíu, đang tải dữ liệu");
   if(user){
    const key=`user-profile-${user.uid}`,cached=getCollection(key,{});
-   try{const snap=await getDoc(doc(db,"users",user.uid));state.userProfile=snap.exists()?{uid:user.uid,email:user.email,...snap.data()}:{uid:user.uid,email:user.email,displayName:user.displayName||"Thành viên",role:"student",classRole:"",team:""};setCollection(key,state.userProfile);}
-   catch(error){console.error("[Auth] profile",error);state.userProfile=cached&&Object.keys(cached).length?cached:{uid:user.uid,email:user.email,displayName:user.displayName||"Thành viên",role:"student",classRole:"",team:""};}
+   try{
+    const snap=await getDoc(doc(db,"users",user.uid));
+    state.userProfile=snap.exists()?{uid:user.uid,email:user.email,...snap.data()}:{uid:user.uid,email:user.email,displayName:user.displayName||"Thành viên",role:"student",classRole:"",team:"",bio:"",photoURL:"",themeColors:{light:{...DEFAULT_THEMES.light},dark:{...DEFAULT_THEMES.dark}}};
+    setCollection(key,state.userProfile);
+   }catch(error){
+    console.error("[Auth] profile",error);
+    state.userProfile=cached&&Object.keys(cached).length?cached:{uid:user.uid,email:user.email,displayName:user.displayName||"Thành viên",role:"student",classRole:"",team:"",bio:"",photoURL:"",themeColors:null};
+   }
+   applyUserTheme(state.userProfile);
    renderProfileFrame();
+   await loadRealtimeData({waitForFirstLoad:true});
+   await checkBirthday();
+   router();
    toast(`🎉 Chào mừng ${state.userProfile.displayName||user.displayName||"bạn"} quay trở lại Portal 8A8!`);
   }else{
-    state.userProfile=null;
-    state.unsubscribe.forEach(fn=>{try{fn()}catch(error){console.error("[Auth] unsubscribe",error)}});
-    state.unsubscribe=[];
-    state.students=[...MOCK_STUDENTS];state.quizzes=[];state.homework=[];state.polls=[];state.approvedConfessions=[];state.notice=null;
-    renderProfileFrame();
-    router();
-    return;
+   state.userProfile=null;
+   clearPalette();
+   state.unsubscribe.forEach(fn=>{try{fn()}catch(error){console.error("[Auth] unsubscribe",error)}});
+   state.unsubscribe=[];
+   state.students=[...MOCK_STUDENTS];state.quizzes=[];state.homework=[];state.polls=[];state.approvedConfessions=[];state.notice=null;
+   renderProfileFrame();
+   router();
   }
-  await checkBirthday();await loadRealtimeData();router();
- }catch(error){console.error("[Auth] state",error);state.userProfile=state.user?getCollection(`user-profile-${state.user.uid}`,{}):null;renderProfileFrame();await loadRealtimeData();router();}
+ }catch(error){
+  console.error("[Auth] state",error);
+  if(state.user){
+   state.userProfile=state.userProfile||getCollection(`user-profile-${state.user.uid}`,{});
+   applyUserTheme(state.userProfile);
+   renderProfileFrame();
+   try{await loadRealtimeData({waitForFirstLoad:true});}catch(loadError){console.warn("[Auth] realtime fallback",loadError);}
+  }else{
+   state.userProfile=null;clearPalette();router();
+  }
+ }finally{
+  bootLoaderDone();
+ }
 });
 
 function roleName(role){
@@ -637,10 +749,12 @@ function renderProfileFrame(){
   frame.classList.remove("hidden"); nav.classList.remove("opacity-0","pointer-events-none"); nav.classList.add("opacity-100","pointer-events-auto");
   const name=state.userProfile?.displayName||state.user.displayName||"Thành viên",role=roleName(state.userProfile?.role);
   const initials=escapeHtml(name.charAt(0).toUpperCase());
+  const avatar=safeImageUrl(state.userProfile?.photoURL);
+  const avatarNode=avatar?`<img class="avatar-image" src="${escapeHtml(avatar)}" alt="Avatar ${escapeHtml(name)}">`:initials;
   const canAdmin=state.userProfile?.role==="admin"||state.userProfile?.role==="super_admin";
   frame.innerHTML=`<div class="flex items-center gap-2">
     <a href="#profile" class="glass rounded-2xl px-2.5 py-2 flex items-center gap-2" aria-label="Mở hồ sơ ${escapeHtml(name)}">
-      <div class="avatar">${initials}</div>
+      <div class="avatar">${avatarNode}</div>
       <div class="hidden lg:block text-left"><div class="text-[10px] text-slate-500">Xin chào</div><div class="text-sm font-black max-w-[120px] truncate">${escapeHtml(name)}</div><div class="text-[10px] text-teal-500 font-bold">${escapeHtml(role)}</div></div>
     </a>
     <button id="logout-button" class="btn btn-soft" type="button">Thoát</button>
@@ -656,24 +770,44 @@ function renderProfileFrame(){
 
 syncMobileMenu();
 
-async function loadRealtimeData(){
+async function loadRealtimeData({waitForFirstLoad=false}={}){
+ clearSnapshotsForState();
+ const cachedStudents=getCollection("students",[]);
+ state.students=Array.isArray(cachedStudents)&&cachedStudents.length?[...cachedStudents]:[...MOCK_STUDENTS];
+ state.quizzes=getCollection("quizzes",[]);
+ state.homework=getCollection("homework",[]);
+ state.polls=getCollection("polls",[]);
+ state.approvedConfessions=getCollection("approvedConfessions",[]);
+ if(!state.user)return;
+
+ const required=["students","quizzes","homework","polls","confessions","popups"];
+ const firstSeen=new Set();
+ let resolveFirstLoad;
+ const firstLoadPromise=new Promise(resolve=>{resolveFirstLoad=resolve;});
+ const finishFirstLoad=()=>{if(resolveFirstLoad){const r=resolveFirstLoad;resolveFirstLoad=null;r();}};
+ const mark=key=>{firstSeen.add(key);if(required.every(x=>firstSeen.has(x)))finishFirstLoad();};
+ const timeout=waitForFirstLoad?setTimeout(finishFirstLoad,7000):null;
  try{
-  state.unsubscribe.forEach(fn=>{try{fn();}catch(error){console.error("[Realtime] unsubscribe",error);}});state.unsubscribe=[];
-  const cs=getCollection("students",[]);state.students=Array.isArray(cs)&&cs.length?[...cs]:[...MOCK_STUDENTS];
-  state.quizzes=getCollection("quizzes",[]);state.homework=getCollection("homework",[]);state.polls=getCollection("polls",[]);state.approvedConfessions=getCollection("approvedConfessions",[]);
-  state.unsubscribe.push(onSnapshot(query(collection(db,"students"),orderBy("name")),snap=>{state.students=snap.docs.length?snap.docs.map(d=>({id:d.id,...d.data()})):[...MOCK_STUDENTS];setCollection("students",state.students);router();},e=>{console.error("[Firestore students]",e);router();}));
-  state.unsubscribe.push(onSnapshot(query(collection(db,"quizzes"),orderBy("createdAt","desc"),limit(50)),snap=>{state.quizzes=snap.docs.map(d=>({id:d.id,...d.data()}));setCollection("quizzes",state.quizzes);router();},e=>{console.error("[Firestore quizzes]",e);state.quizzes=getCollection("quizzes",[]);router();}));
-  state.unsubscribe.push(onSnapshot(query(collection(db,"homework"),orderBy("deadline","asc"),limit(30)),snap=>{state.homework=snap.docs.map(d=>({id:d.id,...d.data()}));setCollection("homework",state.homework);router();},e=>{console.error("[Firestore homework]",e);state.homework=getCollection("homework",[]);router();}));
-  state.unsubscribe.push(onSnapshot(query(collection(db,"polls"),orderBy("createdAt","desc"),limit(10)),snap=>{state.polls=snap.docs.map(d=>({id:d.id,...d.data()}));setCollection("polls",state.polls);router();},e=>{console.error("[Firestore polls]",e);state.polls=getCollection("polls",[]);router();}));
-  state.unsubscribe.push(onSnapshot(query(collection(db,"confessions"),where("status","==","approved"),limit(50)),snap=>{state.approvedConfessions=snap.docs.map(d=>({id:d.id,...d.data()}));state.approvedConfessions.sort((a,b)=>toMillis(b.createdAt)-toMillis(a.createdAt));setCollection("approvedConfessions",state.approvedConfessions);router();},e=>{console.error("[Firestore confessions]",e);state.approvedConfessions=getCollection("approvedConfessions",[]);router();}));
+  state.unsubscribe.push(onSnapshot(query(collection(db,"students"),orderBy("name")),snap=>{state.students=snap.docs.length?snap.docs.map(d=>({id:d.id,...d.data()})):[...MOCK_STUDENTS];setCollection("students",state.students);router();mark("students");},e=>{console.error("[Firestore students]",e);mark("students");}));
+  state.unsubscribe.push(onSnapshot(query(collection(db,"quizzes"),orderBy("createdAt","desc"),limit(50)),snap=>{state.quizzes=snap.docs.map(d=>({id:d.id,...d.data()}));setCollection("quizzes",state.quizzes);router();mark("quizzes");},e=>{console.error("[Firestore quizzes]",e);state.quizzes=getCollection("quizzes",[]);router();mark("quizzes");}));
+  state.unsubscribe.push(onSnapshot(query(collection(db,"homework"),orderBy("deadline","asc"),limit(30)),snap=>{state.homework=snap.docs.map(d=>({id:d.id,...d.data()}));setCollection("homework",state.homework);router();mark("homework");},e=>{console.error("[Firestore homework]",e);state.homework=getCollection("homework",[]);router();mark("homework");}));
+  state.unsubscribe.push(onSnapshot(query(collection(db,"polls"),orderBy("createdAt","desc"),limit(10)),snap=>{state.polls=snap.docs.map(d=>({id:d.id,...d.data()}));setCollection("polls",state.polls);router();mark("polls");},e=>{console.error("[Firestore polls]",e);state.polls=getCollection("polls",[]);router();mark("polls");}));
+  state.unsubscribe.push(onSnapshot(query(collection(db,"confessions"),where("status","==","approved"),limit(50)),snap=>{state.approvedConfessions=snap.docs.map(d=>({id:d.id,...d.data()}));state.approvedConfessions.sort((a,b)=>toMillis(b.createdAt)-toMillis(a.createdAt));setCollection("approvedConfessions",state.approvedConfessions);router();mark("confessions");},e=>{console.error("[Firestore confessions]",e);state.approvedConfessions=getCollection("approvedConfessions",[]);router();mark("confessions");}));
   state.unsubscribe.push(onSnapshot(query(collection(db,"popups"),where("active","==",true),limit(20)),snap=>{
-  const active=snap.docs.map(d=>({id:d.id,...d.data()}));
-  active.sort((a,b)=>toMillis(b.createdAt)-toMillis(a.createdAt));
-  state.notice=active[0]||null;
-  maybeShowNotice();
-},e=>console.error("[Firestore popups]",e)));
- }catch(error){console.error("[Realtime] init",error);state.students=state.students?.length?state.students:[...MOCK_STUDENTS];state.quizzes=getCollection("quizzes",[]);state.homework=getCollection("homework",[]);state.polls=getCollection("polls",[]);state.approvedConfessions=getCollection("approvedConfessions",[]);router();}
+    const active=snap.docs.map(d=>({id:d.id,...d.data()}));
+    active.sort((a,b)=>toMillis(b.createdAt)-toMillis(a.createdAt));
+    state.notice=active[0]||null;
+    maybeShowNotice();
+    mark("popups");
+  },e=>{console.error("[Firestore popups]",e);mark("popups");}));
+ }catch(error){
+  console.error("[Realtime] init",error);
+  router();
+  required.forEach(mark);
+ }
+ if(waitForFirstLoad){try{await firstLoadPromise;}finally{if(timeout)clearTimeout(timeout);}}
 }
+function clearSnapshotsForState(){state.unsubscribe.forEach(fn=>{try{fn();}catch(error){console.error("[Realtime] unsubscribe",error);}});state.unsubscribe=[];}
 
 function currentRoute(){
   const raw=location.hash.replace(/^#/,"");
@@ -1420,24 +1554,116 @@ function confessionPage(){
 
 function profilePage(){
  const p=state.userProfile||{};
+ const store=readThemeStore(p);
+ const photo=safeImageUrl(p.photoURL);
+ const initials=escapeHtml((p.displayName||"T").charAt(0).toUpperCase());
+ const avatarHtml=photo?`<img class="avatar-image" src="${escapeHtml(photo)}" alt="Avatar ${escapeHtml(p.displayName||"Thành viên")}">`:initials;
+ const colorField=(mode,key,label)=>`<label class="block"><span class="text-sm font-bold">${label}</span><div class="color-swatch mt-2"><input data-theme-mode="${mode}" data-theme-key="${key}" type="color" value="${escapeHtml(store[mode][key])}" aria-label="${label} ${mode}"></div></label>`;
  return `<section class="page-section">
-   ${sectionTitle("👤 HỒ SƠ","Thông tin tài khoản","Quản lý thông tin cá nhân của bạn.")}
-   <div class="max-w-2xl mx-auto glass rounded-3xl p-8">
-    <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 text-center sm:text-left">
-     <div class="avatar w-24 h-24 text-4xl shadow-xl shadow-teal-500/20">${escapeHtml((p.displayName||"T").charAt(0))}</div>
-     <div class="flex-1">
-      <div class="text-3xl font-black">${escapeHtml(p.displayName||"Thành viên")}</div>
-      <div class="text-slate-500 mt-1">${escapeHtml(p.email||state.user.email||"")}</div>
-      <div class="mt-3"><span class="badge bg-teal-500/20 text-teal-700 dark:text-teal-400 text-sm px-3 py-1">${roleName(p.role)}</span></div>
-     </div>
+   ${sectionTitle("👤 HỒ SƠ","Hồ sơ & giao diện cá nhân","Tự đổi avatar, tiểu sử và toàn bộ bảng màu cho riêng tài khoản của bạn.")}
+   <div class="grid lg:grid-cols-[.9fr,1.4fr] gap-6">
+    <div class="glass rounded-3xl p-7">
+      <div class="flex flex-col items-center text-center">
+       <div id="profile-avatar-preview" class="profile-avatar-preview">${avatarHtml}</div>
+       <div class="mt-5 text-2xl font-black">${escapeHtml(p.displayName||"Thành viên")}</div>
+       <div class="text-sm text-slate-500 mt-1">${escapeHtml(p.email||state.user?.email||"")}</div>
+       <label class="btn btn-soft mt-5 cursor-pointer">📷 Đổi ảnh avatar<input id="profile-avatar-file" type="file" accept="image/png,image/jpeg,image/webp" class="hidden"></label>
+       <div class="text-xs text-slate-500 mt-3">Ảnh sẽ được nén tự động xuống kích thước gọn trước khi lưu.</div>
+      </div>
+      <div class="mt-7 grid sm:grid-cols-2 gap-4">
+       ${infoBox("🎓","Chức vụ lớp",p.classRole||"Thành viên")}
+       ${infoBox("🏫","Tổ hoạt động",p.team||"Chưa cập nhật")}
+       ${infoBox("🛡️","Vai trò",roleName(p.role))}
+       ${infoBox("🆔","Email",p.email||state.user?.email||"")}
+      </div>
     </div>
-    
-    <div class="grid sm:grid-cols-2 gap-4 mt-8 border-t border-slate-300/20 pt-8">
-      ${infoBox("🎓","Chức vụ lớp",p.classRole||"Thành viên")}
-      ${infoBox("🏫","Tổ hoạt động",p.team||"Chưa cập nhật")}
+
+    <div class="glass rounded-3xl p-7">
+      <form id="profile-form" class="space-y-5">
+       <div><label class="text-sm font-bold">Họ và tên hiển thị</label><input id="profile-name" class="input mt-2" maxlength="80" value="${escapeHtml(p.displayName||"")}" required></div>
+       <div><label class="text-sm font-bold">Tiểu sử</label><textarea id="profile-bio" class="input mt-2 min-h-[130px] resize-y" maxlength="500" placeholder="Viết một vài dòng giới thiệu về bạn…">${escapeHtml(p.bio||"")}</textarea></div>
+
+       <div class="border-t border-slate-300/20 pt-5">
+        <div class="font-black text-lg">🎨 Màu giao diện chế độ sáng</div>
+        <div class="grid sm:grid-cols-2 gap-4 mt-4">
+         ${colorField("light","primary","Màu chính")}
+         ${colorField("light","secondary","Màu phụ")}
+         ${colorField("light","accent","Màu nhấn")}
+         ${colorField("light","page","Màu nền")}
+         ${colorField("light","surface","Màu bề mặt")}
+         ${colorField("light","text","Màu chữ")}
+         ${colorField("light","muted","Màu chữ phụ")}
+         ${colorField("light","border","Màu đường viền")}
+        </div>
+       </div>
+
+       <div class="border-t border-slate-300/20 pt-5">
+        <div class="font-black text-lg">🌙 Màu giao diện chế độ tối</div>
+        <div class="grid sm:grid-cols-2 gap-4 mt-4">
+         ${colorField("dark","primary","Màu chính")}
+         ${colorField("dark","secondary","Màu phụ")}
+         ${colorField("dark","accent","Màu nhấn")}
+         ${colorField("dark","page","Màu nền")}
+         ${colorField("dark","surface","Màu bề mặt")}
+         ${colorField("dark","text","Màu chữ")}
+         ${colorField("dark","muted","Màu chữ phụ")}
+         ${colorField("dark","border","Màu đường viền")}
+        </div>
+       </div>
+
+       <div class="flex flex-wrap gap-3 pt-2">
+        <button class="btn btn-primary" type="submit">💾 Lưu hồ sơ & giao diện</button>
+        <button id="profile-reset-colors" class="btn btn-soft" type="button">↩️ Khôi phục màu mặc định</button>
+       </div>
+      </form>
     </div>
    </div>
  </section>`;
+}
+
+function safeImageUrl(value){
+ const url=String(value||"").trim();
+ return (/^data:image\/(png|jpeg|webp);base64,/i.test(url)||/^https:\/\//i.test(url))?url:"";
+}
+async function compressImageFile(file){
+ if(!file||!file.type.startsWith("image/"))throw new Error("Hãy chọn một file ảnh hợp lệ.");
+ if(file.size>5*1024*1024)throw new Error("Ảnh tối đa 5MB.");
+ const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result));reader.onerror=()=>reject(new Error("Không đọc được ảnh."));reader.readAsDataURL(file);});
+ const image=await new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>reject(new Error("Ảnh không hợp lệ."));img.src=data;});
+ const max=320,scale=Math.min(1,max/Math.max(image.width,image.height));
+ const canvas=document.createElement("canvas");canvas.width=Math.max(1,Math.round(image.width*scale));canvas.height=Math.max(1,Math.round(image.height*scale));
+ const ctx=canvas.getContext("2d");ctx.fillStyle="#ffffff";ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(image,0,0,canvas.width,canvas.height);
+ return canvas.toDataURL("image/jpeg",.8);
+}
+function bindProfileEvents(){
+ const form=$("profile-form");if(!form||form.dataset.bound==="true")return;form.dataset.bound="true";
+ let draftPhoto=safeImageUrl(state.userProfile?.photoURL);
+ const preview=$("profile-avatar-preview"),fileInput=$("profile-avatar-file");
+ fileInput?.addEventListener("change",async()=>{const file=fileInput.files?.[0];if(!file)return;try{const data=await compressImageFile(file);draftPhoto=data;preview.innerHTML=`<img class="avatar-image" src="${escapeHtml(data)}" alt="Avatar mới">`;toast("Đã nạp ảnh avatar. Bấm Lưu hồ sơ để xác nhận.","success");}catch(error){Swal.fire({icon:"error",title:"Ảnh không hợp lệ",text:error.message});fileInput.value="";}});
+ $("profile-reset-colors")?.addEventListener("click",()=>{
+  const mode=currentMode();const store=readThemeStore(state.userProfile);store["light"]={...DEFAULT_THEMES.light};store["dark"]={...DEFAULT_THEMES.dark};
+  document.querySelectorAll("[data-theme-mode]").forEach(input=>{input.value=store[input.dataset.themeMode][input.dataset.themeKey];});
+  applyPalette(store[mode]);saveLocalThemeStore(store);
+ });
+ form.addEventListener("submit",async event=>{
+  event.preventDefault();
+  if(!state.user)return;
+  try{
+   const store=readThemeStore(state.userProfile);
+   document.querySelectorAll("[data-theme-mode]").forEach(input=>{const mode=input.dataset.themeMode,key=input.dataset.themeKey;if(store[mode]&&THEME_KEYS.includes(key)&&/^#[0-9a-fA-F]{6}$/.test(input.value))store[mode][key]=input.value;});
+   const displayName=$("profile-name").value.trim(),bio=$("profile-bio").value.trim();
+   if(!displayName)throw new Error("Họ tên không được để trống.");
+   await updateProfile(auth.currentUser,{displayName});
+   await setDoc(doc(db,"users",state.user.uid),{displayName,bio,photoURL:draftPhoto||"",themeColors:store,updatedAt:serverTimestamp()},{merge:true});
+   state.userProfile={...state.userProfile,displayName,bio,photoURL:draftPhoto||"",themeColors:store};
+   saveLocalThemeStore(store);applyUserTheme(state.userProfile);renderProfileFrame();
+   await swalSuccess("Đã lưu hồ sơ!","Avatar, tiểu sử và bảng màu của bạn đã được cập nhật.");
+   router();
+  }catch(error){
+   console.error("[Profile] save",error);
+   Swal.fire({icon:"error",title:"Không thể lưu hồ sơ",text:error?.message||"Vui lòng thử lại."});
+  }
+ });
 }
 
 function bindPrivateFeedbackEvents(){const form=$("private-feedback-form");if(!form||form.dataset.bound==="true")return;form.dataset.bound="true";form.addEventListener("submit",submitPrivateFeedback);}
@@ -1482,6 +1708,7 @@ function bindRouteEvents(){
  if($("confession-form")) $("confession-form").addEventListener("submit",submitConfession);
  bindPrivateFeedbackEvents();
 
+ bindProfileEvents();
  initGame();
  initCountdowns();
 }
@@ -1616,19 +1843,35 @@ function maybeShowNotice(){
   const version=String(notice.dailyResetNonce||notice.updatedAt?.seconds||toMillis(notice.updatedAt)||notice.createdAt?.seconds||toMillis(notice.createdAt)||notice.id);
   const noticeKey=`${notice.id}:${version}`;
   let readData=null;
-  try{const stored=localStorage.getItem("a8a8-notice-read-v2");readData=stored?JSON.parse(stored):null;}catch(error){console.error("[Notice] invalid read state",error);}
+  try{const stored=localStorage.getItem("a8a8-notice-read-v3");readData=stored?JSON.parse(stored):null;}catch(error){console.error("[Notice] invalid read state",error);}
   if(readData?.key===noticeKey&&readData?.date===todayKey())return;
+
+  const panel=$("notice-panel"),image=$("notice-image"),button=$("notice-read-button");
+  const sizeMap={small:"popup-size-small",normal:"popup-size-normal",large:"popup-size-large"};
+  Object.values(sizeMap).forEach(c=>panel?.classList.remove(c));
+  panel?.classList.add(sizeMap[notice.size]||sizeMap.normal);
+  panel?.style.setProperty("border-color",notice.accentColor||"var(--border)");
+  panel?.style.setProperty("border-radius",`${Math.min(48,Math.max(18,Number(notice.radius||30)))}px`);
+  panel?.style.setProperty("box-shadow",`0 35px 100px rgba(0,0,0,.4),0 0 55px ${notice.accentColor||"rgba(20,184,166,.14)"}`);
+
   $("notice-title").textContent=notice.title||"Thông báo";
   $("notice-content").textContent=notice.content||"";
-  const button=$("notice-read-button"),close=$("notice-close-temporary");
-  let seconds=3; button.disabled=true; button.textContent=`Tôi đã đọc (${seconds})`;
+  const img=safeImageUrl(notice.imageUrl);
+  if(img){image.src=img;image.style.display="block";}else{image.removeAttribute("src");image.style.display="none";}
+  if(button){
+   const accent=/^#[0-9a-fA-F]{6}$/.test(String(notice.accentColor||""))?notice.accentColor:"#14b8a6";
+   button.style.background=`linear-gradient(135deg,${accent},var(--secondary))`;
+   button.textContent=notice.buttonLabel||"Tôi đã đọc & hiểu rõ";
+  }
+  let seconds=3;button.disabled=true;button.textContent=`${notice.buttonLabel||"Tôi đã đọc"} (${seconds})`;
   clearInterval(window.noticeCountdown);
-  window.noticeCountdown=setInterval(()=>{seconds--;if(seconds>0)button.textContent=`Tôi đã đọc (${seconds})`;else{clearInterval(window.noticeCountdown);button.disabled=false;button.textContent="Tôi đã đọc & hiểu rõ";}},1000);
+  window.noticeCountdown=setInterval(()=>{seconds--;if(seconds>0)button.textContent=`${notice.buttonLabel||"Tôi đã đọc"} (${seconds})`;else{clearInterval(window.noticeCountdown);button.disabled=false;button.textContent=notice.buttonLabel||"Tôi đã đọc & hiểu rõ";}},1000);
+  const close=$("notice-close-temporary");
   close.onclick=()=>closeModal("notice-modal");
-  button.onclick=()=>{localStorage.setItem("a8a8-notice-read-v2",JSON.stringify({key:noticeKey,date:todayKey()}));closeModal("notice-modal");};
+  button.onclick=()=>{localStorage.setItem("a8a8-notice-read-v3",JSON.stringify({key:noticeKey,date:todayKey()}));closeModal("notice-modal");};
   openModal("notice-modal");
 }
-window.addEventListener("storage",event=>{ if(event.key==="a8a8-notice-read")maybeShowNotice(); });
+window.addEventListener("storage",event=>{ if(event.key==="a8a8-notice-read-v3")maybeShowNotice(); });
 
 if("serviceWorker" in navigator){
  window.addEventListener("load",async()=>{
