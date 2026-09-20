@@ -1,6 +1,6 @@
 /*
- * 8A8 Seasonal Theme Engine — Upgraded Visual Layer
- * Thêm hiệu ứng ánh sáng sống động, tương tác động và chuyển động linh hoạt.
+ * 8A8 Seasonal Theme Engine — Premium Visual Layer
+ * Nâng cấp: Chuyển động liên tục, ánh sáng rực rỡ và hiệu ứng 3D cho từng ngày lễ.
  */
 
 :root{
@@ -28,507 +28,266 @@ html[data-season="normal"]{
 }
 
 html[data-season="national"]{
-  --season-bg:#330608;
-  --season-surface:rgba(92,5,9,.70);
+  --season-bg:#2b0507;
+  --season-surface:rgba(92,5,9,.75);
   --season-line:rgba(255,211,62,.34);
   --season-text:#fff8df;
   --season-muted:#ffdca2;
   --season-primary:#ffd43b;
-  --season-secondary:#ff6b4a;
-  --season-glow:rgba(255,211,59,.34);
+  --season-secondary:#ff3b24;
+  --season-glow:rgba(255,211,59,.4);
   --season-accent:#ffdf35;
 }
 
 html[data-season="mid-autumn"]{
-  --season-bg:#071330;
-  --season-surface:rgba(13,28,67,.72);
+  --season-bg:#050c1f;
+  --season-surface:rgba(13,28,67,.75);
   --season-line:rgba(255,211,99,.28);
   --season-text:#fff8df;
   --season-muted:#c7c8dc;
   --season-primary:#ffd76b;
-  --season-secondary:#79b7ff;
-  --season-glow:rgba(255,215,107,.27);
+  --season-secondary:#4990e2;
+  --season-glow:rgba(255,215,107,.35);
   --season-accent:#bce9d1;
 }
 
 html[data-season="tet"]{
-  --season-bg:#350507;
-  --season-surface:rgba(101,8,12,.70);
+  --season-bg:#2b0305;
+  --season-surface:rgba(101,8,12,.75);
   --season-line:rgba(255,211,81,.34);
   --season-text:#fff7dd;
   --season-muted:#ffd6a0;
-  --season-primary:#ffd34e;
-  --season-secondary:#ef7b37;
-  --season-glow:rgba(255,211,78,.3);
+  --season-primary:#ffc033;
+  --season-secondary:#e34f22;
+  --season-glow:rgba(255,192,51,.35);
   --season-accent:#ff5b45;
 }
 
 html[data-season="teachers"]{
-  --season-bg:#102b27;
-  --season-surface:rgba(22,67,57,.67);
+  --season-bg:#0a1e1b;
+  --season-surface:rgba(22,67,57,.75);
   --season-line:rgba(176,231,183,.25);
   --season-text:#effff3;
   --season-muted:#c1d9cb;
-  --season-primary:#b4e5a2;
-  --season-secondary:#f2c67d;
-  --season-glow:rgba(180,229,162,.22);
+  --season-primary:#96dd7e;
+  --season-secondary:#e8b153;
+  --season-glow:rgba(150,221,126,.3);
   --season-accent:#f3a8a8;
 }
 
 html[data-season="women"]{
-  --season-bg:#24112d;
-  --season-surface:rgba(68,30,74,.68);
+  --season-bg:#1d0c24;
+  --season-surface:rgba(68,30,74,.75);
   --season-line:rgba(255,180,218,.27);
   --season-text:#fff2fa;
   --season-muted:#e2c3d9;
-  --season-primary:#ffb6dc;
-  --season-secondary:#c5a5ff;
-  --season-glow:rgba(255,182,220,.27);
-  --season-accent:#ffd0e9;
+  --season-primary:#ffa1d1;
+  --season-secondary:#b38cff;
+  --season-glow:rgba(255,161,209,.35);
+  --season-accent:#ffb3df;
 }
 
 html[data-season="halloween"]{
-  --season-bg:#130a09;
-  --season-surface:rgba(55,22,12,.72);
+  --season-bg:#0c0606;
+  --season-surface:rgba(43,17,9,.75);
   --season-line:rgba(255,137,45,.27);
   --season-text:#fff2df;
   --season-muted:#d9bba1;
-  --season-primary:#ff8b2e;
-  --season-secondary:#a86bff;
-  --season-glow:rgba(255,139,46,.28);
+  --season-primary:#ff7c12;
+  --season-secondary:#894ae3;
+  --season-glow:rgba(255,124,18,.35);
   --season-accent:#ffd15b;
 }
 
 html[data-season="christmas"]{
-  --season-bg:#071d1b;
-  --season-surface:rgba(12,57,48,.70);
+  --season-bg:#051413;
+  --season-surface:rgba(12,57,48,.75);
   --season-line:rgba(233,240,216,.22);
   --season-text:#f7fff0;
   --season-muted:#c4d5c9;
-  --season-primary:#e85e68;
-  --season-secondary:#77d39b;
-  --season-glow:rgba(119,211,155,.22);
+  --season-primary:#e34b57;
+  --season-secondary:#5ebd85;
+  --season-glow:rgba(94,189,133,.3);
   --season-accent:#f4d06f;
 }
 
-/* Global atmosphere & Pulsing Aura */
+/* Base Tweak & Breathing Background */
 body.seasonal-active{
   background:
-    radial-gradient(circle at 12% 12%,var(--season-glow),transparent 40%),
-    radial-gradient(circle at 88% 78%,color-mix(in srgb,var(--season-secondary) 20%,transparent),transparent 40%),
+    radial-gradient(circle at 15% 15%, var(--season-glow), transparent 45%),
+    radial-gradient(circle at 85% 85%, color-mix(in srgb, var(--season-secondary) 25%, transparent), transparent 45%),
     var(--season-bg);
   color:var(--season-text);
-  transition:background 900ms ease,color 500ms ease;
-  animation:bgPulse 8s ease-in-out infinite alternate;
+  transition: background 1.5s ease, color 0.5s ease;
+  animation: bgBreathe 8s ease-in-out infinite alternate;
 }
+@keyframes bgBreathe { 0% { background-position: 0% 0%; } 100% { background-position: 100% 100%; } }
 
-@keyframes bgPulse {
-  0% { background-position: 0% 0%; }
-  100% { background-position: 100% 100%; }
-}
-
-body.seasonal-active .glass,
-body.seasonal-active .card,
-body.seasonal-active .modal-content,
-body.seasonal-active .panel{
+body.seasonal-active .glass, body.seasonal-active .card, body.seasonal-active .panel{
   background:var(--season-surface);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
   border-color:color-mix(in srgb,var(--season-line) 65%,transparent);
-  color:var(--season-text);
-  box-shadow:0 24px 80px rgba(0,0,0,.25),0 0 36px var(--season-glow);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow:0 16px 40px rgba(0,0,0,.25), inset 0 1px 1px rgba(255,255,255,.1);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
 }
-
 body.seasonal-active .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 30px 90px rgba(0,0,0,.35), 0 0 50px var(--season-glow);
+  transform: translateY(-5px);
+  box-shadow:0 20px 50px rgba(0,0,0,.4), 0 0 30px var(--season-glow);
 }
 
-body.seasonal-active .neon-border{
-  border-color:var(--season-primary);
-  box-shadow:0 0 0 1px var(--season-primary),0 0 25px var(--season-glow);
-}
-body.seasonal-active .seasonal-accent{
+/* Scene Setup */
+#seasonalScene { position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+#seasonalCanvas { position:absolute; inset:0; width:100%; height:100%; }
+.seasonal-title {
+  position:fixed; top:80px; left:50%; transform:translateX(-50%);
+  z-index:5; font-weight:900; letter-spacing:0.15em; text-transform:uppercase;
   color:var(--season-primary);
-  text-shadow: 0 0 10px var(--season-glow);
+  text-shadow: 0 0 20px var(--season-glow), 0 0 40px var(--season-primary);
+  opacity:0; transition:opacity .8s ease;
 }
+.seasonal-title.show { opacity:1; }
 
-/* Dedicated scene layer */
-#seasonalScene{
-  position:fixed;
-  inset:0;
-  z-index:0;
-  pointer-events:none;
-  overflow:hidden;
-  opacity:1;
+/* ======== LỄ QUỐC KHÁNH ======== */
+.season-national .national-flag { display:block; }
+.national-flag {
+  display:none; position:fixed; top:90px; width:100px; height:66px;
+  background: linear-gradient(135deg, #da251d, #a81710);
+  border-radius: 2px;
+  box-shadow: 0 10px 25px rgba(218,37,29,.4), 0 0 15px rgba(255,215,53,.3);
+  transform-style:preserve-3d; animation:flagWave 2.5s ease-in-out infinite alternate;
 }
-#seasonalCanvas{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
+.national-flag::after {
+  content:"★"; position:absolute; inset:0; display:grid; place-items:center;
+  color:#ffea33; font-size:42px; filter: drop-shadow(0 0 8px #ffea33);
 }
-.seasonal-sky-glow{
-  position:absolute;
-  width:55vw;
-  height:55vw;
-  max-width:850px;
-  max-height:850px;
-  border-radius:50%;
-  filter:blur(65px);
-  opacity:.25;
-  transform:translate(-20%,-25%);
-  background:var(--season-primary);
-  animation:skyGlowPulse 6s ease-in-out infinite alternate;
-}
+.national-flag.left { left:20px; transform-origin:left center; }
+.national-flag.right { right:20px; transform-origin:right center; animation-delay:-1.2s; }
+@keyframes flagWave{ 0%{transform:perspective(600px) rotateY(15deg) skewY(-2deg)} 100%{transform:perspective(600px) rotateY(-15deg) skewY(3deg)} }
 
-@keyframes skyGlowPulse {
-  0% { transform: translate(-20%, -25%) scale(1); opacity: .2; }
-  100% { transform: translate(-15%, -20%) scale(1.15); opacity: .35; }
+/* ======== TRUNG THU ======== */
+.moon-disc {
+  display:none; position:fixed; right:6vw; top:10vh; width:min(25vw,280px); aspect-ratio:1;
+  border-radius:50%; background:radial-gradient(circle at 35% 30%,#ffffff,#ffe7a0 45%,#f2a629 100%);
+  box-shadow:0 0 60px #ffd76b, 0 0 150px rgba(255,215,107,.4);
+  animation: moonGlow 4s ease-in-out infinite alternate;
 }
+@keyframes moonGlow { 100% { box-shadow:0 0 80px #ffe599, 0 0 200px rgba(255,215,107,.6); } }
+.moon-disc::before, .moon-disc::after { content:""; position:absolute; border-radius:50%; background:rgba(180,133,63,.15); }
+.moon-disc::before { width:22%; height:22%; left:20%; top:25%; box-shadow:90px 35px 0 rgba(180,133,63,.1),35px 95px 0 rgba(180,133,63,.12); }
+.moon-disc::after { width:14%; height:14%; right:22%; bottom:22%; }
 
-.seasonal-title{
-  position:fixed;
-  top:82px;
-  left:50%;
-  transform:translateX(-50%);
-  z-index:5;
-  pointer-events:none;
-  text-align:center;
-  font-weight:900;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  color:var(--season-primary);
-  text-shadow:0 0 25px var(--season-glow), 0 0 40px var(--season-primary);
-  opacity:0;
-  transition:opacity .5s ease,transform .7s ease;
+.lantern-rail { display:none; position:fixed; top:0; bottom:0; width:80px; }
+.lantern-rail.left { left:0; } .lantern-rail.right { right:0; }
+.lantern {
+  position:absolute; width:40px; height:56px; border-radius:45% 45% 38% 38%;
+  background:linear-gradient(90deg,#d8232e,#ffdb6e,#d8232e);
+  box-shadow:0 0 30px rgba(255,190,71,.6), inset 0 0 15px rgba(255,255,255,.4);
+  transform-origin:top center; animation: lanternSwing 3s ease-in-out infinite alternate;
 }
-.seasonal-title.show{opacity:1}
+.lantern::before { content:""; position:absolute; left:50%; top:-20px; width:2px; height:22px; background:#f0cf85; }
+.lantern::after { content:""; position:absolute; bottom:-12px; left:50%; transform:translateX(-50%); width:6px; height:12px; background:#ffdb6e; }
+.lantern:nth-child(1) { top:15%; left:20px; animation-duration: 3.2s; }
+.lantern:nth-child(2) { top:40%; left:35px; transform:scale(.85); animation-duration: 2.8s; animation-delay:-1s; }
+.lantern:nth-child(3) { top:65%; left:15px; transform:scale(.95); animation-duration: 3.5s; animation-delay:-2s; }
+.lantern-rail.right .lantern { left:auto; right:20px; }
+@keyframes lanternSwing { 0% { transform: rotate(-8deg); } 100% { transform: rotate(8deg); } }
 
-/* National Day: Dynamic 3D Flag & Glowing Star */
-.season-national .national-flag,
-html[data-season="national"] .national-flag{
-  display:block;
+/* ======== TẾT ======== */
+.couplet {
+  display:none; position:fixed; top:12%; width:56px; min-height:250px;
+  background:linear-gradient(180deg, #c4131d, #8f0d14); border:2px solid #efc64e; border-radius:4px;
+  box-shadow:0 10px 25px rgba(0,0,0,.5), 0 0 20px rgba(255,206,67,.3);
+  color:#ffd76c; padding:16px 8px; writing-mode:vertical-rl; text-align:center; font-weight:900; letter-spacing:.15em;
+  text-shadow: 0 0 10px rgba(255,215,108,.7); animation: coupletPulse 3s infinite alternate;
 }
-.national-flag{
-  display:none;
-  position:fixed;
-  top:86px;
-  width:96px;
-  height:64px;
-  background: linear-gradient(135deg, #e61927, #b30f1b);
-  border: 1px solid rgba(255, 223, 89, 0.6);
-  border-radius: 4px;
-  box-shadow:0 10px 30px rgba(230,25,39,.4), 0 0 20px rgba(255,211,58,.3);
-  transform-style:preserve-3d;
-  animation:flagWave 3s ease-in-out infinite alternate;
-}
-.national-flag::after{
-  content:"★";
-  position:absolute;
-  inset:0;
-  display:grid;
-  place-items:center;
-  color:#ffd735;
-  font-size:38px;
-  filter: drop-shadow(0 0 10px rgba(255,215,53,.9));
-}
-.national-flag.left{left:24px;transform-origin:left center}
-.national-flag.right{right:24px;transform-origin:right center;animation-delay:-1.5s}
+.couplet.left { left:20px; } .couplet.right { right:20px; }
+@keyframes coupletPulse { 100% { border-color:#ffe885; box-shadow:0 10px 25px rgba(0,0,0,.5), 0 0 35px rgba(255,206,67,.6); } }
 
-@keyframes flagWave{
-  0%{transform:perspective(600px) rotateY(12deg) rotateZ(-2deg) skewY(-2deg)}
-  100%{transform:perspective(600px) rotateY(-12deg) rotateZ(2deg) skewY(2deg)}
+.blossom-branch {
+  display:none; position:fixed; width:220px; height:220px;
+  border-left:6px solid #4a2414; border-radius:50%;
+  transform-origin:top left; animation: branchSway 6s ease-in-out infinite alternate;
 }
+.blossom-branch::after {
+  content:""; position:absolute; width:100%; height:100%;
+  background: radial-gradient(circle at 25% 35%,#ff7f8c 0 9px,transparent 10px), radial-gradient(circle at 55% 20%,#ffd4a2 0 7px,transparent 8px), radial-gradient(circle at 75% 50%,#ff8d9c 0 9px,transparent 10px), radial-gradient(circle at 40% 70%,#ffb0bd 0 8px,transparent 9px);
+  filter: drop-shadow(0 0 8px rgba(255,127,140,.6));
+}
+.blossom-branch.left { left:-20px; top:8%; }
+.blossom-branch.right { right:-20px; top:12%; transform:scaleX(-1); transform-origin:top right; }
+@keyframes branchSway { 0% { transform: rotate(-35deg); } 100% { transform: rotate(-30deg); } }
 
-/* Mid Autumn: Atmospheric Moon & Swinging Lanterns */
-.moon-disc{
-  display:none;
-  position:fixed;
-  right:8vw;
-  top:12vh;
-  width:min(28vw,320px);
-  aspect-ratio:1;
-  border-radius:50%;
-  background:radial-gradient(circle at 35% 30%,#ffffff,#ffe396 50%,#f0aa2b 100%);
-  box-shadow:0 0 50px #ffd76b, 0 0 140px rgba(255,215,107,.45);
-  animation: moonPulse 4s ease-in-out infinite alternate;
+/* ======== 20/11 - TEACHERS ======== */
+.tribute-ribbon {
+  display:none; position:fixed; left:50%; top:80px; transform:translateX(-50%);
+  padding:12px 28px; border:1px solid rgba(150,221,126,.5); border-radius:999px;
+  background:rgba(10,30,27,.85); backdrop-filter:blur(10px);
+  box-shadow:0 0 40px rgba(150,221,126,.3); font-weight:800; color:#dfffdc; letter-spacing:.05em;
+  animation: ribbonGlow 3s infinite alternate;
 }
-@keyframes moonPulse {
-  0% { box-shadow: 0 0 40px #ffd76b, 0 0 120px rgba(255,215,107,.35); }
-  100% { box-shadow: 0 0 65px #ffe08a, 0 0 160px rgba(255,215,107,.55); }
+@keyframes ribbonGlow { 100% { box-shadow:0 0 60px rgba(150,221,126,.6); } }
+.rose-corner { display:none; position:fixed; bottom:25px; width:140px; height:140px; }
+.rose-corner.left { left:15px; } .rose-corner.right { right:15px; transform:scaleX(-1); }
+.rose-corner::before {
+  content:"🌹"; font-size:80px; display:inline-block;
+  filter:drop-shadow(0 0 20px rgba(255,100,100,.5)); animation: roseFloat 4s ease-in-out infinite alternate;
 }
-.moon-disc::before,.moon-disc::after{
-  content:"";
-  position:absolute;
-  border-radius:50%;
-  background:rgba(180,133,63,.14);
-}
-.moon-disc::before{width:21%;height:21%;left:21%;top:26%;box-shadow:105px 40px 0 rgba(180,133,63,.12),40px 110px 0 rgba(180,133,63,.1)}
-.moon-disc::after{width:13%;height:13%;right:23%;bottom:23%}
+@keyframes roseFloat { 100% { transform: translateY(-10px) rotate(5deg); filter:drop-shadow(0 10px 25px rgba(255,100,100,.8)); } }
 
-.lantern-rail{display:none;position:fixed;top:0;bottom:0;width:70px}
-.lantern-rail.left{left:0}.lantern-rail.right{right:0}
-.lantern{
-  position:absolute;
-  width:36px;
-  height:52px;
-  border-radius:45% 45% 38% 38%;
-  background:linear-gradient(90deg,#d62832,#ffd25c,#d62832);
-  box-shadow:0 0 25px rgba(255,190,71,.7), inset 0 0 10px rgba(255,255,255,.5);
-  transform-origin: top center;
-  animation: lanternSwing 3.5s ease-in-out infinite alternate;
+/* ======== NGÀY PHỤ NỮ ======== */
+.women-halo {
+  display:none; position:fixed; left:50%; top:10%; width:50vw; height:50vw; max-width:650px; max-height:650px;
+  transform:translateX(-50%); border-radius:50%; border:1px solid rgba(255,161,209,.4);
+  box-shadow:inset 0 0 100px rgba(255,161,209,.2), 0 0 120px rgba(179,140,255,.25);
+  animation: haloBreathe 5s ease-in-out infinite alternate;
 }
-.lantern::before{content:"";position:absolute;left:50%;top:-15px;width:2px;height:17px;background:#e8c679}
-.lantern::after{
-  content:"";
-  position:absolute;
-  bottom:-12px;
-  left:50%;
-  transform:translateX(-50%);
-  width:6px;
-  height:12px;
-  background:#ffd25c;
-  box-shadow: 0 2px 5px rgba(0,0,0,.3);
-}
-.lantern:nth-child(1){top:18%;left:18px;animation-delay: 0s;}
-.lantern:nth-child(2){top:42%;left:32px;transform:scale(.85);animation-delay: -1.2s;}
-.lantern:nth-child(3){top:66%;left:14px;transform:scale(.95);animation-delay: -2.4s;}
-.lantern-rail.right .lantern{left:auto;right:18px}
+@keyframes haloBreathe { 0% { transform: translateX(-50%) scale(0.95); opacity:0.7; } 100% { transform: translateX(-50%) scale(1.05); opacity:1; } }
 
-@keyframes lanternSwing {
-  0% { transform: rotate(-6deg); }
-  100% { transform: rotate(6deg); }
+/* ======== HALLOWEEN ======== */
+.pumpkin {
+  display:none; position:fixed; bottom:30px; left:8vw; width:100px; height:85px;
+  border-radius:48% 48% 42% 42%; background:radial-gradient(ellipse at 50% 40%,#ffbe4d,#c9460e 75%);
+  box-shadow:0 0 45px rgba(255,124,18,.7); animation: pumpkinFlicker 2s infinite alternate;
 }
+.pumpkin::before {
+  content:""; position:absolute; left:28px; top:32px; width:14px; height:14px; background:#0c0606;
+  box-shadow:38px 0 #0c0606, 19px 20px 0 -1px #0c0606; transform:rotate(45deg);
+}
+.pumpkin::after { content:""; position:absolute; left:46px; top:-15px; width:14px; height:20px; background:#4d7c35; border-radius:4px; transform:rotate(12deg); }
+@keyframes pumpkinFlicker { 0%, 100% { box-shadow:0 0 30px rgba(255,124,18,.5); } 50% { box-shadow:0 0 60px rgba(255,124,18,.9); } }
 
-/* Tet: Shimmer Couplets & Gentle Blossom Sway */
-.couplet{
-  display:none;
-  position:fixed;
-  top:14%;
-  width:54px;
-  min-height:240px;
-  background:linear-gradient(180deg, #b8141f, #820a11);
-  border:2px solid #efc64e;
-  border-radius:4px;
-  box-shadow:0 10px 30px rgba(0,0,0,.4), 0 0 25px rgba(255,206,67,.25);
-  color:#ffd76c;
-  padding:14px 8px;
-  writing-mode:vertical-rl;
-  text-align:center;
-  font-weight:800;
-  letter-spacing:.15em;
-  z-index:2;
-  text-shadow:0 0 8px rgba(255,215,108,.6);
-  animation: coupletGlow 3s ease-in-out infinite alternate;
-}
-.couplet.left{left:18px}.couplet.right{right:18px}
-
-@keyframes coupletGlow {
-  0% { border-color: #efc64e; box-shadow: 0 10px 30px rgba(0,0,0,.4), 0 0 15px rgba(255,206,67,.2); }
-  100% { border-color: #fff0a3; box-shadow: 0 10px 30px rgba(0,0,0,.4), 0 0 30px rgba(255,206,67,.5); }
-}
-
-.blossom-branch{
-  display:none;
-  position:fixed;
-  width:200px;
-  height:200px;
-  border-left:5px solid #5d311d;
-  border-radius:50%;
-  transform:rotate(-35deg);
-  transform-origin: top left;
-  animation: branchSway 5s ease-in-out infinite alternate;
-}
-.blossom-branch::after{
-  content:"";
-  position:absolute;
-  width:100%;
-  height:100%;
-  background:
-    radial-gradient(circle at 28% 35%,#ff7f8c 0 8px,transparent 9px),
-    radial-gradient(circle at 55% 22%,#ffd4a2 0 7px,transparent 8px),
-    radial-gradient(circle at 74% 50%,#ff8d9c 0 8px,transparent 9px),
-    radial-gradient(circle at 40% 70%,#ffb0bd 0 7px,transparent 8px);
-  filter: drop-shadow(0 0 6px rgba(255,127,140,.5));
-}
-.blossom-branch.left{left:-20px;top:10%;}
-.blossom-branch.right{right:-20px;top:14%;transform:scaleX(-1) rotate(-35deg);transform-origin: top right;}
-
-@keyframes branchSway {
-  0% { transform: rotate(-37deg); }
-  100% { transform: rotate(-33deg); }
-}
-
-/* Teachers' Day: Glowing Tribute & Floating Rose */
-.tribute-ribbon{
-  display:none;
-  position:fixed;
-  left:50%;
-  top:83px;
-  transform:translateX(-50%);
-  padding:10px 26px;
-  border:1px solid rgba(180,229,162,.5);
-  border-radius:999px;
-  background:rgba(15,54,43,.85);
-  backdrop-filter: blur(8px);
-  box-shadow:0 0 30px rgba(180,229,162,.3);
-  font-weight:800;
-  color:#dfffdc;
-  letter-spacing: .05em;
-  animation: ribbonPulse 3s ease-in-out infinite alternate;
-}
-@keyframes ribbonPulse {
-  0% { box-shadow: 0 0 20px rgba(180,229,162,.2); }
-  100% { box-shadow: 0 0 40px rgba(180,229,162,.5); }
-}
-
-.rose-corner{display:none;position:fixed;bottom:20px;width:120px;height:120px}
-.rose-corner.left{left:10px}.rose-corner.right{right:10px;transform:scaleX(-1)}
-.rose-corner::before{
-  content:"🌹";
-  font-size:72px;
-  filter:drop-shadow(0 0 16px rgba(255,150,150,.5));
-  display: inline-block;
-  animation: roseFloat 4s ease-in-out infinite alternate;
-}
-@keyframes roseFloat {
-  0% { transform: translateY(0) rotate(0deg); }
-  100% { transform: translateY(-8px) rotate(4deg); }
-}
-
-/* Women's Day: Soft Pulsing Aura Halo */
-.women-halo{
-  display:none;
-  position:fixed;
-  left:50%;
-  top:9%;
-  width:45vw;
-  height:45vw;
-  max-width:600px;
-  max-height:600px;
-  transform:translateX(-50%);
-  border-radius:50%;
-  border:1px solid rgba(255,182,220,.3);
-  box-shadow:inset 0 0 90px rgba(255,182,220,.15),0 0 100px rgba(197,165,255,.2);
-  animation: haloBreath 6s ease-in-out infinite alternate;
-}
-@keyframes haloBreath {
-  0% { transform: translateX(-50%) scale(0.95); opacity: 0.6; }
-  100% { transform: translateX(-50%) scale(1.05); opacity: 0.9; }
-}
-
-/* Halloween: Glowing Spooky Pumpkin & Swooping Bats */
-.pumpkin{
-  display:none;
-  position:fixed;
-  bottom:28px;
-  left:6vw;
-  width:95px;
-  height:80px;
-  border-radius:48% 48% 42% 42%;
-  background:radial-gradient(ellipse at 50% 40%,#ffbe4d,#d45115 75%);
-  box-shadow:0 0 35px rgba(255,139,46,.6);
-  animation: pumpkinGlow 2s ease-in-out infinite alternate;
-}
-.pumpkin::before{
-  content:"";
-  position:absolute;
-  left:26px;
-  top:30px;
-  width:12px;
-  height:12px;
-  background:#170a09;
-  box-shadow:36px 0 #170a09,18px 18px 0 -1px #170a09;
-  transform:rotate(45deg);
-}
-.pumpkin::after{
-  content:"";
-  position:absolute;
-  left:44px;
-  top:-12px;
-  width:12px;
-  height:18px;
-  background:#4d7c35;
-  border-radius:4px;
-  transform:rotate(10deg);
-}
-@keyframes pumpkinGlow {
-  0% { box-shadow: 0 0 20px rgba(255,139,46,.4); }
-  100% { box-shadow: 0 0 50px rgba(255,139,46,.8); }
-}
-
-.bat{
-  display:none;
-  position:fixed;
-  width:85px;
-  height:34px;
-  background:#09080d;
+.bat {
+  display:none; position:fixed; width:95px; height:38px; background:#050308;
   clip-path:polygon(0 35%,25% 0,42% 29%,50% 10%,58% 29%,75% 0,100% 35%,76% 65%,61% 54%,50% 100%,39% 54%,24% 65%);
-  filter:drop-shadow(0 0 12px rgba(168,107,255,.5));
-  animation:batFloat 4s ease-in-out infinite;
+  filter:drop-shadow(0 0 15px rgba(137,74,227,.6)); animation:batSwoop 6s ease-in-out infinite;
 }
-.bat.one{right:10%;top:22%;}
-.bat.two{left:20%;top:34%;transform:scale(.65);animation-delay:-2s;}
+.bat.one { right:12%; top:20%; } .bat.two { left:22%; top:30%; transform:scale(.7); animation-delay:-3s; }
+@keyframes batSwoop { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-25px) rotate(-8deg); } }
 
-@keyframes batFloat{
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-18px) rotate(-5deg); }
+/* ======== GIÁNG SINH ======== */
+.xmas-tree { display:none; position:fixed; bottom:0; right:6vw; width:160px; height:240px; }
+.xmas-tree::before {
+  content:""; position:absolute; bottom:30px; left:50%; transform:translateX(-50%);
+  border-left:80px solid transparent; border-right:80px solid transparent; border-bottom:180px solid #146644;
+  filter:drop-shadow(0 0 35px rgba(94,189,133,.4));
 }
+.xmas-tree::after {
+  content:"★"; position:absolute; top:-10px; left:50%; transform:translateX(-50%);
+  font-size:42px; color:#f4d06f; text-shadow:0 0 25px #f4d06f, 0 0 40px #ffea99;
+  animation: starBlink 1.5s infinite alternate;
+}
+.tree-trunk { position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:32px; height:45px; background:#573624; }
+@keyframes starBlink { 100% { transform: translateX(-50%) scale(1.15); text-shadow:0 0 35px #f4d06f, 0 0 60px #ffffff; } }
 
-/* Christmas: Tree with Glowing Star & Subtle Twinkle */
-.xmas-tree{display:none;position:fixed;bottom:0;right:5vw;width:150px;height:220px}
-.xmas-tree::before{
-  content:"";
-  position:absolute;
-  bottom:25px;
-  left:50%;
-  transform:translateX(-50%);
-  border-left:75px solid transparent;
-  border-right:75px solid transparent;
-  border-bottom:170px solid #17724d;
-  filter:drop-shadow(0 0 30px rgba(119,211,155,.35));
-}
-.xmas-tree::after{
-  content:"★";
-  position:absolute;
-  top:-5px;
-  left:50%;
-  transform:translateX(-50%);
-  font-size:36px;
-  color:#f4d06f;
-  text-shadow:0 0 20px #f4d06f, 0 0 35px #ffdf85;
-  animation: starTwinkle 2s ease-in-out infinite alternate;
-}
-.tree-trunk{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:30px;height:42px;background:#68422d}
-
-@keyframes starTwinkle {
-  0% { transform: translateX(-50%) scale(0.9); opacity: 0.8; }
-  100% { transform: translateX(-50%) scale(1.15); opacity: 1; text-shadow: 0 0 25px #f4d06f, 0 0 45px #ffdf85; }
-}
-
-/* State visibility */
+/* State visibility Toggle */
 html[data-season="national"] .national-flag,
-html[data-season="mid-autumn"] .moon-disc,
-html[data-season="mid-autumn"] .lantern-rail,
-html[data-season="tet"] .couplet,
-html[data-season="tet"] .blossom-branch,
-html[data-season="teachers"] .tribute-ribbon,
-html[data-season="teachers"] .rose-corner,
+html[data-season="mid-autumn"] .moon-disc, html[data-season="mid-autumn"] .lantern-rail,
+html[data-season="tet"] .couplet, html[data-season="tet"] .blossom-branch,
+html[data-season="teachers"] .tribute-ribbon, html[data-season="teachers"] .rose-corner,
 html[data-season="women"] .women-halo,
-html[data-season="halloween"] .pumpkin,
-html[data-season="halloween"] .bat,
-html[data-season="christmas"] .xmas-tree{display:block}
+html[data-season="halloween"] .pumpkin, html[data-season="halloween"] .bat,
+html[data-season="christmas"] .xmas-tree { display:block; }
 
-@media(max-width:700px){
-  .national-flag{width:72px;height:48px;top:76px}.national-flag::after{font-size:28px}
-  .moon-disc{right:5vw;top:15vh;width:180px}
-  .couplet{width:44px;min-height:190px;font-size:.8rem}
-  .xmas-tree{transform:scale(.75);transform-origin:bottom right}
-}
-
-/* Main interface stays above the holiday artwork. */
-body > header, body > main, body > footer, body > #mobile-menu, body > #mobile-menu-backdrop{position:relative;z-index:1;}
-body > .modal-backdrop, body > .toast-stack, body > #app-loader{z-index:1000;}
-  
+/* Tránh che UI chính */
+body > header, body > main, body > footer { position:relative; z-index:1; }
+                                                                                                                           
