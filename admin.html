@@ -36,7 +36,7 @@ html[data-theme="light"] .modalbox{background:rgba(255,255,255,.96)}
 </style>
 </head>
 <body>
-<div id="gate" class="modal show"><div class="modalbox"><div class="hero-kicker">🔐 8A8 CONTROL CENTER</div><h2 style="font-size:1.55rem;margin:.75rem 0">Đang xác thực quyền quản trị</h2><div id="gateText" class="section-note">Đang kết nối Firebase...</div><div class="row" style="margin-top:12px"><button id="btnRetry" class="btn btn-primary hidden">↻ Thử lại</button><button id="btnBypass" class="btn btn-warning hidden">⚡ Bypass Check (Dành cho Super Admin)</button><button id="btnGoHome" class="btn btn-soft">Về trang chủ</button></div></div></div>
+<div id="gate" class="modal show"><div class="modalbox"><div class="hero-kicker">🔐 8A8 CONTROL CENTER</div><h2 style="font-size:1.55rem;margin:.75rem 0">Đang xác thực quyền quản trị</h2><div id="gateText" class="section-note">Đang kết nối Firebase...</div><div class="row" style="margin-top:12px"><button id="btnLogin" class="btn btn-primary">🔐 Đăng nhập Admin</button><button id="btnRetry" class="btn btn-primary hidden">↻ Thử lại</button><button id="btnBypass" class="btn btn-warning hidden">⚡ Bypass Check (Dành cho Super Admin)</button><button id="btnGoHome" class="btn btn-soft">Về trang chủ</button></div></div></div>
 <header class="top"><div class="wrap topin"><div class="brand"><img src="./logo.png" class="logo" alt="Logo 8A8" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'brand-fallback',textContent:'8A8'}))"><div class="brand-text"><div class="brand-title">8A8 CONTROL CENTER</div><div class="brand-sub">Trường THCS Cẩm Lý 2</div></div></div><div class="top-actions"><span id="who" class="sub">Chưa xác thực</span><button id="themeToggle" class="btn btn-soft" type="button" title="Đổi giao diện">🌙</button><button id="refreshAll" class="btn btn-soft">↻ Làm mới</button><button id="logout" class="btn btn-danger">Đăng xuất</button></div></div></header>
 
 <main id="app" class="wrap hidden">
@@ -106,6 +106,12 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
+
+// Luôn dùng LOCAL persistence để phiên đăng nhập từ index.html được giữ khi mở admin.html.
+// Nếu trình duyệt không cho phép persistence, hệ thống vẫn tiếp tục bằng phiên hiện tại.
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch((error) => {
+  console.warn("[AdminAuth] Không thể bật LOCAL persistence:", error);
+});
 
 const ADMINS = new Set(["admin", "super_admin"]);
 const SUPER_EMAIL = "tranducmanh2109@gmail.com";
@@ -1225,18 +1231,69 @@ addQuestion();
  */
 auth.onAuthStateChanged(async (user) => {
   currentUser = user;
+
+  // QUAN TRỌNG: Không tự động đá về index.html khi Auth chưa có phiên.
+  // Firebase có thể cần thêm thời gian khôi phục LOCAL persistence trên mobile.
+  // Admin sẽ ở Gate và cho phép đăng nhập trực tiếp nếu chưa có phiên.
   if (!user) {
     profile = null;
     clearSnapshots();
-    location.href = "./index.html";
+    showGate();
+    setGateBusy(false);
+    $("btnLogin")?.classList.remove("hidden");
+    $("btnRetry")?.classList.add("hidden");
+    $("btnBypass")?.classList.add("hidden");
+    setGateMessage("Chưa có phiên đăng nhập Admin. Hãy bấm 'Đăng nhập Admin' để tiếp tục.", "error");
     return;
   }
 
-  const allowed = await verifyAdmin(user);
-  if (!allowed && String(user.email || "").toLowerCase() !== SUPER_EMAIL) {
-    setGateMessage("Tài khoản này không có quyền Admin. Bạn có thể quay lại Portal.", "error");
+  $("btnLogin")?.classList.add("hidden");
+
+  try {
+    const allowed = await verifyAdmin(user);
+    if (!allowed && String(user.email || "").toLowerCase() !== SUPER_EMAIL) {
+      setGateMessage("Tài khoản này không có quyền Admin. Bạn có thể quay lại Portal.", "error");
+    }
+  } catch (error) {
+    console.error("[AdminAuth] verifyAdmin unexpected error:", error);
+    setGateBusy(false);
+    $("btnRetry")?.classList.remove("hidden");
+    setGateMessage(`Không thể hoàn tất xác thực Admin: ${explainVerificationError(error)}`, "error");
   }
 });
+
+$("btnLogin").onclick = async () => {
+  const result = await Swal.fire({
+    title: "🔐 Đăng nhập Admin",
+    html: '<input id="admin-login-email" class="swal2-input" type="email" placeholder="Email Admin"><input id="admin-login-password" class="swal2-input" type="password" placeholder="Mật khẩu">',
+    focusConfirm: false,
+    showCancelButton: true,
+    confirmButtonText: "Đăng nhập",
+    cancelButtonText: "Hủy",
+    preConfirm: () => {
+      const email = document.getElementById("admin-login-email")?.value.trim().toLowerCase();
+      const password = document.getElementById("admin-login-password")?.value || "";
+      if (!email || !password) {
+        Swal.showValidationMessage("Vui lòng nhập email và mật khẩu.");
+        return false;
+      }
+      return { email, password };
+    }
+  });
+
+  if (!result.isConfirmed) return;
+
+  try {
+    setGateBusy(true);
+    setGateMessage("Đang đăng nhập Firebase Authentication…");
+    await auth.signInWithEmailAndPassword(result.value.email, result.value.password);
+    // onAuthStateChanged sẽ tiếp tục verifyAdmin().
+  } catch (error) {
+    setGateBusy(false);
+    setGateMessage(`Đăng nhập thất bại: ${error?.message || "Không xác định"}`, "error");
+    await Swal.fire({ icon: "error", title: "Đăng nhập thất bại", text: error?.message || "Email hoặc mật khẩu không đúng." });
+  }
+};
 </script>
 </body>
 </html>
