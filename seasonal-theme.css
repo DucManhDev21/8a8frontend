@@ -1,7 +1,6 @@
 /*
- * 8A8 Seasonal Theme Engine — visual layer
- * Không dùng hiệu ứng icon rơi chung chung.
- * Mỗi lễ có một không khí, bảng màu và bộ trang trí riêng.
+ * 8A8 Seasonal Theme Engine — Upgraded Visual Layer
+ * Thêm hiệu ứng ánh sáng sống động, tương tác động và chuyển động linh hoạt.
  */
 
 :root{
@@ -112,30 +111,47 @@ html[data-season="christmas"]{
   --season-accent:#f4d06f;
 }
 
-/* Global atmosphere */
+/* Global atmosphere & Pulsing Aura */
 body.seasonal-active{
   background:
-    radial-gradient(circle at 12% 12%,var(--season-glow),transparent 34%),
-    radial-gradient(circle at 88% 78%,color-mix(in srgb,var(--season-secondary) 14%,transparent),transparent 34%),
-    var(--page);
-  color:var(--text);
+    radial-gradient(circle at 12% 12%,var(--season-glow),transparent 40%),
+    radial-gradient(circle at 88% 78%,color-mix(in srgb,var(--season-secondary) 20%,transparent),transparent 40%),
+    var(--season-bg);
+  color:var(--season-text);
   transition:background 900ms ease,color 500ms ease;
+  animation:bgPulse 8s ease-in-out infinite alternate;
 }
+
+@keyframes bgPulse {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 100% 100%; }
+}
+
 body.seasonal-active .glass,
 body.seasonal-active .card,
 body.seasonal-active .modal-content,
 body.seasonal-active .panel{
-  background:var(--surface);
-  border-color:color-mix(in srgb,var(--season-line) 65%,var(--border));
-  color:var(--text);
-  box-shadow:0 24px 80px rgba(0,0,0,.16),0 0 36px var(--season-glow);
+  background:var(--season-surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-color:color-mix(in srgb,var(--season-line) 65%,transparent);
+  color:var(--season-text);
+  box-shadow:0 24px 80px rgba(0,0,0,.25),0 0 36px var(--season-glow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+body.seasonal-active .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 30px 90px rgba(0,0,0,.35), 0 0 50px var(--season-glow);
+}
+
 body.seasonal-active .neon-border{
   border-color:var(--season-primary);
   box-shadow:0 0 0 1px var(--season-primary),0 0 25px var(--season-glow);
 }
 body.seasonal-active .seasonal-accent{
   color:var(--season-primary);
+  text-shadow: 0 0 10px var(--season-glow);
 }
 
 /* Dedicated scene layer */
@@ -160,11 +176,18 @@ body.seasonal-active .seasonal-accent{
   max-width:850px;
   max-height:850px;
   border-radius:50%;
-  filter:blur(55px);
-  opacity:.17;
+  filter:blur(65px);
+  opacity:.25;
   transform:translate(-20%,-25%);
   background:var(--season-primary);
+  animation:skyGlowPulse 6s ease-in-out infinite alternate;
 }
+
+@keyframes skyGlowPulse {
+  0% { transform: translate(-20%, -25%) scale(1); opacity: .2; }
+  100% { transform: translate(-15%, -20%) scale(1.15); opacity: .35; }
+}
+
 .seasonal-title{
   position:fixed;
   top:82px;
@@ -174,16 +197,16 @@ body.seasonal-active .seasonal-accent{
   pointer-events:none;
   text-align:center;
   font-weight:900;
-  letter-spacing:.08em;
+  letter-spacing:.12em;
   text-transform:uppercase;
   color:var(--season-primary);
-  text-shadow:0 0 25px var(--season-glow);
+  text-shadow:0 0 25px var(--season-glow), 0 0 40px var(--season-primary);
   opacity:0;
   transition:opacity .5s ease,transform .7s ease;
 }
 .seasonal-title.show{opacity:1}
 
-/* National Day: flags + star + fireworks */
+/* National Day: Dynamic 3D Flag & Glowing Star */
 .season-national .national-flag,
 html[data-season="national"] .national-flag{
   display:block;
@@ -192,13 +215,14 @@ html[data-season="national"] .national-flag{
   display:none;
   position:fixed;
   top:86px;
-  width:86px;
-  height:58px;
-  background:#d61f2c;
-  border:1px solid rgba(255,218,71,.42);
-  box-shadow:0 0 28px rgba(255,211,58,.20);
+  width:96px;
+  height:64px;
+  background: linear-gradient(135deg, #e61927, #b30f1b);
+  border: 1px solid rgba(255, 223, 89, 0.6);
+  border-radius: 4px;
+  box-shadow:0 10px 30px rgba(230,25,39,.4), 0 0 20px rgba(255,211,58,.3);
   transform-style:preserve-3d;
-  animation:flagWave 3.1s ease-in-out infinite;
+  animation:flagWave 3s ease-in-out infinite alternate;
 }
 .national-flag::after{
   content:"★";
@@ -207,69 +231,282 @@ html[data-season="national"] .national-flag{
   display:grid;
   place-items:center;
   color:#ffd735;
-  font-size:34px;
-  text-shadow:0 0 15px rgba(255,215,53,.65);
+  font-size:38px;
+  filter: drop-shadow(0 0 10px rgba(255,215,53,.9));
 }
-.national-flag.left{left:18px;transform-origin:left center}
-.national-flag.right{right:18px;transform-origin:right center;animation-delay:-1.5s}
-@keyframes flagWave{0%,100%{transform:perspective(500px) rotateY(0) skewY(0)}50%{transform:perspective(500px) rotateY(-10deg) skewY(3deg)}}
+.national-flag.left{left:24px;transform-origin:left center}
+.national-flag.right{right:24px;transform-origin:right center;animation-delay:-1.5s}
 
-/* Mid Autumn: moon + lantern edge */
+@keyframes flagWave{
+  0%{transform:perspective(600px) rotateY(12deg) rotateZ(-2deg) skewY(-2deg)}
+  100%{transform:perspective(600px) rotateY(-12deg) rotateZ(2deg) skewY(2deg)}
+}
+
+/* Mid Autumn: Atmospheric Moon & Swinging Lanterns */
 .moon-disc{
   display:none;
   position:fixed;
   right:8vw;
-  top:13vh;
-  width:min(27vw,310px);
+  top:12vh;
+  width:min(28vw,320px);
   aspect-ratio:1;
   border-radius:50%;
-  background:radial-gradient(circle at 34% 30%,#fff9d9,#ffe9a5 55%,#f2bf59 100%);
-  box-shadow:0 0 35px #ffd76b,0 0 120px rgba(255,215,107,.36);
+  background:radial-gradient(circle at 35% 30%,#ffffff,#ffe396 50%,#f0aa2b 100%);
+  box-shadow:0 0 50px #ffd76b, 0 0 140px rgba(255,215,107,.45);
+  animation: moonPulse 4s ease-in-out infinite alternate;
+}
+@keyframes moonPulse {
+  0% { box-shadow: 0 0 40px #ffd76b, 0 0 120px rgba(255,215,107,.35); }
+  100% { box-shadow: 0 0 65px #ffe08a, 0 0 160px rgba(255,215,107,.55); }
 }
 .moon-disc::before,.moon-disc::after{
   content:"";
   position:absolute;
   border-radius:50%;
-  background:rgba(180,133,63,.12);
+  background:rgba(180,133,63,.14);
 }
-.moon-disc::before{width:21%;height:21%;left:21%;top:26%;box-shadow:105px 40px 0 rgba(180,133,63,.10),40px 110px 0 rgba(180,133,63,.09)}
+.moon-disc::before{width:21%;height:21%;left:21%;top:26%;box-shadow:105px 40px 0 rgba(180,133,63,.12),40px 110px 0 rgba(180,133,63,.1)}
 .moon-disc::after{width:13%;height:13%;right:23%;bottom:23%}
+
 .lantern-rail{display:none;position:fixed;top:0;bottom:0;width:70px}
 .lantern-rail.left{left:0}.lantern-rail.right{right:0}
-.lantern{position:absolute;width:34px;height:48px;border-radius:45% 45% 38% 38%;background:linear-gradient(90deg,#b62c35,#ffd25c,#b62c35);box-shadow:0 0 25px rgba(255,190,71,.55)}
-.lantern::before{content:"";position:absolute;left:50%;top:-13px;width:1px;height:15px;background:#e8c679}
-.lantern:nth-child(1){top:19%;left:18px}.lantern:nth-child(2){top:42%;left:32px;transform:scale(.8)}.lantern:nth-child(3){top:66%;left:12px;transform:scale(.92)}
+.lantern{
+  position:absolute;
+  width:36px;
+  height:52px;
+  border-radius:45% 45% 38% 38%;
+  background:linear-gradient(90deg,#d62832,#ffd25c,#d62832);
+  box-shadow:0 0 25px rgba(255,190,71,.7), inset 0 0 10px rgba(255,255,255,.5);
+  transform-origin: top center;
+  animation: lanternSwing 3.5s ease-in-out infinite alternate;
+}
+.lantern::before{content:"";position:absolute;left:50%;top:-15px;width:2px;height:17px;background:#e8c679}
+.lantern::after{
+  content:"";
+  position:absolute;
+  bottom:-12px;
+  left:50%;
+  transform:translateX(-50%);
+  width:6px;
+  height:12px;
+  background:#ffd25c;
+  box-shadow: 0 2px 5px rgba(0,0,0,.3);
+}
+.lantern:nth-child(1){top:18%;left:18px;animation-delay: 0s;}
+.lantern:nth-child(2){top:42%;left:32px;transform:scale(.85);animation-delay: -1.2s;}
+.lantern:nth-child(3){top:66%;left:14px;transform:scale(.95);animation-delay: -2.4s;}
 .lantern-rail.right .lantern{left:auto;right:18px}
 
-/* Tet: couplets and blossom branches */
-.couplet{display:none;position:fixed;top:14%;width:52px;min-height:230px;background:#9f1119;border:2px solid #efc64e;box-shadow:0 0 30px rgba(255,206,67,.18);color:#ffd76c;padding:13px 8px;writing-mode:vertical-rl;text-align:center;font-weight:800;letter-spacing:.12em;z-index:2}
-.couplet.left{left:16px}.couplet.right{right:16px}
-.blossom-branch{display:none;position:fixed;width:180px;height:180px;border-left:5px solid #5d311d;border-radius:50%;transform:rotate(-35deg)}
-.blossom-branch::after{content:"";position:absolute;width:100%;height:100%;background:radial-gradient(circle at 28% 35%,#ff7f8c 0 7px,transparent 8px),radial-gradient(circle at 55% 22%,#ffd4a2 0 6px,transparent 7px),radial-gradient(circle at 74% 50%,#ff8d9c 0 7px,transparent 8px),radial-gradient(circle at 40% 70%,#ffb0bd 0 6px,transparent 7px)}
-.blossom-branch.left{left:-30px;top:12%}.blossom-branch.right{right:-30px;top:16%;transform:scaleX(-1) rotate(-35deg)}
+@keyframes lanternSwing {
+  0% { transform: rotate(-6deg); }
+  100% { transform: rotate(6deg); }
+}
 
-/* Teachers' Day: tribute ribbon + rose */
-.tribute-ribbon{display:none;position:fixed;left:50%;top:83px;transform:translateX(-50%);padding:10px 22px;border:1px solid rgba(180,229,162,.35);border-radius:999px;background:rgba(15,54,43,.72);box-shadow:0 0 30px rgba(180,229,162,.18);font-weight:800;color:#dfffdc}
+/* Tet: Shimmer Couplets & Gentle Blossom Sway */
+.couplet{
+  display:none;
+  position:fixed;
+  top:14%;
+  width:54px;
+  min-height:240px;
+  background:linear-gradient(180deg, #b8141f, #820a11);
+  border:2px solid #efc64e;
+  border-radius:4px;
+  box-shadow:0 10px 30px rgba(0,0,0,.4), 0 0 25px rgba(255,206,67,.25);
+  color:#ffd76c;
+  padding:14px 8px;
+  writing-mode:vertical-rl;
+  text-align:center;
+  font-weight:800;
+  letter-spacing:.15em;
+  z-index:2;
+  text-shadow:0 0 8px rgba(255,215,108,.6);
+  animation: coupletGlow 3s ease-in-out infinite alternate;
+}
+.couplet.left{left:18px}.couplet.right{right:18px}
+
+@keyframes coupletGlow {
+  0% { border-color: #efc64e; box-shadow: 0 10px 30px rgba(0,0,0,.4), 0 0 15px rgba(255,206,67,.2); }
+  100% { border-color: #fff0a3; box-shadow: 0 10px 30px rgba(0,0,0,.4), 0 0 30px rgba(255,206,67,.5); }
+}
+
+.blossom-branch{
+  display:none;
+  position:fixed;
+  width:200px;
+  height:200px;
+  border-left:5px solid #5d311d;
+  border-radius:50%;
+  transform:rotate(-35deg);
+  transform-origin: top left;
+  animation: branchSway 5s ease-in-out infinite alternate;
+}
+.blossom-branch::after{
+  content:"";
+  position:absolute;
+  width:100%;
+  height:100%;
+  background:
+    radial-gradient(circle at 28% 35%,#ff7f8c 0 8px,transparent 9px),
+    radial-gradient(circle at 55% 22%,#ffd4a2 0 7px,transparent 8px),
+    radial-gradient(circle at 74% 50%,#ff8d9c 0 8px,transparent 9px),
+    radial-gradient(circle at 40% 70%,#ffb0bd 0 7px,transparent 8px);
+  filter: drop-shadow(0 0 6px rgba(255,127,140,.5));
+}
+.blossom-branch.left{left:-20px;top:10%;}
+.blossom-branch.right{right:-20px;top:14%;transform:scaleX(-1) rotate(-35deg);transform-origin: top right;}
+
+@keyframes branchSway {
+  0% { transform: rotate(-37deg); }
+  100% { transform: rotate(-33deg); }
+}
+
+/* Teachers' Day: Glowing Tribute & Floating Rose */
+.tribute-ribbon{
+  display:none;
+  position:fixed;
+  left:50%;
+  top:83px;
+  transform:translateX(-50%);
+  padding:10px 26px;
+  border:1px solid rgba(180,229,162,.5);
+  border-radius:999px;
+  background:rgba(15,54,43,.85);
+  backdrop-filter: blur(8px);
+  box-shadow:0 0 30px rgba(180,229,162,.3);
+  font-weight:800;
+  color:#dfffdc;
+  letter-spacing: .05em;
+  animation: ribbonPulse 3s ease-in-out infinite alternate;
+}
+@keyframes ribbonPulse {
+  0% { box-shadow: 0 0 20px rgba(180,229,162,.2); }
+  100% { box-shadow: 0 0 40px rgba(180,229,162,.5); }
+}
+
 .rose-corner{display:none;position:fixed;bottom:20px;width:120px;height:120px}
-.rose-corner.left{left:0}.rose-corner.right{right:0;transform:scaleX(-1)}
-.rose-corner::before{content:"🌹";font-size:70px;filter:drop-shadow(0 0 12px rgba(255,150,150,.3))}
+.rose-corner.left{left:10px}.rose-corner.right{right:10px;transform:scaleX(-1)}
+.rose-corner::before{
+  content:"🌹";
+  font-size:72px;
+  filter:drop-shadow(0 0 16px rgba(255,150,150,.5));
+  display: inline-block;
+  animation: roseFloat 4s ease-in-out infinite alternate;
+}
+@keyframes roseFloat {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(-8px) rotate(4deg); }
+}
 
-/* Women days: soft heart/flower frames */
-.women-halo{display:none;position:fixed;left:50%;top:9%;width:45vw;height:45vw;max-width:600px;max-height:600px;transform:translateX(-50%);border-radius:50%;border:1px solid rgba(255,182,220,.18);box-shadow:inset 0 0 80px rgba(255,182,220,.08),0 0 90px rgba(197,165,255,.10)}
+/* Women's Day: Soft Pulsing Aura Halo */
+.women-halo{
+  display:none;
+  position:fixed;
+  left:50%;
+  top:9%;
+  width:45vw;
+  height:45vw;
+  max-width:600px;
+  max-height:600px;
+  transform:translateX(-50%);
+  border-radius:50%;
+  border:1px solid rgba(255,182,220,.3);
+  box-shadow:inset 0 0 90px rgba(255,182,220,.15),0 0 100px rgba(197,165,255,.2);
+  animation: haloBreath 6s ease-in-out infinite alternate;
+}
+@keyframes haloBreath {
+  0% { transform: translateX(-50%) scale(0.95); opacity: 0.6; }
+  100% { transform: translateX(-50%) scale(1.05); opacity: 0.9; }
+}
 
-/* Halloween: pumpkin + bat silhouettes */
-.pumpkin{display:none;position:fixed;bottom:28px;left:6vw;width:90px;height:76px;border-radius:48% 48% 42% 42%;background:radial-gradient(ellipse,#ffae3e,#d45115 72%);box-shadow:0 0 32px rgba(255,139,46,.45)}
-.pumpkin::before{content:"";position:absolute;left:25px;top:29px;width:12px;height:12px;background:#170a09;box-shadow:35px 0 #170a09,17px 17px 0 -1px #170a09;transform:rotate(45deg)}
-.pumpkin::after{content:"";position:absolute;left:42px;top:-12px;width:12px;height:18px;background:#4d7c35;border-radius:4px;transform:rotate(10deg)}
-.bat{display:none;position:fixed;width:85px;height:34px;background:#09080d;clip-path:polygon(0 35%,25% 0,42% 29%,50% 10%,58% 29%,75% 0,100% 35%,76% 65%,61% 54%,50% 100%,39% 54%,24% 65%);filter:drop-shadow(0 0 12px rgba(168,107,255,.3));animation:batFloat 5s ease-in-out infinite}
-.bat.one{right:10%;top:22%}.bat.two{left:20%;top:34%;transform:scale(.65);animation-delay:-2s}
-@keyframes batFloat{50%{transform:translateY(-14px) rotate(-3deg)}}
+/* Halloween: Glowing Spooky Pumpkin & Swooping Bats */
+.pumpkin{
+  display:none;
+  position:fixed;
+  bottom:28px;
+  left:6vw;
+  width:95px;
+  height:80px;
+  border-radius:48% 48% 42% 42%;
+  background:radial-gradient(ellipse at 50% 40%,#ffbe4d,#d45115 75%);
+  box-shadow:0 0 35px rgba(255,139,46,.6);
+  animation: pumpkinGlow 2s ease-in-out infinite alternate;
+}
+.pumpkin::before{
+  content:"";
+  position:absolute;
+  left:26px;
+  top:30px;
+  width:12px;
+  height:12px;
+  background:#170a09;
+  box-shadow:36px 0 #170a09,18px 18px 0 -1px #170a09;
+  transform:rotate(45deg);
+}
+.pumpkin::after{
+  content:"";
+  position:absolute;
+  left:44px;
+  top:-12px;
+  width:12px;
+  height:18px;
+  background:#4d7c35;
+  border-radius:4px;
+  transform:rotate(10deg);
+}
+@keyframes pumpkinGlow {
+  0% { box-shadow: 0 0 20px rgba(255,139,46,.4); }
+  100% { box-shadow: 0 0 50px rgba(255,139,46,.8); }
+}
 
-/* Christmas: tree + snow canvas */
+.bat{
+  display:none;
+  position:fixed;
+  width:85px;
+  height:34px;
+  background:#09080d;
+  clip-path:polygon(0 35%,25% 0,42% 29%,50% 10%,58% 29%,75% 0,100% 35%,76% 65%,61% 54%,50% 100%,39% 54%,24% 65%);
+  filter:drop-shadow(0 0 12px rgba(168,107,255,.5));
+  animation:batFloat 4s ease-in-out infinite;
+}
+.bat.one{right:10%;top:22%;}
+.bat.two{left:20%;top:34%;transform:scale(.65);animation-delay:-2s;}
+
+@keyframes batFloat{
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-18px) rotate(-5deg); }
+}
+
+/* Christmas: Tree with Glowing Star & Subtle Twinkle */
 .xmas-tree{display:none;position:fixed;bottom:0;right:5vw;width:150px;height:220px}
-.xmas-tree::before{content:"";position:absolute;bottom:25px;left:50%;transform:translateX(-50%);border-left:75px solid transparent;border-right:75px solid transparent;border-bottom:170px solid #17724d;filter:drop-shadow(0 0 25px rgba(119,211,155,.22))}
-.xmas-tree::after{content:"★";position:absolute;top:0;left:50%;transform:translateX(-50%);font-size:34px;color:#f4d06f;text-shadow:0 0 18px #f4d06f}
+.xmas-tree::before{
+  content:"";
+  position:absolute;
+  bottom:25px;
+  left:50%;
+  transform:translateX(-50%);
+  border-left:75px solid transparent;
+  border-right:75px solid transparent;
+  border-bottom:170px solid #17724d;
+  filter:drop-shadow(0 0 30px rgba(119,211,155,.35));
+}
+.xmas-tree::after{
+  content:"★";
+  position:absolute;
+  top:-5px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:36px;
+  color:#f4d06f;
+  text-shadow:0 0 20px #f4d06f, 0 0 35px #ffdf85;
+  animation: starTwinkle 2s ease-in-out infinite alternate;
+}
 .tree-trunk{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:30px;height:42px;background:#68422d}
+
+@keyframes starTwinkle {
+  0% { transform: translateX(-50%) scale(0.9); opacity: 0.8; }
+  100% { transform: translateX(-50%) scale(1.15); opacity: 1; text-shadow: 0 0 25px #f4d06f, 0 0 45px #ffdf85; }
+}
 
 /* State visibility */
 html[data-season="national"] .national-flag,
@@ -285,13 +522,13 @@ html[data-season="halloween"] .bat,
 html[data-season="christmas"] .xmas-tree{display:block}
 
 @media(max-width:700px){
-  .national-flag{width:64px;height:43px;top:76px}.national-flag::after{font-size:25px}
+  .national-flag{width:72px;height:48px;top:76px}.national-flag::after{font-size:28px}
   .moon-disc{right:5vw;top:15vh;width:180px}
-  .couplet{width:42px;min-height:180px;font-size:.78rem}
-  .xmas-tree{transform:scale(.7);transform-origin:bottom right}
+  .couplet{width:44px;min-height:190px;font-size:.8rem}
+  .xmas-tree{transform:scale(.75);transform-origin:bottom right}
 }
-
 
 /* Main interface stays above the holiday artwork. */
 body > header, body > main, body > footer, body > #mobile-menu, body > #mobile-menu-backdrop{position:relative;z-index:1;}
 body > .modal-backdrop, body > .toast-stack, body > #app-loader{z-index:1000;}
+  
