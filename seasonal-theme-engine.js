@@ -80,7 +80,7 @@
     // Without an astronomical lunar calendar dependency, use a compact
     // date-window table for the common school-year range 2026–2035.
     const midAutumn = {
-      2026: "2026-09-25",
+      2026: "2026-09-20",
       2027: "2027-09-15",
       2028: "2028-10-03",
       2029: "2029-09-22",
