@@ -231,8 +231,10 @@ body.auth-ready-data-pending #app{visibility:visible}
    <a class="nav-link" href="#hoc-tap" data-route-link="hoc-tap">Học tập</a>
    <a class="nav-link" href="#trac-nghiem" data-route-link="trac-nghiem">Trắc nghiệm</a>
    <a class="nav-link" href="#giai-tri" data-route-link="giai-tri">Giải trí</a>
+   <a class="nav-link" href="#thong-bao" data-route-link="thong-bao">🔔 Thông báo</a>
+   <a class="nav-link" href="#vinh-danh" data-route-link="vinh-danh">🏅 Vinh danh</a>
+   <a class="nav-link" href="#phe-binh" data-route-link="phe-binh">⚠️ Phê bình</a>
    <a class="nav-link" href="#confession" data-route-link="confession">Confession</a>
-   <a class="nav-link" href="#chat" data-route-link="chat">Chat</a>
   </nav>
 
   <button id="hamburger-button" class="hamburger" type="button" aria-label="Mở menu" aria-expanded="false" aria-controls="mobile-menu">☰</button>
@@ -255,8 +257,10 @@ body.auth-ready-data-pending #app{visibility:visible}
  <a href="#hoc-tap" data-route-link="hoc-tap">📚 Học tập</a>
  <a href="#trac-nghiem" data-route-link="trac-nghiem">🧠 Trắc nghiệm</a>
  <a href="#giai-tri" data-route-link="giai-tri">🎮 Giải trí</a>
+ <a href="#thong-bao" data-route-link="thong-bao">🔔 Thông báo</a>
+ <a href="#vinh-danh" data-route-link="vinh-danh">🏅 Vinh danh</a>
+ <a href="#phe-binh" data-route-link="phe-binh">⚠️ Phê bình</a>
  <a href="#confession" data-route-link="confession">💬 Confession</a>
- <a href="#chat" data-route-link="chat">💬 Chat lớp</a>
  <a id="mobile-admin-link" href="./admin.html" class="hidden">⚙️ Control Center</a>
  <button id="mobile-logout" type="button" class="btn btn-soft w-full justify-center hidden">🚪 Đăng xuất</button>
 </nav>
@@ -458,9 +462,8 @@ const state = {
   notice:null,
   notifications:[],
   honors:[],
-  chatRooms:[],
-  selectedChatRoomId:null,
-  chatMessageUnsubscribe:null,
+  criticisms:[],
+  notifications:[],
   selectedTeam:null,
   currentQuiz:null,
   quizIndex:0,
@@ -991,23 +994,24 @@ async function loadRealtimeData({waitForFirstLoad=false}={}){
   },e=>{console.error("[Firestore popups]",e);mark("popups");}));
 
   state.unsubscribe.push(onSnapshot(query(collection(db,"honors"),where("active","==",true),limit(50)),snap=>{
-    state.honors=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>toMillis(b.createdAt)-toMillis(a.createdAt));
+    state.honors=snap.docs.map(d=>({id:d.id,...d.data()})).filter(item=>item.active!==false).sort((a,b)=>toMillis(b.createdAt)-toMillis(a.createdAt));
     setCollection("honors",state.honors);
     router();
   },e=>{console.error("[Firestore honors]",e);state.honors=getCollection("honors",[]);router();}));
 
-  state.unsubscribe.push(onSnapshot(query(collection(db,"notifications"),where("recipientUid","==",state.user.uid),limit(30)),snap=>{
-    state.notifications=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>toMillis(b.createdAt)-toMillis(a.createdAt));
+  state.unsubscribe.push(onSnapshot(query(collection(db,"criticisms"),where("active","==",true),limit(50)),snap=>{
+    state.criticisms=snap.docs.map(d=>({id:d.id,...d.data()})).filter(item=>item.active!==false).sort((a,b)=>toMillis(b.createdAt)-toMillis(a.createdAt));
+    setCollection("criticisms",state.criticisms);
+    router();
+  },e=>{console.error("[Firestore criticisms]",e);state.criticisms=getCollection("criticisms",[]);router();}));
+
+  state.unsubscribe.push(onSnapshot(query(collection(db,"notifications"),where("recipientUid","==",state.user.uid),limit(50)),snap=>{
+    state.notifications=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>toMillis(b.createdAt)-toMillis(a.createdAt)).slice(0,50);
     setCollection(`notifications-${state.user.uid}`,state.notifications);
     showNextPrivateNotification();
     router();
   },e=>{console.error("[Firestore notifications]",e);state.notifications=getCollection(`notifications-${state.user.uid}`,[]);showNextPrivateNotification();}));
 
-  state.unsubscribe.push(onSnapshot(query(collection(db,"chatRooms"),limit(100)),snap=>{
-    state.chatRooms=snap.docs.map(d=>({id:d.id,...d.data()})).filter(currentUserCanAccessChatRoom).sort((a,b)=>toMillis(b.updatedAt||b.createdAt)-toMillis(a.updatedAt||a.createdAt));
-    if(state.chatRooms.length&&!state.selectedChatRoomId)state.selectedChatRoomId=state.chatRooms[0].id;
-    router();
-  },e=>console.error("[Firestore chatRooms]",e)));
  }catch(error){
   console.error("[Realtime] init",error);
   router();
@@ -1015,7 +1019,7 @@ async function loadRealtimeData({waitForFirstLoad=false}={}){
  }
  if(waitForFirstLoad){try{await firstLoadPromise;}finally{if(timeout)clearTimeout(timeout);}}
 }
-function clearSnapshotsForState(){state.unsubscribe.forEach(fn=>{try{fn();}catch(error){console.error("[Realtime] unsubscribe",error);}});state.unsubscribe=[];stopChatMessages();}
+function clearSnapshotsForState(){state.unsubscribe.forEach(fn=>{try{fn();}catch(error){console.error("[Realtime] unsubscribe",error);}});state.unsubscribe=[];}
 
 function notificationTypeLabel(type){
  if(type==="praise")return {icon:"🎉",label:"Khen thưởng",tone:"positive"};
@@ -1055,184 +1059,6 @@ async function showNextPrivateNotification(){
 
 function safeChatName(){return state.userProfile?.displayName||state.user?.displayName||state.user?.email||"Thành viên";}
 
-function stopChatMessages(){
- try{state.chatMessageUnsubscribe?.();}catch(error){console.warn("[Chat] unsubscribe",error);}
- state.chatMessageUnsubscribe=null;
-}
-
-function chatRoomMemberIds(room){return Array.isArray(room?.memberUids)?room.memberUids:[];}
-function currentUserCanAccessChatRoom(room){
-  if(!state.user)return false;
-  const isAdmin=["admin","super_admin"].includes(state.userProfile?.role);
-  return isAdmin || room?.isGeneral===true || (room?.memberUids||[]).includes(state.user.uid);
-}
-
-async function ensureGeneralChatRoom(){
-  if(!state.user)return;
-  try{
-    const ref=doc(db,"chatRooms","class_general");
-    const snap=await withTimeout(getDoc(ref),DATA_TIMEOUT_MS,"Phòng chat chung");
-    if(!snap.exists()){
-      await withTimeout(setDoc(ref,{
-        name:"💬 Phòng chung 8A8",
-        description:"Phòng chat chung cho toàn bộ thành viên lớp 8A8.",
-        type:"group",
-        isGeneral:true,
-        creatorUid:state.user.uid,
-        memberUids:[state.user.uid],
-        locked:false,
-        createdAt:serverTimestamp(),
-        updatedAt:serverTimestamp()
-      }),DATA_TIMEOUT_MS,"Tạo phòng chat chung");
-    }
-  }catch(error){
-    console.warn("[Chat] Không thể khởi tạo phòng chung:",error);
-  }
-}
-
-function roomLabel(room){
- if(room.type==="direct"){
-  const otherId=(room.memberUids||[]).find(uid=>uid!==state.user?.uid);
-  const other=state.students.find(x=>(x.accountUid||x.uid||x.id)===otherId);
-  return other?.name||room.name||"Tin nhắn riêng";
- }
- return room.name||"Nhóm chat";
-}
-
-async function openChatRoom(roomId){
- const room=state.chatRooms.find(item=>item.id===roomId);
- if(!room||!currentUserCanAccessChatRoom(room))return;
- state.selectedChatRoomId=roomId;
- stopChatMessages();
-
- const messageQuery=query(
-  collection(db,"chatRooms",roomId,"messages"),
-  orderBy("createdAt","asc"),
-  limit(200)
- );
- state.chatMessageUnsubscribe=onSnapshot(messageQuery,snap=>{
-  const messages=snap.docs.map(d=>({id:d.id,...d.data()}));
-  renderChatMessages(messages,room);
- },error=>{
-  console.error("[Chat messages]",error);
-  const box=$("chat-messages");
-  if(box)box.innerHTML=`<div class="p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-sm">Không tải được tin nhắn: ${escapeHtml(error.message||"lỗi quyền/kết nối")}</div>`;
- });
- router();
-}
-
-function renderChatMessages(messages,room){
- const box=$("chat-messages");
- if(!box)return;
- box.innerHTML=messages.map(message=>{
-  const mine=message.senderUid===state.user?.uid;
-  const photo=safeImageUrl(message.senderPhotoURL);
-  return `<div class="flex ${mine?"justify-end":"justify-start"}">
-    <div class="max-w-[82%] ${mine?"bg-teal-500/12":"bg-slate-500/8"} border border-slate-300/15 rounded-2xl px-4 py-3">
-      <div class="flex items-center gap-2 text-xs text-slate-500">${photo?`<img src="${escapeHtml(photo)}" class="w-7 h-7 rounded-full object-cover">`:""}<b>${escapeHtml(message.senderName||"Thành viên")}</b><span>${message.createdAt?new Date(toMillis(message.createdAt)).toLocaleString("vi-VN"):""}</span></div>
-      <div class="mt-2 whitespace-pre-wrap leading-6">${escapeHtml(message.text||"")}</div>
-      ${(mine||state.userProfile?.role==="admin"||state.userProfile?.role==="super_admin")?`<div class="flex gap-3 mt-2"><button class="text-xs text-teal-600 chat-edit-message" data-room="${escapeHtml(room.id)}" data-message="${escapeHtml(message.id)}" data-text="${escapeHtml(message.text||"")}">Sửa</button><button class="text-xs text-red-500 chat-delete-message" data-room="${escapeHtml(room.id)}" data-message="${escapeHtml(message.id)}">Xóa</button></div>`:""}
-    </div>
-  </div>`;
- }).join("")||`<div class="text-sm text-slate-500 text-center py-10">Chưa có tin nhắn. Hãy bắt đầu cuộc trò chuyện 👋</div>`;
- box.scrollTop=box.scrollHeight;
- box.querySelectorAll(".chat-edit-message").forEach(button=>button.onclick=async()=>{
-  const currentText=button.dataset.text||"";
-  const result=await Swal.fire({title:"Sửa tin nhắn",input:"textarea",inputValue:currentText,inputAttributes:{maxlength:1500},showCancelButton:true,confirmButtonText:"Lưu",cancelButtonText:"Hủy",inputValidator:value=>!String(value||"").trim()?"Tin nhắn không được để trống.":undefined});
-  if(!result.isConfirmed)return;
-  try{await updateDoc(doc(db,"chatRooms",button.dataset.room,"messages",button.dataset.message),{text:String(result.value||"").trim(),editedAt:serverTimestamp()});}
-  catch(error){Swal.fire({icon:"error",title:"Không thể sửa",text:error.message||"Lỗi quyền/kết nối."});}
- });
- box.querySelectorAll(".chat-delete-message").forEach(button=>button.onclick=async()=>{
-  const confirmed=await Swal.fire({icon:"warning",title:"Xóa tin nhắn?",text:"Tin nhắn sẽ bị xóa vĩnh viễn.",showCancelButton:true,confirmButtonText:"Xóa",cancelButtonText:"Hủy",confirmButtonColor:"#ef4444"});
-  if(!confirmed.isConfirmed)return;
-  try{await deleteDoc(doc(db,"chatRooms",button.dataset.room,"messages",button.dataset.message));}
-  catch(error){Swal.fire({icon:"error",title:"Không thể xóa",text:error.message||"Lỗi quyền/kết nối."});}
- });
-}
-
-function chatPage(){
- const rooms=state.chatRooms.filter(currentUserCanAccessChatRoom);
- const selected=rooms.find(x=>x.id===state.selectedChatRoomId)||rooms[0]||null;
- if(selected&&selected.id!==state.selectedChatRoomId)state.selectedChatRoomId=selected.id;
- return `<section class="page-section">
-   ${sectionTitle("💬 CHAT 8A8","Khu trò chuyện","Chat chung, nhóm riêng và tin nhắn 1-1 trong lớp. Mỗi tài khoản chỉ được đọc những phòng mà mình là thành viên.")}
-   <div class="grid lg:grid-cols-[320px,1fr] gap-5">
-    <div class="glass rounded-3xl p-5">
-      <div class="flex justify-between items-center"><h2 class="text-lg font-black">Phòng chat</h2><button id="chat-refresh" class="btn btn-soft">↻</button></div>
-      <div id="chat-room-list" class="space-y-2 mt-4">${rooms.map(room=>`<button class="chat-room-button w-full text-left p-3 rounded-2xl border ${room.id===selected?.id?"border-teal-400 bg-teal-500/10":"border-slate-300/15 bg-white/5"}" data-room-id="${escapeHtml(room.id)}"><div class="font-black">${escapeHtml(roomLabel(room))}</div><div class="text-xs text-slate-500 mt-1">${room.locked?"🔒 Đã khóa":"💬 Đang mở"} · ${room.type==="direct"?"Tin nhắn riêng":`${(room.memberUids||[]).length} thành viên`}</div></button>`).join("")||`<div class="text-sm text-slate-500">Chưa có phòng. Hãy tạo nhóm mới.</div>`}</div>
-      <button id="chat-create-group" class="btn btn-primary w-full mt-4">＋ Tạo nhóm</button>
-      <div class="mt-5 border-t border-slate-300/15 pt-5"><div class="font-black">Nhắn tin với thành viên</div><div class="space-y-2 mt-3">${state.students.slice(0,40).filter(s=>(s.accountUid||s.uid||s.id)!==state.user?.uid).map(s=>`<button class="chat-dm-button w-full text-left p-3 rounded-2xl bg-slate-500/5 hover:bg-slate-500/10" data-uid="${escapeHtml(s.accountUid||s.uid||s.id)}"><b>${escapeHtml(s.name||"Thành viên")}</b><div class="text-xs text-slate-500">${escapeHtml(s.team||"")}</div></button>`).join("")}</div></div>
-    </div>
-    <div class="glass rounded-3xl p-5 min-h-[620px] flex flex-col">
-      <div id="chat-room-header" class="border-b border-slate-300/15 pb-4">${selected?`<div class="text-xl font-black">${escapeHtml(roomLabel(selected))}</div><div class="text-sm text-slate-500 mt-1">${selected.locked?"🔒 Phòng đang khóa quyền gửi":"Bạn có thể trò chuyện tại đây."}</div>`:`<div class="text-xl font-black">Chọn một phòng chat</div>`}</div>
-      <div id="chat-messages" class="flex-1 overflow-auto space-y-3 py-5 min-h-[360px]"></div>
-      <form id="chat-send-form" class="flex gap-2 border-t border-slate-300/15 pt-4 ${selected?"":"hidden"}">
-        <input id="chat-message-input" class="input" maxlength="1500" placeholder="Viết tin nhắn…" autocomplete="off">
-        <button class="btn btn-primary" type="submit" ${selected?.locked?"disabled":""}>Gửi</button>
-      </form>
-    </div>
-   </div>
- </section>`;
-}
-
-async function createChatGroup(){
- const students=state.students.filter(s=>(s.accountUid||s.uid||s.id)!==state.user?.uid);
- const options=students.map(s=>`<option value="${escapeHtml(s.accountUid||s.uid||s.id)}">${escapeHtml(s.name||"Thành viên")} — ${escapeHtml(s.team||"")}</option>`).join("");
- const result=await Swal.fire({title:"Tạo nhóm chat",html:`<input id="swal-group-name" class="swal2-input" placeholder="Tên nhóm"> <textarea id="swal-group-description" class="swal2-textarea" placeholder="Mô tả nhóm"></textarea><select id="swal-group-members" class="swal2-select" multiple size="8" style="width:80%">${options}</select><div style="font-size:12px;color:#64748b;margin-top:8px">Giữ Ctrl/Shift để chọn nhiều thành viên.</div>`,focusConfirm:false,showCancelButton:true,confirmButtonText:"Tạo nhóm",cancelButtonText:"Hủy",preConfirm:()=>{const name=$("swal-group-name")?.value?.trim();const description=$("swal-group-description")?.value?.trim()||"";const members=[...($("swal-group-members")?.selectedOptions||[])].map(o=>o.value);if(!name)return Swal.showValidationMessage("Hãy nhập tên nhóm.");return {name,description,members};}});
- if(!result.isConfirmed)return;
- try{
-  const memberUids=[state.user.uid,...result.value.members.filter(uid=>uid!==state.user.uid)];
-  const ref=await addDoc(collection(db,"chatRooms"),{name:result.value.name,description:result.value.description,type:"group",creatorUid:state.user.uid,memberUids:[...new Set(memberUids)],locked:false,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});
-  state.selectedChatRoomId=ref.id;
-  await openChatRoom(ref.id);
-  toast("✅ Đã tạo nhóm chat.","success");
- }catch(error){Swal.fire({icon:"error",title:"Không thể tạo nhóm",text:error.message||"Lỗi quyền/kết nối."});}
-}
-
-async function openDirectMessage(uid){
- if(!state.user||!uid)return;
- const ids=[state.user.uid,uid].sort();
- const roomId=`dm_${ids.join("__")}`;
- const roomRef=doc(db,"chatRooms",roomId);
- const other=state.students.find(s=>(s.accountUid||s.uid||s.id)===uid);
- try{
-  await setDoc(roomRef,{name:other?.name||"Tin nhắn riêng",type:"direct",creatorUid:state.user.uid,memberUids:ids,locked:false,updatedAt:serverTimestamp(),createdAt:serverTimestamp()},{merge:true});
-  if(!state.chatRooms.some(x=>x.id===roomId))state.chatRooms.push({id:roomId,name:other?.name||"Tin nhắn riêng",type:"direct",creatorUid:state.user.uid,memberUids:ids,locked:false});
-  await openChatRoom(roomId);
- }catch(error){Swal.fire({icon:"error",title:"Không thể mở tin nhắn",text:error.message||"Lỗi quyền/kết nối."});}
-}
-
-async function sendChatMessage(event){
- event.preventDefault();
- const input=$("chat-message-input");
- const text=input?.value?.trim();
- const room=state.chatRooms.find(x=>x.id===state.selectedChatRoomId);
- if(!text||!room||room.locked)return;
- try{
-  await addDoc(collection(db,"chatRooms",room.id,"messages"),{
-   senderUid:state.user.uid,
-   senderName:safeChatName(),
-   senderPhotoURL:state.userProfile?.photoURL||state.user?.photoURL||"",
-   text,
-   createdAt:serverTimestamp()
-  });
-  input.value="";
- }catch(error){Swal.fire({icon:"error",title:"Không thể gửi",text:error.message||"Phòng chat có thể đã bị khóa."});}
-}
-
-async function bindChatEvents(){
- if(currentRoute()!=="chat")return;
- await ensureGeneralChatRoom();
- document.querySelectorAll(".chat-room-button").forEach(button=>button.onclick=()=>openChatRoom(button.dataset.roomId));
- document.querySelectorAll(".chat-dm-button").forEach(button=>button.onclick=()=>openDirectMessage(button.dataset.uid));
- $("chat-create-group")?.addEventListener("click",createChatGroup);
- $("chat-refresh")?.addEventListener("click",()=>router());
- $("chat-send-form")?.addEventListener("submit",sendChatMessage);
- const room=state.chatRooms.find(x=>x.id===state.selectedChatRoomId);
- if(room)openChatRoom(room.id);
-}
-
 function currentRoute(){
   const raw=location.hash.replace(/^#/,"");
   return raw||"trang-chu";
@@ -1270,7 +1096,9 @@ function router(){
         case "trac-nghiem":html=quizPage();break;
         case "giai-tri":html=entertainmentPage();break;
         case "confession":html=confessionPage();break;
-        case "chat":html=chatPage();break;
+        case "thong-bao":html=notificationsPage();break;
+        case "vinh-danh":html=honorsPage();break;
+        case "phe-binh":html=criticismsPage();break;
         case "profile":html=profilePage();break;
         default: location.hash="#trang-chu"; return;
       }
@@ -1432,10 +1260,25 @@ function loggedInDashboard(){
     <div class="glass rounded-3xl p-6 mb-10">
       <div class="flex items-center justify-between gap-4 flex-wrap">
         <div><span class="badge">📣 BẢNG TIN LỚP</span><h2 class="text-2xl font-black mt-3">Vinh danh & nhắc nhở</h2><p class="text-sm text-slate-500 mt-1">Thông tin mới nhất từ Admin/GVCN dành cho tập thể 8A8.</p></div>
-        <a href="#chat" class="btn btn-soft">💬 Vào Chat lớp</a>
+        <div class="flex gap-2 flex-wrap"><a href="#thong-bao" class="btn btn-soft">🔔 Xem thông báo</a><a href="#vinh-danh" class="btn btn-soft">🏅 Vinh danh</a></div>
       </div>
       <div class="space-y-3 mt-5">
         ${state.honors.slice(0,6).map(item=>`<article class="p-4 rounded-2xl border border-slate-300/15 bg-slate-500/5"><div class="flex items-center gap-2"><span class="badge">${item.type==="praise"?"🎉 Vinh danh":item.type==="criticism"?"❌ Phê bình":"⚠️ Nhắc nhở"}</span><span class="text-xs text-slate-500">${item.createdAt?new Date(toMillis(item.createdAt)).toLocaleString("vi-VN"):""}</span></div><h3 class="font-black mt-3">${escapeHtml(item.title||"Thông báo lớp")}</h3><p class="mt-2 text-sm leading-7 whitespace-pre-wrap">${escapeHtml(item.content||"")}</p></article>`).join("")||`<div class="text-sm text-slate-500">Chưa có bài vinh danh hoặc nhắc nhở mới.</div>`}
+      </div>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-6 mb-10">
+      <div class="glass rounded-3xl p-6">
+        <div class="flex justify-between items-center"><h2 class="text-xl font-black">🔔 Thông báo của tôi</h2><a href="#thong-bao" class="text-sm font-bold text-teal-500">Xem tất cả →</a></div>
+        <div class="space-y-3 mt-4">${state.notifications.slice(0,4).map(n=>`<div class="p-3 rounded-2xl bg-slate-500/10"><div class="font-bold">${escapeHtml(n.title||"Thông báo")}</div><div class="text-sm text-slate-500 mt-1">${escapeHtml(n.message||"")}</div></div>`).join("")||`<div class="text-sm text-slate-500">Chưa có thông báo mới.</div>`}</div>
+      </div>
+      <div class="glass rounded-3xl p-6">
+        <div class="text-xl font-black">🔺 10 bạn được cộng điểm gần đây</div>
+        <div class="space-y-2 mt-4">${recentScoreChanges(10,true).map(x=>`<div class="flex justify-between gap-3 p-3 rounded-2xl bg-emerald-500/10"><span class="font-bold">${escapeHtml(x.student.name)}</span><b class="text-emerald-500">+${x.points}</b></div>`).join("")||`<div class="text-sm text-slate-500">Chưa có dữ liệu.</div>`}</div>
+      </div>
+      <div class="glass rounded-3xl p-6">
+        <div class="text-xl font-black">🔻 10 bạn bị trừ điểm gần đây</div>
+        <div class="space-y-2 mt-4">${recentScoreChanges(10,false).map(x=>`<div class="flex justify-between gap-3 p-3 rounded-2xl bg-rose-500/10"><span class="font-bold">${escapeHtml(x.student.name)}</span><b class="text-rose-500">${x.points}</b></div>`).join("")||`<div class="text-sm text-slate-500">Chưa có dữ liệu.</div>`}</div>
       </div>
     </div>
 
@@ -1501,7 +1344,7 @@ function teamPage(team){
 
 function studentCard(student){
  const score=Number(student.score??10);
- const badge=score>=12?"📚":score<8?"⚡":"🌱";
+ const badge=score>=10?"📚":score<8?"⚡":"🌱";
  return `
  <button class="student-card glass rounded-3xl p-5 text-left hover:-translate-y-1 transition-transform" data-student-id="${escapeHtml(student.id)}">
    <div class="flex items-center justify-between">
@@ -1518,7 +1361,7 @@ function openStudent(student){
  state.selectedStudent=student;
  const score=Number(student.score??10);
  const badges=[];
- if(score>=12) badges.push("📚 Chăm ngoan học giỏi");
+ if(score>=10) badges.push("📚 Chăm ngoan học giỏi");
  if(score<8) badges.push("⚡ Cần cố gắng");
  if(!badges.length) badges.push("🌱 Đang tiến bộ");
  state.boardScores=state.students.slice().sort((a,b)=>Number(b.score??10)-Number(a.score??10));
@@ -1580,8 +1423,7 @@ function infoBox(icon,label,value){
 
 function competitionPage(){
  const ranked=state.students.slice().sort((a,b)=>Number(b.score??10)-Number(a.score??10));
- const praises=state.students.flatMap(s=>(s.history||[]).filter(h=>Number(h.points)>0).map(h=>({...h,student:s}))).slice(-8).reverse();
- const warnings=state.students.flatMap(s=>(s.history||[]).filter(h=>Number(h.points)<0).map(h=>({...h,student:s}))).slice(-8).reverse();
+
 
  return `
  <section class="page-section">
@@ -1591,24 +1433,24 @@ function competitionPage(){
    <div class="glass rounded-3xl p-6 border-l-4 border-l-emerald-500">
     <div class="text-xl font-black">🌟 Góc Vinh danh</div>
     <div class="space-y-3 mt-5">
-     ${praises.length?praises.map(item=>`
+     ${state.honors.slice(0,8).length?state.honors.slice(0,8).map(item=>`
        <div class="rounded-2xl p-4 bg-emerald-500/10">
-        <div class="font-black text-emerald-600 dark:text-emerald-400">+${item.points} ·${escapeHtml(item.student.name)}</div>
-        <div class="text-sm mt-1">${escapeHtml(item.reason||"Được ghi nhận")}</div>
+        <div class="font-black text-emerald-600 dark:text-emerald-400">+${escapeHtml(item.title||"Vinh danh")}</div>
+        <div class="text-sm mt-1">${escapeHtml(item.content||"")}</div>
        </div>`).join("")
-       :`<div class="text-sm text-slate-500">Chưa có dữ liệu vinh danh.</div>`}
+       :`<div class="text-sm text-slate-500">Chưa có nội dung vinh danh.</div>`}
     </div>
    </div>
 
    <div class="glass rounded-3xl p-6 border-l-4 border-l-rose-500">
     <div class="text-xl font-black">📝 Góc Nhắc nhở</div>
     <div class="space-y-3 mt-5">
-     ${warnings.length?warnings.map(item=>`
+     ${state.criticisms.slice(0,8).length?state.criticisms.slice(0,8).map(item=>`
        <div class="rounded-2xl p-4 bg-rose-500/10">
-        <div class="font-black text-rose-600 dark:text-rose-400">${item.points} ·${escapeHtml(item.student.name)}</div>
-        <div class="text-sm mt-1">${escapeHtml(item.reason||"Cần chú ý")}</div>
+        <div class="font-black text-rose-600 dark:text-rose-400">${escapeHtml(item.title||"Vinh danh")}</div>
+        <div class="text-sm mt-1">${escapeHtml(item.content||"")}</div>
        </div>`).join("")
-       :`<div class="text-sm text-slate-500">Chưa có dữ liệu nhắc nhở.</div>`}
+       :`<div class="text-sm text-slate-500">Chưa có nội dung phê bình.</div>`}
     </div>
    </div>
   </div>
@@ -1628,13 +1470,34 @@ function competitionPage(){
          <td class="whitespace-nowrap">${escapeHtml(s.name)}</td>
          <td class="whitespace-nowrap">${escapeHtml(s.team||"")}</td>
          <td class="font-black text-teal-600">${Number(s.score??10)}</td>
-         <td>${i===0?"🥇":Number(s.score??10)>=12?"📚":Number(s.score??10)<8?"⚡":"🌱"}</td>
+         <td>${i===0?"🥇":Number(s.score??10)>=10?"📚":Number(s.score??10)<8?"⚡":"🌱"}</td>
         </tr>`).join("")}
       </tbody>
      </table>
    </div>
   </div>
  </section>`;
+}
+
+function recentScoreChanges(limit=10, positive=true){
+  const all=state.students.flatMap(student => (Array.isArray(student.history)?student.history:[]).map((h,index)=>({
+    student, points:Number(h.points||0), direction:h.direction || (Number(h.points||0)>0?"add":"subtract"), timestamp:h.timestamp || h.createdAt || null, index
+  }))).filter(x=>positive?x.points>0:x.points<0).sort((a,b)=>toMillis(b.timestamp)-toMillis(a.timestamp));
+  const seen=new Set(); const result=[];
+  for(const item of all){ const key=String(item.student.id); if(seen.has(key))continue; seen.add(key); result.push(item); if(result.length>=limit)break; }
+  return result;
+}
+
+function notificationsPage(){
+  return `<section class="page-section">${sectionTitle("🔔 TRUNG TÂM THÔNG BÁO","Thông báo của tôi","Cộng/trừ điểm chỉ gửi đến đúng tài khoản bị tác động; các thông báo khác được phân loại rõ ràng.")}\n  <div class="space-y-3">${state.notifications.map(n=>`<article class="glass rounded-3xl p-5 border ${n.read===true?"border-slate-300/10":"border-teal-400/40"}"><div class="flex justify-between gap-3"><span class="badge">${n.direction==="add"?"🔺 Cộng điểm":n.direction==="subtract"?"🔻 Trừ điểm":"🔔 Thông báo"}</span><span class="text-xs text-slate-500">${n.createdAt?new Date(toMillis(n.createdAt)).toLocaleString("vi-VN"):""}</span></div><h3 class="font-black text-lg mt-3">${escapeHtml(n.title||"Thông báo")}</h3><p class="mt-2 whitespace-pre-wrap leading-7">${escapeHtml(n.message||"")}</p>${n.points?`<div class="mt-3 font-black ${Number(n.points)>0?"text-emerald-500":"text-rose-500"}">${Number(n.points)>0?"+":""}${Number(n.points)} điểm · ${Number(n.previousScore??0)} → ${Number(n.newScore??0)}</div>`:""}</article>`).join("")||`<div class="glass rounded-3xl p-8 text-center text-slate-500">Chưa có thông báo.</div>`}</div></section>`;
+}
+
+function honorsPage(){
+  return `<section class="page-section">${sectionTitle("🏅 VINH DANH","Những thành tích được Admin chủ động ghi nhận","Vinh danh là một nội dung riêng, không tự sinh ra từ thao tác cộng điểm.")}<div class="space-y-4">${state.honors.map(item=>`<article class="glass rounded-3xl p-6"><span class="badge">🏅 Vinh danh</span><h2 class="text-2xl font-black mt-3">${escapeHtml(item.title||"Vinh danh")}</h2><p class="mt-3 whitespace-pre-wrap leading-7">${escapeHtml(item.content||"")}</p><div class="text-xs text-slate-500 mt-4">${item.createdAt?new Date(toMillis(item.createdAt)).toLocaleString("vi-VN"):""}</div></article>`).join("")||`<div class="glass rounded-3xl p-8 text-center text-slate-500">Chưa có nội dung vinh danh.</div>`}</div></section>`;
+}
+
+function criticismsPage(){
+  return `<section class="page-section">${sectionTitle("⚠️ PHÊ BÌNH / NHẮC NHỞ","Những nội dung được Admin chủ động đăng","Phê bình/nhắc nhở là một hệ thống riêng và không tự động phát sinh khi trừ điểm.")}<div class="space-y-4">${state.criticisms.map(item=>`<article class="glass rounded-3xl p-6"><span class="badge">⚠️ Nhắc nhở / Phê bình</span><h2 class="text-2xl font-black mt-3">${escapeHtml(item.title||"Nhắc nhở")}</h2><p class="mt-3 whitespace-pre-wrap leading-7">${escapeHtml(item.content||"")}</p><div class="text-xs text-slate-500 mt-4">${item.createdAt?new Date(toMillis(item.createdAt)).toLocaleString("vi-VN"):""}</div></article>`).join("")||`<div class="glass rounded-3xl p-8 text-center text-slate-500">Chưa có nội dung phê bình.</div>`}</div></section>`;
 }
 
 function studyPage(){

@@ -66,20 +66,22 @@ Trần Thị B | tranthib | tranthib@example.com | Matkhau123 | 2012-06-11 | N�
 
  <div class="card"><div class="card-head"><div><h2>🧪 Kết quả Quiz</h2><div class="sub">Theo dõi và xóa kết quả không hợp lệ.</div></div></div><div id="resultList" class="list"></div></div>
 
- <div class="card"><div class="card-head"><div><h2>🧾 Lịch sử điểm</h2><div class="sub">Nhật ký cộng/trừ điểm: học sinh, số điểm, lý do, người thực hiện và thời gian.</div></div></div><div id="pointLogList" class="list"></div></div>
+ <div class="grid lg:grid-cols-2 gap-6"><div class="card"><div class="card-head"><div><h2>🔺 10 bạn được cộng điểm gần đây</h2><div class="sub">Theo lần thay đổi điểm gần nhất.</div></div></div><div id="recentAddList" class="list"></div></div><div class="card"><div class="card-head"><div><h2>🔻 10 bạn bị trừ điểm gần đây</h2><div class="sub">Theo lần thay đổi điểm gần nhất.</div></div></div><div id="recentSubtractList" class="list"></div></div></div>
 
- <div class="card"><div class="card-head"><div><h2>📣 Vinh danh / Nhắc nhở toàn lớp</h2><div class="sub">Đăng bài công khai lên Bảng tin; có thể tag học sinh để gửi thông báo riêng.</div></div></div><form id="honorForm" class="formgrid"><div class="field full"><label>Tiêu đề</label><input name="title" required maxlength="180" placeholder="Tuyên dương tuần này"></div><div class="field"><label>Loại</label><select name="type"><option value="praise">🎉 Vinh danh</option><option value="reminder">⚠️ Nhắc nhở</option><option value="criticism">❌ Phê bình</option></select></div><div class="field"><label>Bật hiển thị</label><select name="active"><option value="true">Có</option><option value="false">Không</option></select></div><div class="field full"><label>Nội dung</label><textarea name="content" required maxlength="3000"></textarea></div><div class="field full"><label>Tag học sinh (nếu có)</label><select id="honorRecipients" name="recipientUids" multiple size="6"></select></div><div class="field full"><button class="btn btn-primary">📣 Đăng lên Bảng tin</button></div></form><div id="honorList" class="list" style="margin-top:12px"></div></div>
+<div class="card"><div class="card-head"><div><h2>🧾 Lịch sử điểm</h2><div class="sub">Nhật ký cộng/trừ điểm: học sinh, số điểm, lý do, người thực hiện và thời gian.</div></div></div><div id="pointLogList" class="list"></div></div>
+
+ <div class="card"><div class="card-head"><div><h2>🏅 Vinh danh</h2><div class="sub">Hoàn toàn độc lập với cộng/trừ điểm. Chỉ nội dung được Admin chủ động tạo mới xuất hiện ở đây.</div></div></div><form id="honorForm" class="formgrid"><div class="field full"><label>Tiêu đề</label><input name="title" required maxlength="180" placeholder="Tuyên dương tuần này"></div><div class="field"><label>Bật hiển thị</label><select name="active"><option value="true">Có</option><option value="false">Không</option></select></div><div class="field full"><label>Nội dung</label><textarea name="content" required maxlength="3000"></textarea></div><div class="field full"><label>Tag học sinh (tùy chọn)</label><select id="honorRecipients" name="recipientUids" multiple size="6"></select></div><div class="field full"><button class="btn btn-primary">🏅 Đăng Vinh danh</button></div></form><div id="honorList" class="list" style="margin-top:12px"></div></div>
+
+ <div class="card"><div class="card-head"><div><h2>⚠️ Phê bình / Nhắc nhở</h2><div class="sub">Hoàn toàn độc lập với trừ điểm. Chỉ nội dung Admin chủ động tạo mới xuất hiện ở đây.</div></div></div><form id="criticismForm" class="formgrid"><div class="field full"><label>Tiêu đề</label><input name="title" required maxlength="180" placeholder="Nhắc nhở tuần này"></div><div class="field"><label>Bật hiển thị</label><select name="active"><option value="true">Có</option><option value="false">Không</option></select></div><div class="field full"><label>Nội dung</label><textarea name="content" required maxlength="3000"></textarea></div><div class="field full"><button class="btn btn-warning">⚠️ Đăng Phê bình / Nhắc nhở</button></div></form><div id="criticismList" class="list" style="margin-top:12px"></div></div>
 
  <div class="card"><div class="card-head"><div><h2>🔔 Lời nhắn riêng</h2><div class="sub">Khen / nhắc / phê bình đích danh; không bắt buộc đổi điểm.</div></div></div><form id="notificationForm" class="formgrid"><div class="field full"><label>Học sinh</label><select id="notificationRecipient" name="recipientUid" required></select></div><div class="field"><label>Loại</label><select name="type"><option value="praise">🎉 Khen thưởng</option><option value="reminder">⚠️ Nhắc nhở</option><option value="criticism">❌ Phê bình</option></select></div><div class="field"><label>Tiêu đề</label><input name="title" placeholder="Lời nhắn từ Admin"></div><div class="field full"><label>Lời nhắn</label><textarea name="message" required maxlength="2000"></textarea></div><div class="field full"><button class="btn btn-primary">🔔 Gửi riêng</button></div></form><div id="notificationList" class="list" style="margin-top:12px"></div></div>
-
- <div class="card full"><div class="card-head"><div><h2>💬 Quản trị Chat</h2><div class="sub">Khóa/mở phòng, xóa nhóm và xóa tin nhắn vi phạm.</div></div></div><div id="adminChatRooms" class="list"></div><div id="adminChatMessages" class="list" style="margin-top:12px"></div></div>
 
  <div id="roleCard" class="card full"><div class="card-head"><div><h2>🛡️ Phân quyền</h2><div class="sub">Chỉ Super Admin mới được đổi quyền. Không cho hạ quyền tài khoản Super Admin chính.</div></div></div><div id="roleList" class="list"></div></div>
 </section>
 <div style="padding:0 0 60px;text-align:center;color:var(--muted)">8A8 — Bứt phá giới hạn, Đoàn kết đập tan mọi thách thức!</div>
 </main>
 
-<div id="scoreModal" class="modal"><div class="modalbox"><h2 id="scoreTitle" style="margin-top:0">Cập nhật thi đua</h2><form id="scoreForm"><input type="hidden" name="uid"><div class="formgrid"><div class="field"><label>Số điểm (+/-)</label><input name="points" type="number" min="-100" max="100" step="1" value="1" required></div><div class="field"><label>Loại</label><select name="type"><option value="praise">🎉 Khen thưởng</option><option value="reminder">⚠️ Nhắc nhở</option><option value="criticism">❌ Phê bình</option></select></div></div><div class="field" style="margin-top:10px"><label>Lý do chi tiết</label><textarea name="reason" required maxlength="1000" placeholder="Ví dụ: Chủ động giúp đỡ bạn trong nhóm…"></textarea></div><div class="row" style="margin-top:12px"><button class="btn btn-primary">Lưu & gửi thông báo</button><button id="closeScore" class="btn btn-soft" type="button">Hủy</button></div></form></div></div>
+<div id="scoreModal" class="modal"><div class="modalbox"><h2 id="scoreTitle" style="margin-top:0">Cập nhật thi đua</h2><form id="scoreForm"><input type="hidden" name="uid"><div class="formgrid"><div class="field"><label>Số điểm (+/-)</label><input name="points" type="number" min="-10" max="10" step="1" value="1" required></div><div class="field"><label>Loại thay đổi</label><div class="input" style="display:flex;align-items:center;font-weight:900">🔺 Cộng / 🔻 Trừ</div></div></div><div class="field" style="margin-top:10px"><label>Lý do chi tiết</label><textarea name="reason" required maxlength="1000" placeholder="Ví dụ: Chủ động giúp đỡ bạn trong nhóm…"></textarea></div><div class="row" style="margin-top:12px"><button class="btn btn-primary">Lưu & gửi thông báo</button><button id="closeScore" class="btn btn-soft" type="button">Hủy</button></div></form></div></div>
 
 <script>
 /*
@@ -127,8 +129,6 @@ let currentUser = null;
 let profile = null;
 let localStudents = [];
 let unsubs = [];
-let adminChatSelectedRoomId = null;
-let adminChatMessageUnsub = null;
 let verificationRun = 0;
 
 const $ = (id) => document.getElementById(id);
@@ -308,8 +308,6 @@ function clearSnapshots() {
     try { unsubscribe(); } catch (_) {}
   });
   unsubs = [];
-  try { adminChatMessageUnsub?.(); } catch (_) {}
-  adminChatMessageUnsub = null;
 }
 
 function subscribe(collectionName, sink, queryBuilder = null) {
@@ -514,19 +512,15 @@ async function start() {
   subscribe("honors", (snapshot) => renderHonors(
     sortDesc(snapshot.docs.map((document) => ({ id: document.id, ...document.data() })))
   ));
+  subscribe("criticisms", (snapshot) => renderCriticisms(
+    sortDesc(snapshot.docs.map((document) => ({ id: document.id, ...document.data() })))
+  ));
   subscribe("notifications", (snapshot) => renderNotifications(
     sortDesc(snapshot.docs.map((document) => ({ id: document.id, ...document.data() })))
   ));
   subscribe("pointLogs", (snapshot) => renderPointLogs(
     sortDesc(snapshot.docs.map((document) => ({ id: document.id, ...document.data() })))
   ));
-  subscribe("chatRooms", (snapshot) => {
-    const rooms = sortDesc(snapshot.docs.map((document) => ({ id: document.id, ...document.data() })));
-    renderAdminChatRooms(rooms);
-    if (adminChatSelectedRoomId && rooms.some((room) => room.id === adminChatSelectedRoomId)) {
-      loadAdminChatMessages(adminChatSelectedRoomId);
-    }
-  });
   subscribe("users", (snapshot) => {
     const users = snapshot.docs.map((document) => ({ id: document.id, ...document.data() }));
     renderRoleAndRecipients(users);
@@ -549,7 +543,7 @@ function renderStudents() {
       </td>
       <td>${esc(student.team || "—")}</td>
       <td>${esc(student.gender || "—")}</td>
-      <td class="score">${Number(student.score ?? 10)}</td>
+      <td class="score">${Math.min(10, Math.max(0, Number(student.score ?? 10)))}</td>
       <td>
         <div class="row">
           <button class="btn btn-soft scoreBtn" data-id="${esc(student.id)}">＋/− Điểm</button>
@@ -610,7 +604,6 @@ async function openScore(id) {
   if (!student) return;
   document.querySelector("#scoreForm [name=uid]").value = id;
   document.querySelector("#scoreForm [name=points]").value = "1";
-  document.querySelector("#scoreForm [name=type]").value = "praise";
   document.querySelector("#scoreForm [name=reason]").value = "";
   $("scoreTitle").textContent = `Thi đua — ${student.name}`;
   $("scoreModal").classList.add("show");
@@ -621,28 +614,19 @@ async function saveScore(event) {
   try {
     const form = new FormData(event.target);
     const points = Number(form.get("points"));
-    const type = String(form.get("type"));
-    if (!Number.isInteger(points) || points === 0 || Math.abs(points) > 100) {
-      throw new Error("Số điểm phải là số nguyên khác 0 và nằm trong khoảng -100 đến 100.");
+    if (!Number.isInteger(points) || points === 0 || Math.abs(points) > 10) {
+      throw new Error("Số điểm phải là số nguyên khác 0 và nằm trong khoảng -10 đến +10.");
     }
-    if (type === "praise" && points < 0) throw new Error("Khen thưởng phải dùng điểm dương.");
-    if ((type === "reminder" || type === "criticism") && points > 0) throw new Error("Nhắc nhở/Phê bình nên dùng điểm âm.");
-
+    const reason = String(form.get("reason") || "").trim();
+    if (!reason) throw new Error("Vui lòng nhập lý do.");
     await api(`/api/admin/students/${encodeURIComponent(form.get("uid"))}/score`, {
       method: "PATCH",
-      body: JSON.stringify({
-        points,
-        type,
-        reason: String(form.get("reason") || "").trim()
-      })
+      body: JSON.stringify({ points, reason })
     });
-
     $("scoreModal").classList.remove("show");
     event.target.reset();
-    await ok("Đã cập nhật điểm", "Đã lưu lịch sử và gửi thông báo riêng cho học sinh.");
-  } catch (error) {
-    fail(error.message);
-  }
+    await ok(points > 0 ? "Đã cộng điểm" : "Đã trừ điểm", `Điểm luôn nằm trong khoảng 0–10. Chỉ tài khoản học sinh bị tác động nhận thông báo.`);
+  } catch (error) { fail(error.message); }
 }
 
 async function deleteStudent(id) {
@@ -1113,28 +1097,27 @@ async function saveRole(id) {
 async function createHonor(event) {
   event.preventDefault();
   try {
-    const form = new FormData(event.target);
-    const recipientUids = [...($("honorRecipients")?.selectedOptions || [])].map((option) => option.value).filter(Boolean);
-    const data = {
-      title: String(form.get("title") || "").trim(),
-      content: String(form.get("content") || "").trim(),
-      type: String(form.get("type") || "reminder"),
-      active: form.get("active") === "true",
-      recipientUids
-    };
-    const created = await api("/api/admin/content/honors", { method: "POST", body: JSON.stringify(data) });
-    for (const uid of recipientUids) {
-      await api("/api/admin/notification", { method: "POST", body: JSON.stringify({ recipientUid: uid, type: data.type, title: data.title, message: data.content }) });
-    }
+    const form=new FormData(event.target);
+    const recipientUids=[...($("honorRecipients")?.selectedOptions||[])].map(o=>o.value).filter(Boolean);
+    const data={title:String(form.get("title")||"").trim(),content:String(form.get("content")||"").trim(),active:form.get("active")==="true",recipientUids};
+    if(!data.title||!data.content)throw new Error("Tiêu đề và nội dung là bắt buộc.");
+    await api("/api/admin/content/honors",{method:"POST",body:JSON.stringify(data)});
+    for(const uid of recipientUids){await api("/api/admin/notification",{method:"POST",body:JSON.stringify({recipientUid:uid,type:"praise",title:data.title,message:data.content,category:"honor"})});}
     event.target.reset();
-    await ok("Đã đăng Vinh danh/Nhắc nhở", created?.id ? "Bài đã xuất hiện trên Bảng tin." : "");
-  } catch (error) { fail(error.message); }
+    await ok("Đã đăng Vinh danh");
+  }catch(error){fail(error.message);}
 }
 
-function renderHonors(items) {
-  $("honorList").innerHTML = items.map((item) => `<div class="item"><div class="item-title">${item.type === "praise" ? "🎉" : item.type === "criticism" ? "❌" : "⚠️"} ${esc(item.title || "Bài vinh danh")}</div><div class="item-meta">${item.active === false ? "⚪ Tắt" : "🟢 Hiển thị"} · ${dateText(item.createdAt)}</div><div style="margin-top:8px;white-space:pre-wrap">${esc(item.content || "")}</div><div class="item-actions"><button class="btn btn-soft edit-honor" data-id="${esc(item.id)}">✏️ Sửa</button><button class="btn btn-danger del-honor" data-id="${esc(item.id)}" data-label="${esc(item.title || "Bài vinh danh")}">🗑️ Xóa</button></div></div>`).join("") || `<div class="sub">Chưa có bài vinh danh.</div>`;
-  document.querySelectorAll(".edit-honor").forEach((button) => button.onclick = () => editContent("honors", button.dataset.id, items.find((item) => item.id === button.dataset.id)));
-  document.querySelectorAll(".del-honor").forEach((button) => button.onclick = () => deleteDocByCollection("honors", button.dataset.id, button.dataset.label));
+async function createCriticism(event) {
+  event.preventDefault();
+  try {
+    const form=new FormData(event.target);
+    const data={title:String(form.get("title")||"").trim(),content:String(form.get("content")||"").trim(),active:form.get("active")==="true"};
+    if(!data.title||!data.content)throw new Error("Tiêu đề và nội dung là bắt buộc.");
+    await api("/api/admin/content/criticisms",{method:"POST",body:JSON.stringify(data)});
+    event.target.reset();
+    await ok("Đã đăng Phê bình / Nhắc nhở");
+  }catch(error){fail(error.message);}
 }
 
 async function createPrivateNotification(event) {
@@ -1147,38 +1130,46 @@ async function createPrivateNotification(event) {
   } catch (error) { fail(error.message); }
 }
 
+function renderHonors(items) {
+  if (!$("honorList")) return;
+  const visible=items.filter(item=>item.active!==false);
+  $("honorList").innerHTML=visible.slice(0,100).map(item=>`<div class="item"><div class="item-title">🏅 ${esc(item.title||"Vinh danh")}</div><div class="item-meta">${dateText(item.createdAt)}</div><div style="margin-top:8px;white-space:pre-wrap">${esc(item.content||"")}</div><div class="item-actions"><button class="btn btn-soft edit-honor" data-id="${esc(item.id)}">✏️ Sửa</button><button class="btn btn-danger del-honor" data-id="${esc(item.id)}" data-label="${esc(item.title||"Vinh danh")}">🗑️ Xóa</button></div></div>`).join("") || `<div class="sub">Chưa có nội dung vinh danh.</div>`;
+  document.querySelectorAll(".edit-honor").forEach(button=>button.onclick=()=>editContent("honors",button.dataset.id,visible.find(x=>x.id===button.dataset.id)));
+  document.querySelectorAll(".del-honor").forEach(button=>button.onclick=()=>deleteDocByCollection("honors",button.dataset.id,button.dataset.label));
+}
+
 function renderNotifications(items) {
   $("notificationList") && ($( "notificationList").innerHTML = items.slice(0, 100).map((item) => `<div class="item"><div class="item-title">${item.type === "praise" ? "🎉" : item.type === "criticism" ? "❌" : "⚠️"} ${esc(item.title || "Thông báo")}</div><div class="item-meta">UID: ${esc(item.recipientUid || "—")} · ${item.read ? "Đã đọc" : "Chưa đọc"} · ${dateText(item.createdAt)}</div><div style="margin-top:8px;white-space:pre-wrap">${esc(item.message || "")}</div><div class="item-actions"><button class="btn btn-soft edit-notification" data-id="${esc(item.id)}">✏️ Sửa</button><button class="btn btn-danger del-notification" data-id="${esc(item.id)}" data-label="Thông báo riêng">🗑️ Xóa</button></div></div>`).join("") || `<div class="sub">Chưa có thông báo riêng.</div>`);
   document.querySelectorAll(".edit-notification").forEach((button) => button.onclick = () => editContent("notifications", button.dataset.id, items.find((item) => item.id === button.dataset.id)));
   document.querySelectorAll(".del-notification").forEach((button) => button.onclick = () => deleteDocByCollection("notifications", button.dataset.id, button.dataset.label));
 }
 
+function renderCriticisms(items) {
+  if (!$("criticismList")) return;
+  const visible=items.filter(item=>item.active!==false);
+  $("criticismList").innerHTML=visible.slice(0,100).map(item=>`<div class="item"><div class="item-title">⚠️ ${esc(item.title||"Nhắc nhở")}</div><div class="item-meta">${dateText(item.createdAt)}</div><div style="margin-top:8px;white-space:pre-wrap">${esc(item.content||"")}</div><div class="item-actions"><button class="btn btn-soft edit-criticism" data-id="${esc(item.id)}">✏️ Sửa</button><button class="btn btn-danger del-criticism" data-id="${esc(item.id)}" data-label="${esc(item.title||"Phê bình")}">🗑️ Xóa</button></div></div>`).join("") || `<div class="sub">Chưa có nội dung phê bình.</div>`;
+  document.querySelectorAll(".edit-criticism").forEach(button=>button.onclick=()=>editContent("criticisms",button.dataset.id,visible.find(x=>x.id===button.dataset.id)));
+  document.querySelectorAll(".del-criticism").forEach(button=>button.onclick=()=>deleteDocByCollection("criticisms",button.dataset.id,button.dataset.label));
+}
+
+function renderRecentScoreLists(items) {
+  const recent=items.slice().sort((a,b)=>millis(b.createdAt)-millis(a.createdAt));
+  const unique=(list)=>{const seen=new Set(); const out=[]; for(const item of list){const key=String(item.studentUid||item.id); if(seen.has(key))continue; seen.add(key); out.push(item); if(out.length>=10)break;} return out;};
+  const adds=unique(recent.filter(x=>Number(x.points)>0));
+  const subtracts=unique(recent.filter(x=>Number(x.points)<0));
+  const render=list=>list.map(item=>{const student=localStudents.find(s=>String(s.id)===String(item.studentUid));return `<div class="item"><div class="item-title">${Number(item.points)>0?"🔺":"🔻"} ${esc(student?.name||item.studentUid||"Học sinh")}</div><div class="item-meta">${Number(item.points)>0?"+":""}${Number(item.points)} điểm · ${Number(item.previousScore||0)} → ${Number(item.newScore||0)} · ${dateText(item.createdAt)}</div><div style="margin-top:6px">${esc(item.reason||"")}</div></div>`}).join("") || `<div class="sub">Chưa có dữ liệu.</div>`;
+  if($("recentAddList"))$("recentAddList").innerHTML=render(adds);
+  if($("recentSubtractList"))$("recentSubtractList").innerHTML=render(subtracts);
+}
+
 function renderPointLogs(items) {
   if (!$("pointLogList")) return;
+  renderRecentScoreLists(items);
   $("pointLogList").innerHTML = items.slice(0, 100).map((item) => {
     const student = localStudents.find((candidate) => String(candidate.id || candidate.uid || candidate.accountUid) === String(item.studentUid));
     const label = student?.name ? `${student.name} · ${item.studentUid || ""}` : (item.studentUid || "");
     return `<div class="item"><div class="item-title">${Number(item.points || 0) > 0 ? "➕" : "➖"} ${esc(label)}</div><div class="item-meta">${Number(item.previousScore || 0)} → ${Number(item.newScore || 0)} · ${esc(item.type || "")} · ${dateText(item.createdAt)}</div><div style="margin-top:8px">${esc(item.reason || "")}</div></div>`;
   }).join("") || `<div class="sub">Chưa có lịch sử điểm.</div>`;
-}
-
-/* -------------------------------------------------------------------------
- * CHAT ADMIN
- * ------------------------------------------------------------------------- */
-function renderAdminChatRooms(rooms) {
-  $("adminChatRooms").innerHTML = rooms.map((room) => `<div class="item"><div class="item-title">💬 ${esc(room.name || room.id)}</div><div class="item-meta">${room.type || "group"} · ${(room.memberUids || []).length} thành viên · ${room.locked ? "🔒 Đã khóa" : "🟢 Đang mở"}</div><div class="item-actions"><button class="btn btn-soft admin-chat-select" data-id="${esc(room.id)}">Xem tin nhắn</button><button class="btn btn-warning admin-chat-lock" data-id="${esc(room.id)}" data-locked="${room.locked === true}">${room.locked ? "🔓 Mở khóa" : "🔒 Khóa chat"}</button><button class="btn btn-danger admin-chat-delete-room" data-id="${esc(room.id)}" data-label="phòng ${esc(room.name || room.id)}">🗑️ Xóa nhóm</button></div></div>`).join("") || `<div class="sub">Chưa có phòng chat.</div>`;
-  document.querySelectorAll(".admin-chat-select").forEach((button) => button.onclick = () => { adminChatSelectedRoomId = button.dataset.id; loadAdminChatMessages(button.dataset.id); });
-  document.querySelectorAll(".admin-chat-lock").forEach((button) => button.onclick = async () => { try { await api(`/api/admin/chat/rooms/${encodeURIComponent(button.dataset.id)}/lock`, { method: "PATCH", body: JSON.stringify({ locked: button.dataset.locked !== "true" }) }); await ok(button.dataset.locked === "true" ? "Đã mở khóa chat" : "Đã khóa chat"); } catch (error) { fail(error.message); } });
-  document.querySelectorAll(".admin-chat-delete-room").forEach((button) => button.onclick = async () => { if (!(await confirmDelete(button.dataset.label))) return; try { await api(`/api/admin/chat/rooms/${encodeURIComponent(button.dataset.id)}`, { method: "DELETE" }); adminChatSelectedRoomId = null; $("adminChatMessages").innerHTML = ""; await ok("Đã xóa nhóm"); } catch (error) { fail(error.message); } });
-}
-
-function loadAdminChatMessages(roomId) {
-  try { adminChatMessageUnsub?.(); } catch (_) {}
-  adminChatMessageUnsub = db.collection("chatRooms").doc(roomId).collection("messages").orderBy("createdAt", "desc").limit(100).onSnapshot((snapshot) => {
-    const messages = snapshot.docs.map((document) => ({ id: document.id, ...document.data() })).reverse();
-    $("adminChatMessages").innerHTML = `<div class="item-title">Tin nhắn phòng ${esc(roomId)}</div>` + (messages.map((message) => `<div class="item"><div class="item-title">${esc(message.senderName || "Thành viên")}</div><div class="item-meta">${dateText(message.createdAt)} · ${esc(message.senderUid || "")}</div><div style="white-space:pre-wrap;margin-top:7px">${esc(message.text || "")}</div><div class="item-actions"><button class="btn btn-danger admin-chat-delete-message" data-room="${esc(roomId)}" data-message="${esc(message.id)}">🗑️ Xóa tin nhắn</button></div></div>`).join("") || `<div class="sub">Chưa có tin nhắn.</div>`);
-    document.querySelectorAll(".admin-chat-delete-message").forEach((button) => button.onclick = async () => { if (!(await confirmDelete("tin nhắn này"))) return; try { await api(`/api/admin/chat/rooms/${encodeURIComponent(button.dataset.room)}/messages/${encodeURIComponent(button.dataset.message)}`, { method: "DELETE" }); await ok("Đã xóa tin nhắn"); } catch (error) { fail(error.message); } });
-  }, (error) => { console.error("[Admin Chat]", error); $("adminChatMessages").innerHTML = `<div class="bulk-fail">Không tải được tin nhắn: ${esc(error.message)}</div>`; });
 }
 
 function applyAdminTheme(mode){
@@ -1203,6 +1194,7 @@ $("quizForm").onsubmit = createQuiz;
 $("homeworkForm").onsubmit = createHomework;
 $("attendanceForm").onsubmit = createAttendance;
 $("honorForm").onsubmit = createHonor;
+$("criticismForm").onsubmit = createCriticism;
 $("notificationForm").onsubmit = createPrivateNotification;
 $("resetPopup").onclick = resetPopup;
 $("addQuestion").onclick = () => addQuestion();
